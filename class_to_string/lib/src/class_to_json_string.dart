@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:class_to_string/src/class_to_string.dart';
 
 /// A [ClassToString] that produces single line output.
+///
+/// Note: this is an experimental feature. API may change without a major
+/// version increase.
 class ClassToJsonString implements ClassToString {
   StringBuffer? _result = StringBuffer();
   Map<String, dynamic>? _result2 = {};
@@ -39,14 +42,12 @@ class ClassToJsonString implements ClassToString {
       _result!.write(jsonEncode(value));
     } else {
       final result = value.toString();
-      print(result);
       _result!.write(identical(_previousString, result) ? result : jsonEncode(result));
     }
   }
 
   @override
   String toString() {
-    // var stringResult = jsonEncode(_result2, toEncodable: (e) => e.toString());
     _result!.write('}');
     _isJsonString -= 1;
     final result = _previousString = _result!.toString();
@@ -55,12 +56,4 @@ class ClassToJsonString implements ClassToString {
     _result2 = null;
     return result;
   }
-}
-
-class _JsonValue {
-  final Object value;
-
-  _JsonValue(this.value);
-
-  dynamic toJson() => value.toString();
 }

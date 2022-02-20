@@ -1,6 +1,5 @@
 import 'package:class_to_string/src/class_to_flat_string.dart';
 import 'package:class_to_string/src/class_to_indent_string.dart';
-import 'package:class_to_string/src/class_to_json_string.dart';
 
 /// Interface for [Object.toString] output pretty class to string.
 abstract class ClassToString {
@@ -18,9 +17,6 @@ abstract class ClassToString {
 
   /// A [ClassToString] that produces multi-line indented output.
   factory ClassToString.indent(String name, [Iterable<Type> types]) = ClassToIndentString;
-
-  /// A [ClassToString] that produces json output.
-  factory ClassToString.json(String name, [Iterable<Type> types]) = ClassToJsonString;
 
   /// Add a field and its value.
   void add(String field, Object? value);

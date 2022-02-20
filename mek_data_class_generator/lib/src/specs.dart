@@ -41,7 +41,7 @@ class ClassSpec {
       t(element.typeParameters.map((e) => e.getDisplayString(withNullability: true)).join(', '));
   late final String _joinedTypes = t(element.typeParameters.map((e) => e.displayName).join(', '));
 
-  static t(String t) => t.isEmpty ? '' : '<$t>';
+  static String t(String t) => t.isEmpty ? '' : '<$t>';
 
   late final NameSpec self = NameSpec(
     name: element.name,

@@ -2,9 +2,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
     show
         InheritanceManager3;
+import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
-
-import 'utils.dart';
 
 /// See https://github.com/google/json_serializable.dart/blob/master/json_serializable/lib/src/field_helpers.dart
 

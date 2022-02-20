@@ -1,6 +1,6 @@
 name: class_to_string
 description: It allows to get beautiful class to string.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/BreX900/data_class/tree/main/class_to_string
 
 environment:
