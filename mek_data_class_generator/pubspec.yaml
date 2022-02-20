@@ -1,0 +1,25 @@
+name: mek_data_class_generator
+version: 0.0.1
+description: >
+  Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
+  and `change` methods
+homepage: https://github.com/google/built_value.dart
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  mek_data_class:
+    path: ../mek_data_class
+
+  analyzer: '>=2.6.0 <4.0.0'
+  build: '>=1.0.0 <3.0.0'
+  source_gen: '>=0.9.0 <2.0.0'
+  dart_style: '>=2.0.0 <3.0.0'
+
+dev_dependencies:
+  mek_lints: ^0.2.0
+  test: ^1.20.1
+
+  # dart run build_runner watch --delete-conflicting-outputs
+  build_runner: ^2.1.7
