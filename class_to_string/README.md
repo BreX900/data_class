@@ -1,4 +1,4 @@
-It allows to get beautiful toStrings.
+It allows to get beautiful class to string.
 Generally used in code generators for example in [mek_data_class]
 
 ## Features

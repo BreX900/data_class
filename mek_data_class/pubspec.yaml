@@ -1,7 +1,8 @@
 name: mek_data_class
-description: A starting point for Dart libraries or applications.
+description: >
+  Generate `hashCode`, `==`, `toString`, `copyWith` and `change` methods with low code
 version: 0.0.1
-# homepage: https://www.example.com
+homepage: https://github.com/BreX900/data_class/tree/main/mek_data_class
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

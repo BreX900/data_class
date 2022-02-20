@@ -1,3 +1,6 @@
+[![pub package](https://img.shields.io/badge/GitHub-0.0.1-brightgreen)](https://github.com/BreX900/data_class)
+[![pub package](https://img.shields.io/badge/pub.dev-0.0.1-blue)](https://pub.dartlang.org/packages/mek_data_class)
+
 The purpose of this library is to expose the generation of very simple class methods with excellent performance and little code generation.
 For this you will only be able to enable what you need of the supported features
 

@@ -1,1 +1,1 @@
-/example/README.md
+../README.md
