@@ -34,19 +34,24 @@ mixin _$Response<T> {
     );
   }
 
-  Response<T> change(void Function(_ResponseChanges<T> c) updates) {
-    final changes = _ResponseChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+  Response<T> change(void Function(_ResponseChanges<T> c) updates) =>
+      (_ResponseChanges<T>._(_self)..update(updates)).build();
 
   _ResponseChanges<T> toChanges() => _ResponseChanges._(_self);
 }
 
 class _ResponseChanges<T> {
-  T data;
+  late T data;
 
-  _ResponseChanges._(Response<T> self) : data = self.data;
+  _ResponseChanges._(Response<T> dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_ResponseChanges<T> c) updates) => updates(this);
+
+  void replace(covariant Response<T> dataClass) {
+    data = dataClass.data;
+  }
 
   Response<T> build() => Response(
         data: data,
@@ -85,11 +90,8 @@ mixin _$PaginatedResponse<T extends Object> {
   }
 
   PaginatedResponse<T> change(
-      void Function(_PaginatedResponseChanges<T> c) updates) {
-    final changes = _PaginatedResponseChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+          void Function(_PaginatedResponseChanges<T> c) updates) =>
+      (_PaginatedResponseChanges<T>._(_self)..update(updates)).build();
 
   _PaginatedResponseChanges<T> toChanges() =>
       _PaginatedResponseChanges._(_self);
@@ -97,12 +99,20 @@ mixin _$PaginatedResponse<T extends Object> {
 
 class _PaginatedResponseChanges<T extends Object>
     implements _ResponseChanges<T> {
-  T data;
-  int total;
+  late T data;
+  late int total;
 
-  _PaginatedResponseChanges._(PaginatedResponse<T> self)
-      : data = self.data,
-        total = self.total;
+  _PaginatedResponseChanges._(PaginatedResponse<T> dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_PaginatedResponseChanges<T> c) updates) =>
+      updates(this);
+
+  void replace(covariant PaginatedResponse<T> dataClass) {
+    data = dataClass.data;
+    total = dataClass.total;
+  }
 
   PaginatedResponse<T> build() => PaginatedResponse(
         data: data,
@@ -136,19 +146,25 @@ mixin _$ListResponse<T> {
     );
   }
 
-  ListResponse<T> change(void Function(_ListResponseChanges<T> c) updates) {
-    final changes = _ListResponseChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+  ListResponse<T> change(void Function(_ListResponseChanges<T> c) updates) =>
+      (_ListResponseChanges<T>._(_self)..update(updates)).build();
 
   _ListResponseChanges<T> toChanges() => _ListResponseChanges._(_self);
 }
 
 class _ListResponseChanges<T> implements _ResponseChanges<List<T>> {
-  List<T> data;
+  late List<T> data;
 
-  _ListResponseChanges._(ListResponse<T> self) : data = self.data;
+  _ListResponseChanges._(ListResponse<T> dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_ListResponseChanges<T> c) updates) =>
+      updates(this);
+
+  void replace(covariant ListResponse<T> dataClass) {
+    data = dataClass.data;
+  }
 
   ListResponse<T> build() => ListResponse(
         data: data,

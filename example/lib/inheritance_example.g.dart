@@ -38,6 +38,14 @@ mixin _$Animal {
 abstract class AnimalChanges {
   String get finalField;
 
+  AnimalChanges._(Animal dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(AnimalChanges c) updates);
+
+  void replace(covariant Animal dataClass);
+
   Animal build();
 }
 
@@ -72,22 +80,26 @@ mixin _$Dog {
     );
   }
 
-  Dog change(void Function(_DogChanges c) updates) {
-    final changes = _DogChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+  Dog change(void Function(_DogChanges c) updates) =>
+      (_DogChanges._(_self)..update(updates)).build();
 
   _DogChanges toChanges() => _DogChanges._(_self);
 }
 
 class _DogChanges implements AnimalChanges {
-  String finalField;
-  String getterField;
+  late String finalField;
+  late String getterField;
 
-  _DogChanges._(Dog self)
-      : finalField = self.finalField,
-        getterField = self.getterField;
+  _DogChanges._(Dog dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_DogChanges c) updates) => updates(this);
+
+  void replace(covariant Dog dataClass) {
+    finalField = dataClass.finalField;
+    getterField = dataClass.getterField;
+  }
 
   Dog build() => Dog(
         finalField: finalField,
@@ -126,22 +138,26 @@ mixin _$Cat {
     );
   }
 
-  Cat change(void Function(_CatChanges c) updates) {
-    final changes = _CatChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+  Cat change(void Function(_CatChanges c) updates) =>
+      (_CatChanges._(_self)..update(updates)).build();
 
   _CatChanges toChanges() => _CatChanges._(_self);
 }
 
 class _CatChanges implements AnimalChanges {
-  String finalField;
-  String getterField;
+  late String finalField;
+  late String getterField;
 
-  _CatChanges._(Cat self)
-      : finalField = self.finalField,
-        getterField = self.getterField;
+  _CatChanges._(Cat dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_CatChanges c) updates) => updates(this);
+
+  void replace(covariant Cat dataClass) {
+    finalField = dataClass.finalField;
+    getterField = dataClass.getterField;
+  }
 
   Cat build() => Cat(
         finalField: finalField,

@@ -104,11 +104,11 @@ class Value<T> with _$Value<T> {
 Use the [ClassToString] package to perform the `toString` method
 ```dart
 final product = Product(...);
-print(product);
 /// Product(
 ///   title=Overlord,
 ///   price=12,
 /// )
+print(product);
 ```
 
 ### CopyWith
@@ -122,17 +122,34 @@ print(product.copyWith(title: 'Raisekamika'));
 
 ### *Changes
 Unlike a builder you cannot set values to null but the field is not defined as such and cannot be instantiated
+
 ```dart
-final product = Product(...);
+final updatedProduct = product.change((changes) => changes..title = 'Raisekamika');
 
-final inlineUpdateProduct = product.change((changes) => changes.title = 'Raisekamika');
-
-final updateProduct = product.toChanges();
+final changes = product.toChanges();
 changes.title = 'Raisekamika';
 final updatedProduct = changes.build();
 ```
 
 > Enable in `build.yaml` with `changeable: true`
+
+#### *Changes.update
+Update the `*Changes` class by passing a function
+```dart 
+final updatedChanges = changes.update((c) => c..title = 'Albedo')); // title=Albedo
+```
+
+#### *Changes.replace
+Update the properties of the `*Changes` class with the properties of the `DataClass`
+```dart 
+final updatedChanges = productChanges.replace(product); // title=Raisekamika
+```
+
+#### *Changes.build
+Build the `DataClass` from `*Changes` class
+```dart 
+Product product = productChanges.build();
+```
 
 ## Global Configs
 See the docs of the DataClass class for more information
@@ -151,6 +168,13 @@ targets:
           copyable: false
           changeable: false
           changesVisible: false
+```
+
+### Recommended options
+```yaml
+comparable: true
+stringify: true
+changeable: true
 ```
 
 ## Motivations

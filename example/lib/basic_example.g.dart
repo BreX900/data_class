@@ -39,22 +39,26 @@ mixin _$Product {
     );
   }
 
-  Product change(void Function(_ProductChanges c) updates) {
-    final changes = _ProductChanges._(_self);
-    updates(changes);
-    return changes.build();
-  }
+  Product change(void Function(_ProductChanges c) updates) =>
+      (_ProductChanges._(_self)..update(updates)).build();
 
   _ProductChanges toChanges() => _ProductChanges._(_self);
 }
 
 class _ProductChanges {
-  int id;
-  String title;
+  late int id;
+  late String title;
 
-  _ProductChanges._(Product self)
-      : id = self.id,
-        title = self.title;
+  _ProductChanges._(Product dataClass) {
+    replace(dataClass);
+  }
+
+  void update(void Function(_ProductChanges c) updates) => updates(this);
+
+  void replace(covariant Product dataClass) {
+    id = dataClass.id;
+    title = dataClass.title;
+  }
 
   Product build() => Product(
         id: id,
