@@ -44,9 +44,9 @@ part 'my_file.g.dart';
 ## Usage/Examples
 
 You can see some examples in 
-- [basic](/example/lib/basic_example.dart)
-- [generics](/example/lib/generics_example.dart)
-- [inheritance](/example/lib/inheritance_example.dart)
+- [basic](https://github.com/BreX900/data_class/blob/main/example/lib/basic_example.dart)
+- [generics](https://github.com/BreX900/data_class/blob/main/example/lib/generics_example.dart)
+- [inheritance](https://github.com/BreX900/data_class/blob/main/example/lib/inheritance_example.dart)
 
 ### Basic
 

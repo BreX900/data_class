@@ -1,5 +1,5 @@
 name: mek_data_class_generator
-version: 0.0.3
+version: 0.0.3+1
 description: >
   Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
   and `change` methods
