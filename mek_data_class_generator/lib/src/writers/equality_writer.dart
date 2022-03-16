@@ -9,30 +9,35 @@ class EqualityWriter extends Writer {
   Iterable<String> writeMethods() sync* {
     yield _generatePropsMethod();
     yield _generateEqualMethod();
+    yield _generateHashcodeMethod();
   }
 
   String _generatePropsMethod() {
     return '''
-  List<Object?> get _props => [
-      ${_writePropsFields().join('\n')}
-      ];''';
+  Iterable<Object?> get _props sync* {
+${_writePropsFields().join('\n')}
+  }''';
   }
 
   Iterable<String> _writePropsFields() sync* {
     for (var field in fieldSpecs) {
       if (!field.stringify) continue;
 
-      yield '_self.${field.name},';
+      yield '      yield _self.${field.name};';
     }
   }
 
   String _generateEqualMethod() {
     return '''
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ${classSpec.mixin.typedName} &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);''';
+          DataClass.\$equals(_props, other._props);''';
+  }
+
+  String _generateHashcodeMethod() {
+    return '''
+    int get hashCode => Object.hashAll(_props);''';
   }
 }

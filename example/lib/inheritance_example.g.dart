@@ -11,18 +11,18 @@ part of 'inheritance_example.dart';
 mixin _$Animal {
   Animal get _self => this as Animal;
 
-  List<Object?> get _props => [
-        _self.finalField,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.finalField;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$Animal &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() =>
       (ClassToString('Animal')..add('finalField', _self.finalField)).toString();
 
@@ -52,19 +52,19 @@ abstract class AnimalChanges {
 mixin _$Dog {
   Dog get _self => this as Dog;
 
-  List<Object?> get _props => [
-        _self.finalField,
-        _self.getterField,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.finalField;
+    yield _self.getterField;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$Dog &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() => (ClassToString('Dog')
         ..add('finalField', _self.finalField)
         ..add('getterField', _self.getterField))
@@ -110,19 +110,19 @@ class _DogChanges implements AnimalChanges {
 mixin _$Cat {
   Cat get _self => this as Cat;
 
-  List<Object?> get _props => [
-        _self.finalField,
-        _self.getterField,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.finalField;
+    yield _self.getterField;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$Cat &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() => (ClassToString('Cat')
         ..add('finalField', _self.finalField)
         ..add('getterField', _self.getterField))

@@ -10,7 +10,6 @@ class ToStringWriter extends Writer {
     final types = classSpec.types.isEmpty ? '' : ', ${classSpec.types}';
 
     yield '''
-  @override
   String toString() => (ClassToString('${classSpec.self.name}'$types)
       ${_writeFields().join('\n')}).toString();''';
   }

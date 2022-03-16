@@ -5,7 +5,7 @@ part 'basic_example.g.dart';
 @DataClass()
 class Product with _$Product {
   final int id;
-  final String title;
+  final String? title;
 
   const Product({
     required this.id,

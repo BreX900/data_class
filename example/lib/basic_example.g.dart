@@ -11,19 +11,19 @@ part of 'basic_example.dart';
 mixin _$Product {
   Product get _self => this as Product;
 
-  List<Object?> get _props => [
-        _self.id,
-        _self.title,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.id;
+    yield _self.title;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$Product &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() => (ClassToString('Product')
         ..add('id', _self.id)
         ..add('title', _self.title))
@@ -47,7 +47,7 @@ mixin _$Product {
 
 class _ProductChanges {
   late int id;
-  late String title;
+  late String? title;
 
   _ProductChanges._(Product dataClass) {
     replace(dataClass);

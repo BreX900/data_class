@@ -3,10 +3,10 @@
 /// More dartdocs go here.
 library mek_data_class;
 
+import 'package:collection/collection.dart';
 import 'package:meta/meta_meta.dart';
 
 export 'package:class_to_string/class_to_string.dart' show ClassToString;
-export 'package:collection/collection.dart' show DeepCollectionEquality;
 
 /// Enable and customize data class generation.
 ///
@@ -43,6 +43,11 @@ class DataClass {
     this.changeable,
     this.changesVisible,
   });
+
+  /// Used by mek_data_class_generator
+  static bool $equals(Iterable<Object?> self, Iterable<Object?> other) {
+    return const IterableEquality<Object?>(DeepCollectionEquality()).equals(self, other);
+  }
 }
 
 /// Customize data class field generation

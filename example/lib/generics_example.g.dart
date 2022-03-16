@@ -11,18 +11,18 @@ part of 'generics_example.dart';
 mixin _$Response<T> {
   Response<T> get _self => this as Response<T>;
 
-  List<Object?> get _props => [
-        _self.data,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.data;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$Response<T> &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() =>
       (ClassToString('Response', [T])..add('data', _self.data)).toString();
 
@@ -61,19 +61,19 @@ class _ResponseChanges<T> {
 mixin _$PaginatedResponse<T extends Object> {
   PaginatedResponse<T> get _self => this as PaginatedResponse<T>;
 
-  List<Object?> get _props => [
-        _self.data,
-        _self.total,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.data;
+    yield _self.total;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$PaginatedResponse<T> &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() => (ClassToString('PaginatedResponse', [T])
         ..add('data', _self.data)
         ..add('total', _self.total))
@@ -123,18 +123,18 @@ class _PaginatedResponseChanges<T extends Object>
 mixin _$ListResponse<T> {
   ListResponse<T> get _self => this as ListResponse<T>;
 
-  List<Object?> get _props => [
-        _self.data,
-      ];
+  Iterable<Object?> get _props sync* {
+    yield _self.data;
+  }
 
-  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _$ListResponse<T> &&
           runtimeType == other.runtimeType &&
-          const DeepCollectionEquality().equals(_props, other._props);
+          DataClass.$equals(_props, other._props);
 
-  @override
+  int get hashCode => Object.hashAll(_props);
+
   String toString() =>
       (ClassToString('ListResponse', [T])..add('data', _self.data)).toString();
 
