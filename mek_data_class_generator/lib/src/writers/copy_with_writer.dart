@@ -1,4 +1,5 @@
 import 'package:mek_data_class_generator/src/specs.dart';
+import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
 class CopyWithWriter extends Writer {
@@ -23,7 +24,7 @@ class CopyWithWriter extends Writer {
 
   Iterable<String> _generateMethodArgs() sync* {
     for (var field in fieldSpecs) {
-      yield '${field.type}? ${field.name},\n';
+      yield '${withNull(field.originalType)} ${field.name},\n';
     }
   }
 

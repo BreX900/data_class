@@ -14,6 +14,7 @@ mixin _$Product {
   Iterable<Object?> get _props sync* {
     yield _self.id;
     yield _self.title;
+    yield _self.extraData;
   }
 
   bool operator ==(Object other) =>
@@ -26,16 +27,19 @@ mixin _$Product {
 
   String toString() => (ClassToString('Product')
         ..add('id', _self.id)
-        ..add('title', _self.title))
+        ..add('title', _self.title)
+        ..add('extraData', _self.extraData))
       .toString();
 
   Product copyWith({
     int? id,
     String? title,
+    Map<String, int?>? extraData,
   }) {
     return Product(
       id: id ?? _self.id,
       title: title ?? _self.title,
+      extraData: extraData ?? _self.extraData,
     );
   }
 
@@ -48,6 +52,7 @@ mixin _$Product {
 class _ProductChanges {
   late int id;
   late String? title;
+  late Map<String, int?>? extraData;
 
   _ProductChanges._(Product dataClass) {
     replace(dataClass);
@@ -58,10 +63,12 @@ class _ProductChanges {
   void replace(covariant Product dataClass) {
     id = dataClass.id;
     title = dataClass.title;
+    extraData = dataClass.extraData;
   }
 
   Product build() => Product(
         id: id,
         title: title,
+        extraData: extraData,
       );
 }

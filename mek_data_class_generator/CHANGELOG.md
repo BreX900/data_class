@@ -1,3 +1,6 @@
+## 0.1.1
+- Fix nested null type when generating `copyWith` method
+
 ## 0.1.0
 - Fix `hashcode` method generation
 - Removed `@override` annotation to reduce generated code
