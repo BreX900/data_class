@@ -9,11 +9,13 @@ environment:
 
 dependencies:
   class_to_string: ^0.0.2
-#  class_to_string:
-#    path: ../class_to_string
 
   meta: ^1.7.0
   collection: ^1.15.0
+
+dependency_overrides:
+  class_to_string:
+    path: ../class_to_string
 
 dev_dependencies:
   mek_lints: ^0.2.0

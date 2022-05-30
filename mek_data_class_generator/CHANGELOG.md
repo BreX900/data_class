@@ -1,3 +1,6 @@
+## 0.1.2
+- feat update analyzer dependency
+
 ## 0.1.1
 - Fix nested null type when generating `copyWith` method
 

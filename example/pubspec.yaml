@@ -5,6 +5,11 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
+  mek_data_class: ^0.0.0
+
+dependency_overrides:
+  class_to_string:
+    path: ../class_to_string
   mek_data_class:
     path: ../mek_data_class
 
