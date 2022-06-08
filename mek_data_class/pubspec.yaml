@@ -18,5 +18,5 @@ dependency_overrides:
     path: ../class_to_string
 
 dev_dependencies:
-  mek_lints: ^0.2.0
+  mek_lints: ^0.3.0
   test: ^1.20.1

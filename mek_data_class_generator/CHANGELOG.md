@@ -1,4 +1,4 @@
-## 0.1.2
+## 0.1.3
 - feat update analyzer dependency
 
 ## 0.1.1
