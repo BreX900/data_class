@@ -1,3 +1,6 @@
+## 0.1.4
+- fix generation for fields on abstract class
+
 ## 0.1.3
 - feat update analyzer dependency
 

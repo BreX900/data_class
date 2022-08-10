@@ -83,11 +83,7 @@ class ChangesWriter extends Writer {
     for (var field in fieldSpecs) {
       if (!field.updatable) continue;
 
-      if (isAbstract) {
-        yield '${field.originalType} get ${field.name};';
-      } else {
-        yield 'late ${field.originalType} ${field.name};';
-      }
+      yield 'late ${field.originalType} ${field.name};';
     }
   }
 
