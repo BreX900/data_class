@@ -26,6 +26,7 @@ class ClassSpec {
   final bool copyable;
   final bool changeable;
   final bool changesVisible;
+  final bool createFieldsClass;
 
   ClassSpec({
     required this.element,
@@ -35,6 +36,7 @@ class ClassSpec {
     required this.stringify,
     required this.changeable,
     required this.changesVisible,
+    required this.createFieldsClass,
   });
 
   late final String _fullJoinedTypes =
@@ -70,11 +72,14 @@ class ClassSpec {
       copyable: annotation.peek('copyable')?.boolValue ?? config.copyable,
       changeable: annotation.peek('changeable')?.boolValue ?? config.changeable,
       changesVisible: annotation.peek('changesVisible')?.boolValue ?? config.changesVisible,
+      createFieldsClass:
+          annotation.peek('createFieldsClass')?.boolValue ?? config.createFieldsClass,
     );
   }
 }
 
 class FieldSpec {
+  final FieldElement element;
   final String name;
   final String type;
   final String originalType;
@@ -84,6 +89,7 @@ class FieldSpec {
   final String? stringifier;
 
   const FieldSpec({
+    required this.element,
     required this.name,
     required this.type,
     required this.originalType,
@@ -97,6 +103,7 @@ class FieldSpec {
     final annotation = dataFieldAnnotation(element);
 
     return FieldSpec(
+      element: element,
       name: element.displayName,
       type: element.type.getDisplayString(withNullability: false),
       originalType: element.type.getDisplayString(withNullability: true),

@@ -8,7 +8,7 @@ class CopyWithWriter extends Writer {
 
   @override
   Iterable<String> writeMethods() sync* {
-    String _writeBody() {
+    String writeBody() {
       return ''' {
     return ${classSpec.self.name}(
     ${_generateClassArgs().join()}    
@@ -19,7 +19,7 @@ class CopyWithWriter extends Writer {
     yield '''
   ${classSpec.self.typedName} copyWith({
     ${_generateMethodArgs().join()}
-  })${writeMethodBody(_writeBody)}''';
+  })${writeMethodBody(writeBody)}''';
   }
 
   Iterable<String> _generateMethodArgs() sync* {

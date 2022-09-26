@@ -33,6 +33,10 @@ class DataClass {
   /// Default: `false`
   final bool? changesVisible;
 
+  /// Create a class with all the field names of the class
+  /// Default: `false`
+  final bool? createFieldsClass;
+
   /// Ex.
   /// @DataClass()
   /// class Product {}
@@ -42,6 +46,7 @@ class DataClass {
     this.copyable,
     this.changeable,
     this.changesVisible,
+    this.createFieldsClass,
   });
 
   /// Used by mek_data_class_generator

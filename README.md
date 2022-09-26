@@ -151,6 +151,23 @@ Build the `DataClass` from `*Changes` class
 Product product = productChanges.build();
 ```
 
+### DataClassFields
+Generate a class that contains the names of the fields of the Data Class. `@DataClass(createFieldsClass)`
+Example:
+```dart
+@DataClass(createFieldsClass: true)
+class Product with _$Product {
+  final int id;
+  const Product({required this.id});
+}
+// GENERATED CODE
+class ProductFields {
+  final String _path;
+  const ProductFields([this._path = '']);
+  String get id => '${_path}id';
+}
+```
+
 ## Global Configs
 See the docs of the DataClass class for more information
 

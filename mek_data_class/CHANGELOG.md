@@ -1,3 +1,6 @@
+## 0.2.0
+- Added `DataClass.createFieldsClass` to create a class that contains the names of the fields of the Data Class
+
 ## 0.1.0
 - Removed `DeepCollectionEquality` export in favor of `DataClass.$equals` method
 

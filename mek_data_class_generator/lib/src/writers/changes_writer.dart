@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
@@ -20,21 +21,21 @@ class ChangesWriter extends Writer {
   }
 
   String _writeChangeMethod() {
-    String _writeBody() {
+    String writeBody() {
       return ''' => (${classSpec.changes.typedName}._(_self)..update(updates)).build();''';
     }
 
     return '''
-  ${classSpec.self.typedName} change(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(_writeBody)}''';
+  ${classSpec.self.typedName} change(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(writeBody)}''';
   }
 
   String _writeToChangesMethod() {
-    String _writeBody() {
+    String writeBody() {
       return ''' => ${classSpec.changes.name}._(_self);''';
     }
 
     return '''
-  ${classSpec.changes.typedName} toChanges()${writeMethodBody(_writeBody)}''';
+  ${classSpec.changes.typedName} toChanges()${writeMethodBody(writeBody)}''';
   }
 
   @override
@@ -46,11 +47,11 @@ class ChangesWriter extends Writer {
     final superType = findSuperDataClass(classSpec.element);
     var superSelf = '';
     if (superType != null) {
-      final superSpec = ClassSpec.from(config, superType.element,
-          ConstantReader(dataClassChecker.firstAnnotationOf(superType.element)));
+      final superSpec = ClassSpec.from(config, superType.element2 as ClassElement,
+          ConstantReader(dataClassChecker.firstAnnotationOf(superType.element2)));
 
       final superTypes = ClassSpec.t(superType.typeArguments.join(', '));
-      final superName = '${visibility(superSpec.changesVisible)}${superType.element.name}Changes';
+      final superName = '${visibility(superSpec.changesVisible)}${superType.element2.name}Changes';
       superSelf = 'implements $superName$superTypes ';
     }
 
@@ -88,16 +89,16 @@ class ChangesWriter extends Writer {
   }
 
   String _writeChangeClassMethod() {
-    String _writeBody() {
+    String writeBody() {
       return ''' => updates(this);''';
     }
 
     return '''
-  void update(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(_writeBody)}''';
+  void update(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(writeBody)}''';
   }
 
   String _writeReplaceClassMethod() {
-    Iterable<String> _generateProperties() sync* {
+    Iterable<String> generateProperties() sync* {
       for (var field in fieldSpecs) {
         if (!field.updatable) continue;
 
@@ -105,14 +106,14 @@ class ChangesWriter extends Writer {
       }
     }
 
-    String _writeBody() {
+    String writeBody() {
       return ''' {
-      ${_generateProperties().join('\n')}
+      ${generateProperties().join('\n')}
     }''';
     }
 
     return '''
-    void replace(covariant ${classSpec.self.typedName} dataClass)${writeMethodBody(_writeBody)}
+    void replace(covariant ${classSpec.self.typedName} dataClass)${writeMethodBody(writeBody)}
     ''';
   }
 

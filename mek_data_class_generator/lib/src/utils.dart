@@ -13,18 +13,24 @@ DartObject? _dataFieldAnnotation(FieldElement element) =>
 ConstantReader dataFieldAnnotation(FieldElement element) =>
     ConstantReader(_dataFieldAnnotation(element));
 
-/// Returns `true` if [element] is annotated with [JsonKey].
+/// Returns `true` if [element] is annotated with [DataField].
 bool hasDataFieldAnnotation(FieldElement element) => _dataFieldAnnotation(element) != null;
 
 final dataClassChecker = TypeChecker.fromRuntime(DataClass);
 
+ConstantReader? dataClassAnnotation(ClassElement element) {
+  // if (element == null) return null;
+  final dartObject = dataClassChecker.firstAnnotationOf(element, throwOnUnresolved: false);
+  return dartObject == null ? null : ConstantReader(dartObject);
+}
+
 InterfaceType? findSuperDataClass(ClassElement element) {
   InterfaceType? superType = element.supertype;
   while (superType != null) {
-    if (dataClassChecker.hasAnnotationOf(superType.element)) {
+    if (dataClassChecker.hasAnnotationOf(superType.element2)) {
       return superType;
     }
-    superType = superType.element.supertype;
+    superType = superType.element2.supertype;
   }
   return null;
 }

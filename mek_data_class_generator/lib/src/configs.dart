@@ -5,6 +5,7 @@ class Config {
   final bool copyable;
   final bool changeable;
   final bool changesVisible;
+  final bool createFieldsClass;
 
   const Config({
     required this.pageWidth,
@@ -13,6 +14,7 @@ class Config {
     required this.stringify,
     required this.changeable,
     required this.changesVisible,
+    required this.createFieldsClass,
   });
 
   factory Config.from(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class Config {
       copyable: map['copyable'] ?? false,
       changeable: map['changeable'] ?? false,
       changesVisible: map['changesVisible'] ?? false,
+      createFieldsClass: map['createFieldsClass'] ?? false,
     );
   }
 }

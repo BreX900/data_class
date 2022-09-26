@@ -6,7 +6,7 @@ part of 'inheritance_example.dart';
 // DataClassGenerator
 // **************************************************************************
 
-// ignore_for_file: annotate_overrides
+// ignore_for_file: annotate_overrides, unused_element
 
 mixin _$Animal {
   Animal get _self => this as Animal;
@@ -36,7 +36,7 @@ mixin _$Animal {
 }
 
 abstract class AnimalChanges {
-  String get finalField;
+  late String finalField;
 
   AnimalChanges._(Animal dataClass) {
     replace(dataClass);

@@ -7,6 +7,7 @@ import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/writers/changes_writer.dart';
 import 'package:mek_data_class_generator/src/writers/copy_with_writer.dart';
 import 'package:mek_data_class_generator/src/writers/equality_writer.dart';
+import 'package:mek_data_class_generator/src/writers/fields_class_writer.dart';
 import 'package:mek_data_class_generator/src/writers/to_string_writer.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 import 'package:source_gen/source_gen.dart';
@@ -20,6 +21,22 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
   @override
   Iterable<String> generateForAnnotatedElement(
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) sync* {
+    try {
+      for (final result in _generateForAnnotatedElement(element, annotation, buildStep)) {
+        yield result;
+      }
+    } catch (error, stackTrace) {
+      // ignore: avoid_print
+      print('error\n$stackTrace');
+      rethrow;
+    }
+  }
+
+  Iterable<String> _generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
@@ -50,7 +67,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
       }
     }
 
-    yield '// ignore_for_file: annotate_overrides';
+    yield '// ignore_for_file: annotate_overrides, unused_element';
     yield '''mixin ${classSpec.mixin.fullTypedName} {
   ${classSpec.self.typedName} get _self => this as ${classSpec.self.typedName};
   
@@ -66,6 +83,9 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     if (classSpec.copyable) yield CopyWithWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
     if (classSpec.changeable) {
       yield ChangesWriter(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
+    }
+    if (classSpec.createFieldsClass) {
+      yield FieldsClassWriter(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
     }
   }
 }

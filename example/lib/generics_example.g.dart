@@ -6,7 +6,7 @@ part of 'generics_example.dart';
 // DataClassGenerator
 // **************************************************************************
 
-// ignore_for_file: annotate_overrides
+// ignore_for_file: annotate_overrides, unused_element
 
 mixin _$Response<T> {
   Response<T> get _self => this as Response<T>;
