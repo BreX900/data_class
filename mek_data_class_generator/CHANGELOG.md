@@ -1,3 +1,5 @@
+
+## 0.3.0
 - feat: Added support for type aliases (typedef)
 
 ## 0.2.0
