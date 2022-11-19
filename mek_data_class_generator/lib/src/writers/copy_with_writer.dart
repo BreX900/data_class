@@ -24,7 +24,7 @@ class CopyWithWriter extends Writer {
 
   Iterable<String> _generateMethodArgs() sync* {
     for (var field in fieldSpecs) {
-      yield '${withNull(field.originalType)} ${field.name},\n';
+      yield '${withNull(field.getType(nullable: true))} ${field.name},\n';
     }
   }
 

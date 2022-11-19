@@ -84,7 +84,7 @@ class ChangesWriter extends Writer {
     for (var field in fieldSpecs) {
       if (!field.updatable) continue;
 
-      yield 'late ${field.originalType} ${field.name};';
+      yield 'late ${field.getType(nullable: true)} ${field.name};';
     }
   }
 

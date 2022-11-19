@@ -16,11 +16,13 @@ dependencies:
   source_gen: ^1.2.0
   dart_style: ^2.2.0
 
-dependency_overrides:
-  class_to_string:
-    path: ../class_to_string
-  mek_data_class:
-    path: ../mek_data_class
+  collection: ^1.16.0
+
+#dependency_overrides:
+#  class_to_string:
+#    path: ../class_to_string
+#  mek_data_class:
+#    path: ../mek_data_class
 
 dev_dependencies:
   mek_lints: ^0.3.0

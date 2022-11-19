@@ -1,4 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
@@ -80,9 +82,8 @@ class ClassSpec {
 
 class FieldSpec {
   final FieldElement element;
+
   final String name;
-  final String type;
-  final String originalType;
   final bool comparable;
   final bool stringify;
   final bool updatable;
@@ -91,8 +92,6 @@ class FieldSpec {
   const FieldSpec({
     required this.element,
     required this.name,
-    required this.type,
-    required this.originalType,
     required this.comparable,
     required this.stringify,
     required this.updatable,
@@ -105,12 +104,26 @@ class FieldSpec {
     return FieldSpec(
       element: element,
       name: element.displayName,
-      type: element.type.getDisplayString(withNullability: false),
-      originalType: element.type.getDisplayString(withNullability: true),
       comparable: annotation.peek('comparable')?.boolValue ?? true,
       stringify: annotation.peek('stringify')?.boolValue ?? true,
       updatable: annotation.peek('updatable')?.boolValue ?? true,
       stringifier: annotation.peek('stringifier')?.revive().accessor,
     );
+  }
+
+  String getType({required bool nullable}) => _getType(element.type, nullable: nullable);
+
+  static String _getType(DartType type, {required bool nullable}) {
+    final alias = type.alias;
+
+    if (alias != null) {
+      final args = alias.typeArguments.map((e) => _getType(e, nullable: true)).toList();
+      final shouldNullable = nullable && type.nullabilitySuffix != NullabilitySuffix.none;
+      return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${shouldNullable ? '?' : ''}';
+    }
+
+    final name = type.getDisplayString(withNullability: true);
+    final shouldNotNullable = !nullable && name.endsWith('?');
+    return shouldNotNullable ? name.substring(0, name.length - 1) : name;
   }
 }
