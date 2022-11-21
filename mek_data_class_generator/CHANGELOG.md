@@ -1,4 +1,7 @@
 
+## 0.3.1
+- feat: support analyzer `>=4.0.0 <6.0.0`
+
 ## 0.3.0
 - feat: Added support for type aliases (typedef)
 
