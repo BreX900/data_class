@@ -2,7 +2,7 @@ import 'package:mek_data_class/mek_data_class.dart';
 
 part 'inheritance_example.g.dart';
 
-@DataClass(changesVisible: true)
+@DataClass(changeable: true, copyable: true)
 abstract class Animal with _$Animal {
   final String finalField;
   String get getterField;
@@ -16,7 +16,7 @@ abstract class Animal with _$Animal {
   String say();
 }
 
-@DataClass()
+@DataClass(changeable: true, copyable: true)
 class Dog extends Animal with _$Dog {
   @override
   final String getterField;
@@ -33,7 +33,7 @@ class Dog extends Animal with _$Dog {
   String say() => 'Woof!';
 }
 
-@DataClass()
+@DataClass(changeable: true, copyable: true)
 class Cat extends Animal with _$Cat {
   @override
   final String getterField;

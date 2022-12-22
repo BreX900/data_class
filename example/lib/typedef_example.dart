@@ -5,7 +5,7 @@ part 'typedef_example.g.dart';
 typedef JsonMap<T> = Map<String, T>;
 typedef NullableJsonMap<T> = Map<String?, T>;
 
-@DataClass()
+@DataClass(changeable: true, copyable: true)
 class Extra with _$Extra {
   final JsonMap<int>? jsonMap;
   final NullableJsonMap<double?> nullableJsonMap;

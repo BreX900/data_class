@@ -26,14 +26,6 @@ mixin _$Order {
   String toString() =>
       (ClassToString('Order')..add('product', _self.product)).toString();
 
-  Order copyWith({
-    Product? product,
-  }) {
-    return Order(
-      product: product ?? _self.product,
-    );
-  }
-
   Order change(void Function(_OrderChanges c) updates) =>
       (_OrderChanges._(_self)..update(updates)).build();
 
@@ -41,38 +33,21 @@ mixin _$Order {
 }
 
 class _OrderChanges {
-  late Product product;
+  Product product;
 
-  _OrderChanges._(Order dataClass) {
-    replace(dataClass);
-  }
+  _OrderChanges._(Order dc) : product = dc.product;
 
   void update(void Function(_OrderChanges c) updates) => updates(this);
-
-  void replace(covariant Order dataClass) {
-    product = dataClass.product;
-  }
 
   Order build() => Order(
         product: product,
       );
 }
 
-class OrderFields {
-  final String _path;
-
-  const OrderFields([this._path = '']);
-
-  ProductFields get product => ProductFields('${_path}product.');
-
-  String toString() => _path.isEmpty ? 'OrderFields()' : _path;
-}
-
 mixin _$Product {
   Product get _self => this as Product;
 
   Iterable<Object?> get _props sync* {
-    yield _self.id;
     yield _self.title;
     yield _self.extraData;
   }
@@ -87,18 +62,16 @@ mixin _$Product {
 
   String toString() => (ClassToString('Product')
         ..add('id', _self.id)
-        ..add('title', _self.title)
-        ..add('extraData', _self.extraData))
+        ..add('title', _self.title))
       .toString();
 
   Product copyWith({
     int? id,
-    String? title,
     Map<String, int?>? extraData,
   }) {
     return Product(
       id: id ?? _self.id,
-      title: title ?? _self.title,
+      title: _self.title,
       extraData: extraData ?? _self.extraData,
     );
   }
@@ -110,37 +83,19 @@ mixin _$Product {
 }
 
 class _ProductChanges {
-  late int id;
-  late String? title;
-  late Map<String, int?>? extraData;
+  final Product _dc;
+  int id;
+  Map<String, int?>? extraData;
 
-  _ProductChanges._(Product dataClass) {
-    replace(dataClass);
-  }
+  _ProductChanges._(this._dc)
+      : id = _dc.id,
+        extraData = _dc.extraData;
 
   void update(void Function(_ProductChanges c) updates) => updates(this);
 
-  void replace(covariant Product dataClass) {
-    id = dataClass.id;
-    title = dataClass.title;
-    extraData = dataClass.extraData;
-  }
-
   Product build() => Product(
         id: id,
-        title: title,
+        title: _dc.title,
         extraData: extraData,
       );
-}
-
-class ProductFields {
-  final String _path;
-
-  const ProductFields([this._path = '']);
-
-  String get id => '${_path}id';
-  String get title => '${_path}title';
-  String get extraData => '${_path}extraData';
-
-  String toString() => _path.isEmpty ? 'ProductFields()' : _path;
 }

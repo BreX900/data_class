@@ -1,9 +1,8 @@
 builders:
   data_class:
-    target: ":mek_data_class_generator"
     import: "package:mek_data_class_generator/builder.dart"
     builder_factories: ["dataClass"]
     build_extensions: {".dart": [".data_class.g.part"]}
     auto_apply: dependents
     build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
+    applies_builders: ["source_gen:combining_builder"]

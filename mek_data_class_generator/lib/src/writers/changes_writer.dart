@@ -56,25 +56,28 @@ class ChangesWriter extends Writer {
     }
 
     final isAbstract = classSpec.element.isAbstract;
+    final hasNeedDataClass = fieldSpecs.any((e) => !e.updatable);
+
+    final dataClassVarName = hasNeedDataClass ? '_dc' : 'dc';
+    final constructorParam = hasNeedDataClass
+        ? 'this.$dataClassVarName'
+        : '${classSpec.self.typedName} $dataClassVarName';
 
     String writeBuildBody() {
       return '''
        => ${classSpec.self.name}(
-        ${_generateBuildMethodMapping().join()}
+        ${_generateBuildMethodMapping(dataClassVarName).join()}
       );''';
     }
 
     return '''
   ${isAbstract ? 'abstract ' : ''}class ${classSpec.changes.fullTypedName} $superSelf{
+    ${hasNeedDataClass ? 'final ${classSpec.self.typedName} _dc;' : ''}
     ${_generateClassFields(isAbstract: isAbstract).join('\n')}
     
-    ${classSpec.changes.name}._(${classSpec.self.typedName} dataClass) {
-      replace(dataClass);
-    }
+    ${classSpec.changes.name}._($constructorParam) : ${_generateConstructorAssignments(dataClassVarName).join(', ')};
     
     ${_writeChangeClassMethod()}
-    
-    ${_writeReplaceClassMethod()}
       
     ${classSpec.self.typedName} build()${writeMethodBody(writeBuildBody)}
   }''';
@@ -84,7 +87,15 @@ class ChangesWriter extends Writer {
     for (var field in fieldSpecs) {
       if (!field.updatable) continue;
 
-      yield 'late ${field.getType(nullable: true)} ${field.name};';
+      yield '${field.getType(nullable: true)} ${field.name};';
+    }
+  }
+
+  Iterable<String> _generateConstructorAssignments(String dataClassVarName) sync* {
+    for (var field in fieldSpecs) {
+      if (!field.updatable) continue;
+
+      yield '${field.name} = $dataClassVarName.${field.name}';
     }
   }
 
@@ -97,31 +108,31 @@ class ChangesWriter extends Writer {
   void update(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(writeBody)}''';
   }
 
-  String _writeReplaceClassMethod() {
-    Iterable<String> generateProperties() sync* {
-      for (var field in fieldSpecs) {
-        if (!field.updatable) continue;
+  // String _writeReplaceClassMethod() {
+  //   Iterable<String> generateProperties() sync* {
+  //     for (var field in fieldSpecs) {
+  //       if (!field.updatable) continue;
+  //
+  //       yield '${field.name} = dataClass.${field.name};';
+  //     }
+  //   }
+  //
+  //   String writeBody() {
+  //     return ''' {
+  //     ${generateProperties().join('\n')}
+  //   }''';
+  //   }
+  //
+  //   return '''
+  //   void replace(covariant ${classSpec.self.typedName} dataClass)${writeMethodBody(writeBody)}
+  //   ''';
+  // }
 
-        yield '${field.name} = dataClass.${field.name};';
-      }
-    }
-
-    String writeBody() {
-      return ''' {
-      ${generateProperties().join('\n')}
-    }''';
-    }
-
-    return '''
-    void replace(covariant ${classSpec.self.typedName} dataClass)${writeMethodBody(writeBody)}
-    ''';
-  }
-
-  Iterable<String> _generateBuildMethodMapping() sync* {
+  Iterable<String> _generateBuildMethodMapping(String dataClassVarName) sync* {
     for (var field in fieldSpecs) {
-      if (!field.updatable) continue;
+      // if (!field.updatable) continue;
 
-      yield '${field.name}: ${field.name},\n';
+      yield '${field.name}: ${field.updatable ? '' : '$dataClassVarName.'}${field.name},\n';
     }
   }
 }

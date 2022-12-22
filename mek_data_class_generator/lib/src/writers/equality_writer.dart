@@ -21,7 +21,7 @@ ${_writePropsFields().join('\n')}
 
   Iterable<String> _writePropsFields() sync* {
     for (var field in fieldSpecs) {
-      if (!field.stringify) continue;
+      if (!field.comparable) continue;
 
       yield '      yield _self.${field.name};';
     }

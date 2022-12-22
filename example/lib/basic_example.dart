@@ -2,28 +2,29 @@ import 'package:mek_data_class/mek_data_class.dart';
 
 part 'basic_example.g.dart';
 
-@DataClass(createFieldsClass: true)
+@DataClass(changeable: true)
 class Order with _$Order {
   final Product product;
-
-  static final OrderFields fields = OrderFields();
 
   const Order({
     required this.product,
   });
 }
 
-@DataClass(createFieldsClass: true)
+@DataClass(changeable: true, copyable: true)
 class Product with _$Product {
+  @DataField(comparable: false)
   final int id;
+  @DataField(updatable: false)
   final String? title;
+  @DataField(stringify: false)
   final Map<String, int?>? extraData;
 
-  static final ProductFields fields = ProductFields();
+  final String idAndTitle;
 
   const Product({
     required this.id,
     required this.title,
     this.extraData,
-  });
+  }) : idAndTitle = '$id - $title';
 }

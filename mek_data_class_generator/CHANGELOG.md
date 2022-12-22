@@ -1,4 +1,15 @@
 
+## 0.4.0
+- fix: generate a `copyWith` and `*Changes` with not updatable parameters
+- fix: generate a `copyWith` and `*Changes` with parameters that do not exist in the constructors
+- feat: Added `json_serializable` support for creating the `*Fields` class. Now if the given class has 
+  `@JsonSerializable(createFieldMap: true)` it will read its map values.
+
+**BREAKING CHANGES**:
+- refactor: removed method `*Changes.replace`. You can directly assign the value and then call change.
+  Instead of: `order.change((c) => c.product.change((c) => c..replace(product)..title = 'New Title'))`.
+  Uses: `order.change((c) => c.product = product.change((c) => c..title = 'New Title'))`
+
 ## 0.3.1
 - feat: support analyzer `>=4.0.0 <6.0.0`
 

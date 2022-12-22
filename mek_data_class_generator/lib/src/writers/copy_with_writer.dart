@@ -24,13 +24,15 @@ class CopyWithWriter extends Writer {
 
   Iterable<String> _generateMethodArgs() sync* {
     for (var field in fieldSpecs) {
+      if (!field.updatable) continue;
+
       yield '${withNull(field.getType(nullable: true))} ${field.name},\n';
     }
   }
 
   Iterable<String> _generateClassArgs() sync* {
     for (var field in fieldSpecs) {
-      yield '${field.name}: ${field.name} ?? _self.${field.name},\n';
+      yield '${field.name}: ${field.updatable ? '${field.name} ?? ' : ''}_self.${field.name},\n';
     }
   }
 }

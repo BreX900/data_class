@@ -30,21 +30,17 @@ mixin _$Animal {
     String? finalField,
   });
 
-  Animal change(void Function(AnimalChanges c) updates);
+  Animal change(void Function(_AnimalChanges c) updates);
 
-  AnimalChanges toChanges();
+  _AnimalChanges toChanges();
 }
 
-abstract class AnimalChanges {
-  late String finalField;
+abstract class _AnimalChanges {
+  String finalField;
 
-  AnimalChanges._(Animal dataClass) {
-    replace(dataClass);
-  }
+  _AnimalChanges._(Animal dc) : finalField = dc.finalField;
 
-  void update(void Function(AnimalChanges c) updates);
-
-  void replace(covariant Animal dataClass);
+  void update(void Function(_AnimalChanges c) updates);
 
   Animal build();
 }
@@ -86,20 +82,15 @@ mixin _$Dog {
   _DogChanges toChanges() => _DogChanges._(_self);
 }
 
-class _DogChanges implements AnimalChanges {
-  late String finalField;
-  late String getterField;
+class _DogChanges implements _AnimalChanges {
+  String finalField;
+  String getterField;
 
-  _DogChanges._(Dog dataClass) {
-    replace(dataClass);
-  }
+  _DogChanges._(Dog dc)
+      : finalField = dc.finalField,
+        getterField = dc.getterField;
 
   void update(void Function(_DogChanges c) updates) => updates(this);
-
-  void replace(covariant Dog dataClass) {
-    finalField = dataClass.finalField;
-    getterField = dataClass.getterField;
-  }
 
   Dog build() => Dog(
         finalField: finalField,
@@ -144,20 +135,15 @@ mixin _$Cat {
   _CatChanges toChanges() => _CatChanges._(_self);
 }
 
-class _CatChanges implements AnimalChanges {
-  late String finalField;
-  late String getterField;
+class _CatChanges implements _AnimalChanges {
+  String finalField;
+  String getterField;
 
-  _CatChanges._(Cat dataClass) {
-    replace(dataClass);
-  }
+  _CatChanges._(Cat dc)
+      : finalField = dc.finalField,
+        getterField = dc.getterField;
 
   void update(void Function(_CatChanges c) updates) => updates(this);
-
-  void replace(covariant Cat dataClass) {
-    finalField = dataClass.finalField;
-    getterField = dataClass.getterField;
-  }
 
   Cat build() => Cat(
         finalField: finalField,

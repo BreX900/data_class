@@ -46,19 +46,14 @@ mixin _$Extra {
 }
 
 class _ExtraChanges {
-  late JsonMap<int>? jsonMap;
-  late NullableJsonMap<double?> nullableJsonMap;
+  JsonMap<int>? jsonMap;
+  NullableJsonMap<double?> nullableJsonMap;
 
-  _ExtraChanges._(Extra dataClass) {
-    replace(dataClass);
-  }
+  _ExtraChanges._(Extra dc)
+      : jsonMap = dc.jsonMap,
+        nullableJsonMap = dc.nullableJsonMap;
 
   void update(void Function(_ExtraChanges c) updates) => updates(this);
-
-  void replace(covariant Extra dataClass) {
-    jsonMap = dataClass.jsonMap;
-    nullableJsonMap = dataClass.nullableJsonMap;
-  }
 
   Extra build() => Extra(
         jsonMap: jsonMap,

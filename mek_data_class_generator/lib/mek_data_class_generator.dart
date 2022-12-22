@@ -30,8 +30,8 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
         yield result;
       }
     } catch (error, stackTrace) {
-      // ignore: avoid_print
-      print('error\n$stackTrace');
+      // ignore: avoid_print, dead_code
+      if (false) print('error\n$stackTrace');
       rethrow;
     }
   }
@@ -42,15 +42,25 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     BuildStep buildStep,
   ) sync* {
     if (element is! ClassElement) return;
-
-    final classSpec = ClassSpec.from(config, element, annotation);
-    final fieldSpecs = createSortedFieldSet(element).where((field) {
+    final constructorElement = element.unnamedConstructor ?? element.constructors.first;
+    final fieldsElements = createSortedFieldSet(element).where((field) {
       if (field.isStatic || !field.isFinal) return false;
       if (field.isPrivate || field.hasInitializer) return false;
+
+      if (!constructorElement.parameters.any((e) => e.name == field.name)) return false;
       return true;
-    }).map((element) {
-      return FieldSpec.from(classSpec, element);
+    });
+
+    final classSpec = ClassSpec.from(config, element, annotation);
+    final fieldSpecs = fieldsElements.map((element) => FieldSpec.from(classSpec, element)).toList();
+
+    final missingFields = constructorElement.parameters.where((param) {
+      return fieldsElements.every((e) => e.name != param.name);
     }).toList();
+
+    if (missingFields.isNotEmpty) {
+      throw 'Missing constructor parameters declaration for ${missingFields.join(', ')}.';
+    }
 
     final cb = StringBuffer();
     final lb = StringBuffer();
@@ -78,10 +88,18 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
   }
 
   Iterable<Writer> _writeGenerators(ClassSpec classSpec, List<FieldSpec> fieldSpecs) sync* {
-    if (classSpec.comparable) yield EqualityWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    if (classSpec.stringify) yield ToStringWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    if (classSpec.copyable) yield CopyWithWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    if (classSpec.changeable) {
+    final updatableFields = fieldSpecs.any((e) => e.updatable);
+
+    if (classSpec.comparable) {
+      yield EqualityWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    }
+    if (classSpec.stringify) {
+      yield ToStringWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    }
+    if (classSpec.copyable && updatableFields) {
+      yield CopyWithWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    }
+    if (classSpec.changeable && updatableFields) {
       yield ChangesWriter(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
     }
     if (classSpec.createFieldsClass) {
