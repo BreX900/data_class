@@ -1,4 +1,7 @@
 
+
+
+## 1.0.0
 - feat: customization of the equal operator and hashcode through the use of the Equality class
 - feat: namespace support (prefix imports): `library.Product`
 - feat: Can define on the yaml file whether the toString method should include all fields of the class 
