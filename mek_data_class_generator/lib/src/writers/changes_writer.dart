@@ -92,7 +92,7 @@ class ChangesWriter extends Writer {
     for (var field in _paramsSpecs) {
       if (!field.updatable) continue;
 
-      yield '${field.getType(nullable: true)} ${field.name};';
+      yield '${field.getType(Nullability.inherit)} ${field.name};';
     }
   }
 

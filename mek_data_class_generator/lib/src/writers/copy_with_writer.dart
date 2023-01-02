@@ -1,5 +1,4 @@
 import 'package:mek_data_class_generator/src/specs.dart';
-import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
 class CopyWithWriter extends Writer {
@@ -31,7 +30,7 @@ class CopyWithWriter extends Writer {
     for (var field in _paramsSpecs) {
       if (!field.updatable) continue;
 
-      yield '${withNull(field.getType(nullable: true))} ${field.name},\n';
+      yield '${field.getType(Nullability.always)} ${field.name},\n';
     }
   }
 

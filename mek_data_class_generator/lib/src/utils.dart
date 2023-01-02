@@ -34,7 +34,3 @@ InterfaceType? findSuperDataClass(ClassElement element) {
   }
   return null;
 }
-
-String withNull(String name) {
-  return name.endsWith('?') ? name : '$name?';
-}

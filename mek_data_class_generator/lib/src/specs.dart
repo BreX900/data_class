@@ -1,3 +1,5 @@
+import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -83,7 +85,10 @@ class ClassSpec {
   }
 }
 
+enum Nullability { none, inherit, always }
+
 class FieldSpec {
+  final ParsedLibraryResult parsedLibrary;
   final FieldElement element;
 
   final String name;
@@ -95,6 +100,7 @@ class FieldSpec {
   late final bool isParam = _isParam(element.enclosingElement3 as ClassElement, element);
 
   FieldSpec({
+    required this.parsedLibrary,
     required this.element,
     required this.name,
     required this.comparable,
@@ -103,10 +109,15 @@ class FieldSpec {
     required this.stringifier,
   });
 
-  factory FieldSpec.from(ClassSpec classSpec, FieldElement element) {
+  factory FieldSpec.from(
+    ParsedLibraryResult parsedLibrary,
+    ClassSpec classSpec,
+    FieldElement element,
+  ) {
     final annotation = dataFieldAnnotation(element);
 
     return FieldSpec(
+      parsedLibrary: parsedLibrary,
       element: element,
       name: element.displayName,
       comparable: annotation.peek('comparable')?.boolValue ?? true,
@@ -116,20 +127,55 @@ class FieldSpec {
     );
   }
 
-  String getType({required bool nullable}) => _getType(element.type, nullable: nullable);
+  String getType(Nullability nullability) {
+    final prefixedElements = element.library.libraryImports.expand<Element>((e) {
+      if (e.prefix == null) return [];
+      return e.namespace.definedNames.values;
+    });
 
-  static String _getType(DartType type, {required bool nullable}) {
-    final alias = type.alias;
+    final type = prefixedElements.contains(element.type.element2)
+        ? _getTypeWithPrefix(parsedLibrary, element)
+        : _getType(element.type);
 
-    if (alias != null) {
-      final args = alias.typeArguments.map((e) => _getType(e, nullable: true)).toList();
-      final shouldNullable = nullable && type.nullabilitySuffix != NullabilitySuffix.none;
-      return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${shouldNullable ? '?' : ''}';
+    switch (nullability) {
+      case Nullability.none:
+        return type.endsWith('?') ? type.substring(type.length - 1) : type;
+      case Nullability.inherit:
+        return type;
+      case Nullability.always:
+        return type.endsWith('?') ? type : '$type?';
     }
+  }
 
-    final name = type.getDisplayString(withNullability: true);
-    final shouldNotNullable = !nullable && name.endsWith('?');
-    return shouldNotNullable ? name.substring(0, name.length - 1) : name;
+  static String _getType(DartType type) {
+    final alias = type.alias;
+    if (alias != null) {
+      final args = alias.typeArguments.map(_getType).toList();
+      final nullable = type.nullabilitySuffix != NullabilitySuffix.none;
+      return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${nullable ? '?' : ''}';
+    }
+    return type.getDisplayString(withNullability: true);
+  }
+
+  /// The [builderElementType] plus any import prefix.
+  static String _getTypeWithPrefix(ParsedLibraryResult parsedLibrary, FieldElement element) {
+    // final parsedLibrary = parsedLibraryResult(classSpec.element.library);
+    // If it's a real field, it's a [VariableDeclaration] which is guaranteed
+    // to have parent node [VariableDeclarationList] giving the type.
+    final fieldDeclaration = parsedLibrary.getElementDeclaration(element);
+    // print(fieldDeclaration != null);
+    if (fieldDeclaration != null) {
+      return (((fieldDeclaration.node as VariableDeclaration).parent) as VariableDeclarationList)
+              .type
+              ?.toSource() ??
+          'dynamic';
+    } else {
+      // Otherwise it's an explicit getter/setter pair; get the type from the getter.
+      return (parsedLibrary.getElementDeclaration(element.getter!)!.node as MethodDeclaration)
+              .returnType
+              ?.toSource() ??
+          'dynamic';
+    }
   }
 
   static bool _isParam(ClassElement classElement, FieldElement element) {

@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:mek_data_class/mek_data_class.dart';
@@ -42,6 +43,9 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     BuildStep buildStep,
   ) sync* {
     if (element is! ClassElement) return;
+    final libraryElement = element.library;
+    final parsedLibrary =
+        libraryElement.session.getParsedLibraryByElement(libraryElement) as ParsedLibraryResult;
 
     final constructorElement = element.unnamedConstructor ?? element.constructors.first;
     final fieldElements = createSortedFieldSet(element).where((field) {
@@ -52,7 +56,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
     final classSpec = ClassSpec.from(config, element, annotation);
     final fieldSpecs = fieldElements.map((element) {
-      return FieldSpec.from(classSpec, element);
+      return FieldSpec.from(parsedLibrary, classSpec, element);
     }).toList();
 
     final missingFields = constructorElement.parameters.where((param) {

@@ -1,4 +1,5 @@
 
+- feat: namespace support (prefix imports): `library.Product`
 - feat: Can define on the yaml file whether the toString method should include all fields of the class 
     or only the parameters of the constructor
 
