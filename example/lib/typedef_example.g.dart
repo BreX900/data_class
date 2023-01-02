@@ -14,6 +14,8 @@ mixin _$Extra {
   Iterable<Object?> get _props sync* {
     yield _self.jsonMap;
     yield _self.nullableJsonMap;
+    yield _self.product;
+    yield _self.product2;
   }
 
   bool operator ==(Object other) =>
@@ -26,16 +28,22 @@ mixin _$Extra {
 
   String toString() => (ClassToString('Extra')
         ..add('jsonMap', _self.jsonMap)
-        ..add('nullableJsonMap', _self.nullableJsonMap))
+        ..add('nullableJsonMap', _self.nullableJsonMap)
+        ..add('product', _self.product)
+        ..add('product2', _self.product2))
       .toString();
 
   Extra copyWith({
     JsonMap<int>? jsonMap,
     NullableJsonMap<double?>? nullableJsonMap,
+    be.Product? product,
+    be.Product? product2,
   }) {
     return Extra(
       jsonMap: jsonMap ?? _self.jsonMap,
       nullableJsonMap: nullableJsonMap ?? _self.nullableJsonMap,
+      product: product ?? _self.product,
+      product2: product2 ?? _self.product2,
     );
   }
 
@@ -48,15 +56,21 @@ mixin _$Extra {
 class _ExtraChanges {
   JsonMap<int>? jsonMap;
   NullableJsonMap<double?> nullableJsonMap;
+  be.Product product;
+  be.Product product2;
 
   _ExtraChanges._(Extra dc)
       : jsonMap = dc.jsonMap,
-        nullableJsonMap = dc.nullableJsonMap;
+        nullableJsonMap = dc.nullableJsonMap,
+        product = dc.product,
+        product2 = dc.product2;
 
   void update(void Function(_ExtraChanges c) updates) => updates(this);
 
   Extra build() => Extra(
         jsonMap: jsonMap,
         nullableJsonMap: nullableJsonMap,
+        product: product,
+        product2: product2,
       );
 }
