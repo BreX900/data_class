@@ -17,6 +17,11 @@ class FieldsClassWriter extends Writer {
     required List<FieldSpec> fieldSpecs,
   }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
 
+  late final List<FieldSpec> _paramsSpecs = fieldSpecs.where((e) => e.isParam).toList();
+
+  @override
+  bool get available => classSpec.createFieldsClass && _paramsSpecs.isNotEmpty;
+
   String buildFieldPath(FieldSpec fieldSpec, bool hasFieldMap) {
     return hasFieldMap ? '\$_path\${_get(\'${fieldSpec.name}\')}' : '\${_path}${fieldSpec.name}';
   }
@@ -55,7 +60,7 @@ class FieldsClassWriter extends Writer {
 
   const $className([this._path = '']);
   
-  ${fieldSpecs.map((e) => buildField(e, hasFieldMap)).join('\n')}    
+  ${_paramsSpecs.map((e) => buildField(e, hasFieldMap)).join('\n')}    
   
   String toString() => _path.isEmpty ? '$className()' : _path;
 ''';

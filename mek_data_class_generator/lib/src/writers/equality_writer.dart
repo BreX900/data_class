@@ -6,6 +6,9 @@ class EqualityWriter extends Writer {
       : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
 
   @override
+  bool get available => classSpec.comparable;
+
+  @override
   Iterable<String> writeMethods() sync* {
     yield _generatePropsMethod();
     yield _generateEqualMethod();
@@ -21,6 +24,7 @@ ${_writePropsFields().join('\n')}
 
   Iterable<String> _writePropsFields() sync* {
     for (var field in fieldSpecs) {
+      if (!field.isParam) continue;
       if (!field.comparable) continue;
 
       yield '      yield _self.${field.name};';

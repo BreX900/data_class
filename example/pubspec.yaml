@@ -6,7 +6,7 @@ environment:
 
 scripts:
   # To generate .g files:
-  build:watch: dart run build_runner watch -d
+  build:watch: dart run build_runner watch -d -v
 
 dependencies:
   mek_data_class: ^0.0.0

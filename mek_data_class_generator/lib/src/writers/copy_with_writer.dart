@@ -3,8 +3,13 @@ import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
 class CopyWithWriter extends Writer {
-  const CopyWithWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
+  CopyWithWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
       : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+
+  late final List<FieldSpec> _paramsSpecs = fieldSpecs.where((e) => e.isParam).toList();
+
+  @override
+  bool get available => classSpec.copyable && _paramsSpecs.isNotEmpty;
 
   @override
   Iterable<String> writeMethods() sync* {
@@ -23,7 +28,7 @@ class CopyWithWriter extends Writer {
   }
 
   Iterable<String> _generateMethodArgs() sync* {
-    for (var field in fieldSpecs) {
+    for (var field in _paramsSpecs) {
       if (!field.updatable) continue;
 
       yield '${withNull(field.getType(nullable: true))} ${field.name},\n';
@@ -31,7 +36,7 @@ class CopyWithWriter extends Writer {
   }
 
   Iterable<String> _generateClassArgs() sync* {
-    for (var field in fieldSpecs) {
+    for (var field in _paramsSpecs) {
       yield '${field.name}: ${field.updatable ? '${field.name} ?? ' : ''}_self.${field.name},\n';
     }
   }

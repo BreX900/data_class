@@ -1,3 +1,21 @@
+targets:
+  $default:
+    builders:
+      source_gen:combining_builder:
+        generate_for:
+          - '**/configs.dart'
+
+      json_serializable:
+        generate_for:
+          - '**/configs.dart'
+        options:
+          create_to_json: false
+          create_factory: true
+          any_map: true
+          checked: true
+          disallow_unrecognized_keys: true
+          field_rename: snake
+
 builders:
   data_class:
     import: "package:mek_data_class_generator/builder.dart"

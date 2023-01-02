@@ -6,7 +6,7 @@ import 'package:source_gen/source_gen.dart';
 
 /// Dart entry point for building a DataClass generated files
 Builder dataClass(BuilderOptions options) {
-  final config = Config.from(options.config);
+  final config = Config.fromJson(options.config);
 
   return SharedPartBuilder(
     [DataClassGenerator(config: config)],

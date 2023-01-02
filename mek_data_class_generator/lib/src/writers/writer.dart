@@ -6,6 +6,8 @@ abstract class Writer {
 
   const Writer({required this.classSpec, required this.fieldSpecs});
 
+  bool get available;
+
   Iterable<String> writeMethods() sync* {}
 
   Iterable<String> writeClasses() sync* {}

@@ -19,6 +19,7 @@ class DataClass {
 
   /// Overrides [Object.toString] method.
   /// Default: `true`
+  /// Inserting `stringify_type: fields` in the yaml file, the toString method will use all the fields
   final bool? stringify;
 
   /// Adds the `copyWith` method to the class.

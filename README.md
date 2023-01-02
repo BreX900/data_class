@@ -136,7 +136,7 @@ final updatedProduct = changes.build();
 #### *Changes.update
 Update the `*Changes` class by passing a function
 ```dart 
-final updatedChanges = changes.update((c) => c..title = 'Albedo')); // title=Albedo
+final updatedChanges = changes.update((c) => c..title = 'Albedo'); // title=Albedo
 ```
 
 #### *Changes.replace
@@ -176,15 +176,17 @@ See the docs of the DataClass class for more information
 targets:
   $default:
     builders:
-      mek_data_class_generator|data_class:
+      mek_data_class_generator:data_class:
         enabled: true
         options:
-          pageWidth: 80
+          page_width: 80
           comparable: true
           stringify: true
+          stringify_type: params
           copyable: false
           changeable: false
-          changesVisible: false
+          changes_visible: false
+          create_fields_class: false
 ```
 
 ### Recommended options

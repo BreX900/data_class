@@ -1,4 +1,10 @@
 
+- feat: Can define on the yaml file whether the toString method should include all fields of the class 
+    or only the parameters of the constructor
+
+**BREAKING CHANGES**:
+- refactor: use snake_case in yaml file
+
 ## 0.4.0
 - fix: generate a `copyWith` and `*Changes` with not updatable parameters
 - fix: generate a `copyWith` and `*Changes` with parameters that do not exist in the constructors

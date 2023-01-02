@@ -8,11 +8,16 @@ import 'package:source_gen/source_gen.dart';
 class ChangesWriter extends Writer {
   final Config config;
 
-  const ChangesWriter({
+  ChangesWriter({
     required this.config,
     required ClassSpec classSpec,
     required List<FieldSpec> fieldSpecs,
   }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+
+  late final List<FieldSpec> _paramsSpecs = fieldSpecs.where((e) => e.isParam).toList();
+
+  @override
+  bool get available => classSpec.changeable && _paramsSpecs.isNotEmpty;
 
   @override
   Iterable<String> writeMethods() sync* {
@@ -56,7 +61,7 @@ class ChangesWriter extends Writer {
     }
 
     final isAbstract = classSpec.element.isAbstract;
-    final hasNeedDataClass = fieldSpecs.any((e) => !e.updatable);
+    final hasNeedDataClass = _paramsSpecs.any((e) => !e.updatable);
 
     final dataClassVarName = hasNeedDataClass ? '_dc' : 'dc';
     final constructorParam = hasNeedDataClass
@@ -84,7 +89,7 @@ class ChangesWriter extends Writer {
   }
 
   Iterable<String> _generateClassFields({required bool isAbstract}) sync* {
-    for (var field in fieldSpecs) {
+    for (var field in _paramsSpecs) {
       if (!field.updatable) continue;
 
       yield '${field.getType(nullable: true)} ${field.name};';
@@ -92,7 +97,7 @@ class ChangesWriter extends Writer {
   }
 
   Iterable<String> _generateConstructorAssignments(String dataClassVarName) sync* {
-    for (var field in fieldSpecs) {
+    for (var field in _paramsSpecs) {
       if (!field.updatable) continue;
 
       yield '${field.name} = $dataClassVarName.${field.name}';
@@ -108,30 +113,8 @@ class ChangesWriter extends Writer {
   void update(void Function(${classSpec.changes.typedName} c) updates)${writeMethodBody(writeBody)}''';
   }
 
-  // String _writeReplaceClassMethod() {
-  //   Iterable<String> generateProperties() sync* {
-  //     for (var field in fieldSpecs) {
-  //       if (!field.updatable) continue;
-  //
-  //       yield '${field.name} = dataClass.${field.name};';
-  //     }
-  //   }
-  //
-  //   String writeBody() {
-  //     return ''' {
-  //     ${generateProperties().join('\n')}
-  //   }''';
-  //   }
-  //
-  //   return '''
-  //   void replace(covariant ${classSpec.self.typedName} dataClass)${writeMethodBody(writeBody)}
-  //   ''';
-  // }
-
   Iterable<String> _generateBuildMethodMapping(String dataClassVarName) sync* {
-    for (var field in fieldSpecs) {
-      // if (!field.updatable) continue;
-
+    for (var field in _paramsSpecs) {
       yield '${field.name}: ${field.updatable ? '' : '$dataClassVarName.'}${field.name},\n';
     }
   }

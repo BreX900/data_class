@@ -1,9 +1,22 @@
+import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
 class ToStringWriter extends Writer {
   const ToStringWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
       : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+
+  @override
+  bool get available => classSpec.stringify;
+
+  List<FieldSpec> get _effectiveFieldSpecs {
+    switch (classSpec.stringifyType) {
+      case StringifyType.params:
+        return fieldSpecs.where((element) => element.isParam).toList();
+      case StringifyType.fields:
+        return fieldSpecs;
+    }
+  }
 
   @override
   Iterable<String> writeMethods() sync* {
@@ -15,7 +28,7 @@ class ToStringWriter extends Writer {
   }
 
   Iterable<String> _writeFields() sync* {
-    for (var spec in fieldSpecs) {
+    for (var spec in _effectiveFieldSpecs) {
       if (!spec.stringify) continue;
 
       final variable = '_self.${spec.name}';

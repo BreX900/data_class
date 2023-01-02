@@ -9,6 +9,10 @@ repository: https://github.com/BreX900/data_class
 environment:
   sdk: '>=2.17.0 <3.0.0'
 
+scripts:
+  # To generate .g files:
+  build:watch: dart run build_runner watch --delete-conflicting-outputs
+
 dependencies:
   mek_data_class: ^0.2.0
 
@@ -21,15 +25,15 @@ dependencies:
 
   json_annotation: ^4.7.0
 
-#dependency_overrides:
-#  class_to_string:
-#    path: ../class_to_string
-#  mek_data_class:
-#    path: ../mek_data_class
+dependency_overrides:
+  class_to_string:
+    path: ../class_to_string
+  mek_data_class:
+    path: ../mek_data_class
 
 dev_dependencies:
   mek_lints: ^0.3.0
   test: ^1.21.6
 
-  # dart run build_runner watch --delete-conflicting-outputs
   build_runner: ^2.1.7
+  json_serializable: ^6.5.4
