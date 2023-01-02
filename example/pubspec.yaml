@@ -9,6 +9,7 @@ scripts:
   build:watch: dart run build_runner watch -d -v
 
 dependencies:
+  collection: ^1.16.0
   mek_data_class: ^0.0.0
   json_annotation: ^4.7.0
 

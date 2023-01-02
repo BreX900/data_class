@@ -17,7 +17,7 @@ mixin _$Response<T> {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Response<T> &&
+      other is Response<T> &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -62,7 +62,7 @@ mixin _$PaginatedResponse<T extends Object> {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$PaginatedResponse<T> &&
+      other is PaginatedResponse<T> &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -118,7 +118,7 @@ mixin _$ListResponse<T> {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$ListResponse<T> &&
+      other is ListResponse<T> &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 

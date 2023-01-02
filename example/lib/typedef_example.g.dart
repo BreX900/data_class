@@ -20,7 +20,7 @@ mixin _$Extra {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Extra &&
+      other is Extra &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 

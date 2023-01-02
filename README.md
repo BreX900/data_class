@@ -57,6 +57,7 @@ You only have to provide a constructor with named arguments for all fields and e
 @DataClass()
 class Product with _$Product {
   final String title;
+  @DataField(equality: DefaultEquality())
   final double price;
 
   const Product({
@@ -67,6 +68,8 @@ class Product with _$Product {
   String get titlePrice => '$title$price';
 }
 ```
+
+Customization of the equal operator and hashcode through the use of the Equality class is supported. See example.
 
 ### Inheritance
 Taking into consideration the previous example you can write and inherit all methods

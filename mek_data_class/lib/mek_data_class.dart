@@ -62,6 +62,9 @@ class DataField {
   /// It will be considered in the [Object.==] and [Object.hashCode] methods.
   final bool comparable;
 
+  /// This equality is used in the following methods [Object.==] and [Object.hashCode].
+  final Equality<dynamic>? equality;
+
   /// It will be considered in the [Object.toString] method
   final bool stringify;
 
@@ -79,6 +82,7 @@ class DataField {
   /// }
   const DataField({
     this.comparable = true,
+    this.equality,
     this.stringify = true,
     this.updatable = true,
     this.stringifier,

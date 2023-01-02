@@ -17,7 +17,7 @@ mixin _$Father {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Father &&
+      other is Father &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -46,7 +46,7 @@ mixin _$Mother {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Mother &&
+      other is Mother &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -77,7 +77,7 @@ mixin _$Child {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Child &&
+      other is Child &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 

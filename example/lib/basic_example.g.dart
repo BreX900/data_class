@@ -11,17 +11,17 @@ part of 'basic_example.dart';
 mixin _$Order {
   Order get _self => this as Order;
 
-  Iterable<Object?> get _props sync* {
-    yield _self.product;
-  }
+  Iterable<Object?> get _props sync* {}
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Order &&
+      other is Order &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          DataClass.$equals(_props, other._props) &&
+          const ProductEquality().equals(_self.product, other.product);
 
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode => Object.hashAll(
+      _props.followedBy([const ProductEquality().hash(_self.product)]));
 
   String toString() =>
       (ClassToString('Order')..add('product', _self.product)).toString();
@@ -54,7 +54,7 @@ mixin _$Product {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Product &&
+      other is Product &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 

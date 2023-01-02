@@ -17,7 +17,7 @@ mixin _$Animal {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Animal &&
+      other is Animal &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -55,7 +55,7 @@ mixin _$Dog {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Dog &&
+      other is Dog &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 
@@ -108,7 +108,7 @@ mixin _$Cat {
 
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is _$Cat &&
+      other is Cat &&
           runtimeType == other.runtimeType &&
           DataClass.$equals(_props, other._props);
 

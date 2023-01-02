@@ -93,9 +93,10 @@ class FieldSpec {
 
   final String name;
   final bool comparable;
+  final String? equality;
   final bool stringify;
-  final bool updatable;
   final String? stringifier;
+  final bool updatable;
 
   late final bool isParam = _isParam(element.enclosingElement3 as ClassElement, element);
 
@@ -104,9 +105,10 @@ class FieldSpec {
     required this.element,
     required this.name,
     required this.comparable,
+    required this.equality,
     required this.stringify,
-    required this.updatable,
     required this.stringifier,
+    required this.updatable,
   });
 
   factory FieldSpec.from(
@@ -116,14 +118,17 @@ class FieldSpec {
   ) {
     final annotation = dataFieldAnnotation(element);
 
+    final equality = annotation.peek('equality')?.revive().source.fragment;
+
     return FieldSpec(
       parsedLibrary: parsedLibrary,
       element: element,
       name: element.displayName,
       comparable: annotation.peek('comparable')?.boolValue ?? true,
+      equality: equality != null ? 'const $equality()' : null,
       stringify: annotation.peek('stringify')?.boolValue ?? true,
-      updatable: annotation.peek('updatable')?.boolValue ?? true,
       stringifier: annotation.peek('stringifier')?.revive().accessor,
+      updatable: annotation.peek('updatable')?.boolValue ?? true,
     );
   }
 
