@@ -21,13 +21,13 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
   });
 
   @override
-  Iterable<String> generateForAnnotatedElement(
+  Stream<String> generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) sync* {
+  ) async* {
     try {
-      for (final result in _generateForAnnotatedElement(element, annotation, buildStep)) {
+      await for (final result in _generateForAnnotatedElement(element, annotation, buildStep)) {
         yield result;
       }
     } catch (error, stackTrace) {
@@ -37,13 +37,14 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     }
   }
 
-  Iterable<String> _generateForAnnotatedElement(
+  Stream<String> _generateForAnnotatedElement(
     Element element,
     ConstantReader annotation,
     BuildStep buildStep,
-  ) sync* {
+  ) async* {
     if (element is! ClassElement) return;
-    final libraryElement = element.library;
+    // Pick new valid library element: https://github.com/dart-lang/build/issues/2634#issuecomment-670603224
+    final libraryElement = await buildStep.resolver.libraryFor(buildStep.inputId);
     final parsedLibrary =
         libraryElement.session.getParsedLibraryByElement(libraryElement) as ParsedLibraryResult;
 

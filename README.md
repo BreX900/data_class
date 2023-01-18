@@ -185,7 +185,7 @@ targets:
           page_width: 80
           comparable: true
           stringify: true
-          stringify_type: params
+          stringify_type: params | fields
           copyable: false
           changeable: false
           changes_visible: false

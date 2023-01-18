@@ -1,5 +1,5 @@
-
-
+## 1.0.1
+- fix: InconsistentAnalysisException
 
 ## 1.0.0
 - feat: customization of the equal operator and hashcode through the use of the Equality class
