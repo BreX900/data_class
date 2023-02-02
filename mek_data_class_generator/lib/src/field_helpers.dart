@@ -31,7 +31,12 @@ class _FieldSet implements Comparable<_FieldSet> {
   int compareTo(_FieldSet other) => _sortByLocation(sortField, other.sortField);
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
-    final checkerA = TypeChecker.fromStatic((a.enclosingElement3 as ClassElement).thisType);
+    var checkerA;
+    if (a.enclosingElement3 is MixinElement) {
+      checkerA = TypeChecker.fromStatic((a.enclosingElement3 as MixinElement).thisType);
+    } else {
+      checkerA = TypeChecker.fromStatic((a.enclosingElement3 as ClassElement).thisType);
+    }
 
     if (!checkerA.isExactly(b.enclosingElement3)) {
       // in this case, you want to prioritize the enclosingElement that is more
@@ -41,7 +46,12 @@ class _FieldSet implements Comparable<_FieldSet> {
         return -1;
       }
 
-      final checkerB = TypeChecker.fromStatic((b.enclosingElement3 as ClassElement).thisType);
+      var checkerB;
+      if (b.enclosingElement3 is MixinElement) {
+        checkerB = TypeChecker.fromStatic((b.enclosingElement3 as MixinElement).thisType);
+      } else {
+        checkerB = TypeChecker.fromStatic((b.enclosingElement3 as ClassElement).thisType);
+      }
 
       if (checkerB.isAssignableFrom(a.enclosingElement3)) {
         return 1;
