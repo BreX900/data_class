@@ -31,7 +31,7 @@ class _FieldSet implements Comparable<_FieldSet> {
   int compareTo(_FieldSet other) => _sortByLocation(sortField, other.sortField);
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
-    final checkerA = TypeChecker.fromStatic((a.enclosingElement3 as ClassElement).thisType);
+    final checkerA = TypeChecker.fromStatic((a.enclosingElement3 as InterfaceElement).thisType);
 
     if (!checkerA.isExactly(b.enclosingElement3)) {
       // in this case, you want to prioritize the enclosingElement that is more
@@ -41,7 +41,7 @@ class _FieldSet implements Comparable<_FieldSet> {
         return -1;
       }
 
-      final checkerB = TypeChecker.fromStatic((b.enclosingElement3 as ClassElement).thisType);
+      final checkerB = TypeChecker.fromStatic((b.enclosingElement3 as InterfaceElement).thisType);
 
       if (checkerB.isAssignableFrom(a.enclosingElement3)) {
         return 1;
@@ -61,13 +61,14 @@ class _FieldSet implements Comparable<_FieldSet> {
   }
 }
 
-/// Returns a [Set] of all instance [FieldElement] items for [element] and
+/// Returns a [List] of all instance [FieldElement] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
-Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
+List<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
-  final elementInstanceFields = Map.fromEntries(element.fields.map((e) => MapEntry(e.name, e)));
+  final elementInstanceFields =
+      Map.fromEntries(element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)));
 
   final inheritedFields = <String, FieldElement>{};
   final manager = InheritanceManager3();
@@ -94,7 +95,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
       .toList()
     ..sort();
 
-  return fields.map((fs) => fs.field);
+  return fields.map((fs) => fs.field).toList(growable: false);
 }
 
 const _dartCoreObjectChecker = TypeChecker.fromRuntime(Object);

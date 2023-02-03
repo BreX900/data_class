@@ -1,3 +1,6 @@
+## 1.0.2
+- fix: bug when annotated classes also use mixins
+
 ## 1.0.1
 - fix: InconsistentAnalysisException
 

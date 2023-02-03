@@ -17,7 +17,7 @@ abstract class Animal with _$Animal {
 }
 
 @DataClass(changeable: true, copyable: true)
-class Dog extends Animal with _$Dog {
+class Dog extends Animal with Action, _$Dog {
   @override
   final String getterField;
 
@@ -34,7 +34,7 @@ class Dog extends Animal with _$Dog {
 }
 
 @DataClass(changeable: true, copyable: true)
-class Cat extends Animal with _$Cat {
+class Cat extends Animal with Action, _$Cat {
   @override
   final String getterField;
 
@@ -48,4 +48,12 @@ class Cat extends Animal with _$Cat {
 
   @override
   String say() => 'Meow!';
+}
+
+mixin Action {
+  String get name;
+
+  String say();
+
+  String get action => '$name say ${say()}';
 }
