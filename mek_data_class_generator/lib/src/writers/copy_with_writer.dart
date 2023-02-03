@@ -1,3 +1,4 @@
+import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
@@ -11,32 +12,36 @@ class CopyWithWriter extends Writer {
   bool get available => classSpec.copyable && _paramsSpecs.isNotEmpty;
 
   @override
-  Iterable<String> writeMethods() sync* {
-    String writeBody() {
-      return ''' {
-    return ${classSpec.self.name}(
-    ${_generateClassArgs().join()}    
-    );
-  }''';
-    }
+  bool get needMixinMethodSelf => true;
 
-    yield '''
-  ${classSpec.self.typedName} copyWith({
-    ${_generateMethodArgs().join()}
-  })${writeMethodBody(writeBody)}''';
+  @override
+  Iterable<Method> creteMixinMethods() sync* {
+    yield _createMixinMethodCopyWith();
   }
 
-  Iterable<String> _generateMethodArgs() sync* {
-    for (var field in _paramsSpecs) {
-      if (!field.updatable) continue;
+  Method _createMixinMethodCopyWith() {
+    final params = _paramsSpecs.where((field) => field.updatable).map((field) {
+      return Parameter((b) => b
+        ..named = true
+        ..type = Reference(field.getType(Nullability.always))
+        ..name = field.name);
+    });
 
-      yield '${field.getType(Nullability.always)} ${field.name},\n';
+    Code? body;
+    if (!classSpec.element.isAbstract) {
+      final params = _paramsSpecs.map((field) {
+        return MapEntry(
+          field.name,
+          '${field.updatable ? '${field.name} ?? ' : ''}_self.${field.name}',
+        );
+      });
+      body = Code('return ${classSpec.instance(Map.fromEntries(params))};');
     }
-  }
 
-  Iterable<String> _generateClassArgs() sync* {
-    for (var field in _paramsSpecs) {
-      yield '${field.name}: ${field.updatable ? '${field.name} ?? ' : ''}_self.${field.name},\n';
-    }
+    return Method((b) => b
+      ..returns = Reference(classSpec.self.typedName)
+      ..name = 'copyWith'
+      ..optionalParameters.addAll(params)
+      ..body = body);
   }
 }

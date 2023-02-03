@@ -24,9 +24,9 @@ class Product with _$Product {
 
   final String idAndTitle;
 
-  const Product({
-    required this.id,
-    required this.title,
+  const Product(
+    this.id,
+    this.title, {
     this.extraData,
   }) : idAndTitle = '$id - $title';
 }
@@ -43,3 +43,6 @@ class ProductEquality implements Equality<Product> {
   @override
   bool isValidKey(Object? o) => throw UnimplementedError();
 }
+
+@DataClass(changeable: true)
+class EmptyClass with _$EmptyClass {}

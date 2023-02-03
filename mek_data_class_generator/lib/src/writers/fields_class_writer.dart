@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
@@ -22,11 +23,16 @@ class FieldsClassWriter extends Writer {
   @override
   bool get available => classSpec.createFieldsClass && _paramsSpecs.isNotEmpty;
 
-  String buildFieldPath(FieldSpec fieldSpec, bool hasFieldMap) {
+  @override
+  Iterable<Class> createLibraryClasses() sync* {
+    yield createLibraryClassFields();
+  }
+
+  String _createFieldPath(FieldSpec fieldSpec, bool hasFieldMap) {
     return hasFieldMap ? '\$_path\${_get(\'${fieldSpec.name}\')}' : '\${_path}${fieldSpec.name}';
   }
 
-  String? buildDataField(FieldSpec fieldSpec, String fieldPath) {
+  Method? _createMethodField(FieldSpec fieldSpec, String fieldPath) {
     final fieldClassElement = fieldSpec.element.type.element2;
     if (fieldClassElement is! ClassElement) return null;
 
@@ -37,39 +43,61 @@ class FieldsClassWriter extends Writer {
     if (!fieldClassSpec.createFieldsClass) return null;
 
     final keysClassName = '${fieldClassElement.name}Fields';
-    return '$keysClassName get ${fieldSpec.name} => $keysClassName(\'$fieldPath.\');';
+
+    return Method((b) => b
+      ..returns = Reference(keysClassName)
+      ..type = MethodType.getter
+      ..name = fieldSpec.name
+      ..lambda = true
+      ..body = Code("$keysClassName('$fieldPath.')"));
   }
 
-  String buildField(FieldSpec fieldSpec, bool hasFieldMap) {
-    final fieldPath = buildFieldPath(fieldSpec, hasFieldMap);
-
-    final result = buildDataField(fieldSpec, fieldPath);
-
-    return result ?? 'String get ${fieldSpec.name} => \'$fieldPath\';';
-  }
-
-  @override
-  Iterable<String> writeClasses() sync* {
+  Class createLibraryClassFields() {
     final jsonSerializable = _jsonSerializableType.firstAnnotationOf(classSpec.element);
     final hasFieldMap = ConstantReader(jsonSerializable).peek('createFieldMap')?.boolValue ?? false;
 
     final className = '${classSpec.element.name}Fields';
 
-    yield '''class $className {
-    final String _path;
+    final methodsFields = _paramsSpecs.map((field) {
+      final fieldPath = _createFieldPath(field, hasFieldMap);
 
-  const $className([this._path = '']);
-  
-  ${_paramsSpecs.map((e) => buildField(e, hasFieldMap)).join('\n')}    
-  
-  String toString() => _path.isEmpty ? '$className()' : _path;
-''';
-    if (hasFieldMap) {
-      yield '''
+      final result = _createMethodField(field, fieldPath);
+      if (result != null) return result;
 
-  String _get(String key) => _\$${classSpec.self.name}FieldMap[key]!;
-''';
-    }
-    yield '\n}';
+      return Method((b) => b
+        ..returns = Refs.string
+        ..type = MethodType.getter
+        ..name = field.name
+        ..lambda = true
+        ..body = Code("'$fieldPath'"));
+    });
+
+    return Class((b) => b
+      ..name = className
+      ..fields.add(Field((b) => b
+        ..modifier = FieldModifier.final$
+        ..type = Refs.string
+        ..name = '_path'))
+      ..constructors.add(Constructor((b) => b
+        ..constant = true
+        ..optionalParameters.add(Parameter((b) => b
+          ..toThis = true
+          ..name = '_path'
+          ..defaultTo = Code("''")))))
+      ..methods.addAll(methodsFields)
+      ..methods.add(Method((b) => b
+        ..annotations.add(Annotations.override)
+        ..returns = Refs.string
+        ..name = 'toString'
+        ..lambda = true
+        ..body = Code("_path.isEmpty ? '$className()' : _path")))
+      ..methods.returnIf(hasFieldMap)?.add(Method((b) => b
+        ..returns = Refs.string
+        ..name = '_get'
+        ..requiredParameters.add(Parameter((b) => b
+          ..type = Refs.string
+          ..name = 'key'))
+        ..lambda = true
+        ..body = Code("_\$${classSpec.self.name}FieldMap[key]!"))));
   }
 }

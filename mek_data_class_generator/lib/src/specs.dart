@@ -45,6 +45,9 @@ class ClassSpec {
     required this.createFieldsClass,
   });
 
+  late final selfTypes =
+      element.typeParameters.map((e) => e.getDisplayString(withNullability: true));
+
   late final String _fullJoinedTypes =
       t(element.typeParameters.map((e) => e.getDisplayString(withNullability: true)).join(', '));
   late final String _joinedTypes = t(element.typeParameters.map((e) => e.displayName).join(', '));
@@ -82,6 +85,14 @@ class ClassSpec {
       createFieldsClass:
           annotation.peek('createFieldsClass')?.boolValue ?? config.createFieldsClass,
     );
+  }
+
+  String instance(Map<String, String> params) {
+    final constructor = element.unnamedConstructor ?? element.constructors.first;
+    final parameters = constructor.parameters.map((param) {
+      return param.isNamed ? '${param.name}: ${params[param.name]!},' : '${params[param.name]!},';
+    });
+    return '${self.name}(${parameters.join()})';
   }
 }
 
