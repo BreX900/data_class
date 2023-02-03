@@ -19,7 +19,6 @@ bool hasDataFieldAnnotation(FieldElement element) => _dataFieldAnnotation(elemen
 final dataClassChecker = TypeChecker.fromRuntime(DataClass);
 
 ConstantReader? dataClassAnnotation(ClassElement element) {
-  // if (element == null) return null;
   final dartObject = dataClassChecker.firstAnnotationOf(element, throwOnUnresolved: false);
   return dartObject == null ? null : ConstantReader(dartObject);
 }
@@ -33,4 +32,10 @@ InterfaceType? findSuperDataClass(ClassElement element) {
     superType = superType.element2.supertype;
   }
   return null;
+}
+
+bool isDataClassField(FieldElement field) {
+  if (field.isStatic) return false;
+  if (!field.isFinal) return false;
+  return true;
 }

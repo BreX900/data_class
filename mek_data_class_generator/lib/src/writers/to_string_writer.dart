@@ -1,40 +1,50 @@
+import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/writers/writer.dart';
 
 class ToStringWriter extends Writer {
-  const ToStringWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
+  ToStringWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
       : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
 
   @override
   bool get available => classSpec.stringify;
 
-  List<FieldSpec> get _effectiveFieldSpecs {
+  @override
+  bool get needMixinMethodSelf => _effectiveFieldSpecs.isNotEmpty;
+
+  late final Iterable<FieldSpec> _effectiveFieldSpecs = (() {
+    var fieldSpecs = this.fieldSpecs.where((field) => field.stringify);
     switch (classSpec.stringifyType) {
       case StringifyType.params:
-        return fieldSpecs.where((element) => element.isParam).toList();
+        fieldSpecs = fieldSpecs.where((field) => field.isParam).toList();
+        break;
       case StringifyType.fields:
-        return fieldSpecs;
+        break;
     }
-  }
+    return fieldSpecs;
+  })();
 
   @override
-  Iterable<String> writeMethods() sync* {
-    final types = classSpec.types.isEmpty ? '' : ', ${classSpec.types}';
-
-    yield '''
-  String toString() => (ClassToString('${classSpec.self.name}'$types)
-      ${_writeFields().join('\n')}).toString();''';
+  Iterable<Method> creteMixinMethods() sync* {
+    yield _createMixinMethodToString();
   }
 
-  Iterable<String> _writeFields() sync* {
-    for (var spec in _effectiveFieldSpecs) {
-      if (!spec.stringify) continue;
+  Method _createMixinMethodToString() {
+    final types = classSpec.types.isEmpty ? '' : ', ${classSpec.types}';
 
-      final variable = '_self.${spec.name}';
-      final stringifier = spec.stringifier;
+    final fields = _effectiveFieldSpecs.map((field) {
+      final variable = '_self.${field.name}';
+      final stringifier = field.stringifier;
       final stringifyVariable = stringifier != null ? '$stringifier($variable)' : variable;
-      yield '..add(\'${spec.name}\', $stringifyVariable)';
-    }
+      return '..add(\'${field.name}\', $stringifyVariable)';
+    });
+
+    return Method((b) => b
+      ..annotations.add(Annotations.override)
+      ..returns = Refs.string
+      ..name = 'toString'
+      ..lambda = true
+      ..body = Code("(ClassToString('${classSpec.self.name}'$types)${fields.join()}).toString()"));
   }
 }
