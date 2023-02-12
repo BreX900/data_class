@@ -24,7 +24,7 @@ dependencies:
 
   collection: ^1.16.0
 
-  json_annotation: ^4.8.0
+  json_annotation: ^4.7.0
 
 dependency_overrides:
   class_to_string:

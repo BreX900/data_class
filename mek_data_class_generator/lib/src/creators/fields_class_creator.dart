@@ -2,17 +2,17 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
+import 'package:mek_data_class_generator/src/creators/creator.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
-import 'package:mek_data_class_generator/src/writers/writer.dart';
 import 'package:source_gen/source_gen.dart';
 
-class FieldsClassWriter extends Writer {
+class FieldsClassCreator extends Creator {
   static final _jsonSerializableType = TypeChecker.fromRuntime(JsonSerializable);
 
   final Config config;
 
-  FieldsClassWriter({
+  FieldsClassCreator({
     required this.config,
     required ClassSpec classSpec,
     required List<FieldSpec> fieldSpecs,
