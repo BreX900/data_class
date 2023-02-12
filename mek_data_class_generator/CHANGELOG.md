@@ -1,6 +1,7 @@
 
-- refactor: improve code style using code_builder package
+## 1.1.0
 - feat: allow positional parameters on data class constructors
+- refactor: improve code style using code_builder package
 
 ## 1.0.2
 - fix: bug when annotated classes also use mixins
