@@ -1,11 +1,11 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 
-abstract class Writer {
+abstract class Creator {
   final ClassSpec classSpec;
   final List<FieldSpec> fieldSpecs;
 
-  const Writer({required this.classSpec, required this.fieldSpecs});
+  const Creator({required this.classSpec, required this.fieldSpecs});
 
   bool get available;
   bool get needMixinMethodSelf => false;

@@ -6,15 +6,15 @@ import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
+import 'package:mek_data_class_generator/src/creators/changes_creator.dart';
+import 'package:mek_data_class_generator/src/creators/copy_with_creator.dart';
+import 'package:mek_data_class_generator/src/creators/creator.dart';
+import 'package:mek_data_class_generator/src/creators/equality_creator.dart';
+import 'package:mek_data_class_generator/src/creators/fields_class_creator.dart';
+import 'package:mek_data_class_generator/src/creators/to_string_creator.dart';
 import 'package:mek_data_class_generator/src/field_helpers.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
-import 'package:mek_data_class_generator/src/writers/changes_writer.dart';
-import 'package:mek_data_class_generator/src/writers/copy_with_writer.dart';
-import 'package:mek_data_class_generator/src/writers/equality_writer.dart';
-import 'package:mek_data_class_generator/src/writers/fields_class_writer.dart';
-import 'package:mek_data_class_generator/src/writers/to_string_writer.dart';
-import 'package:mek_data_class_generator/src/writers/writer.dart';
 import 'package:source_gen/source_gen.dart';
 
 class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
@@ -58,12 +58,12 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     var mixinMethods = Iterable<Method>.empty();
     var libraryClasses = Iterable<Class>.empty();
 
-    for (final writer in _writeGenerators(classSpec, fieldSpecs)) {
-      if (!writer.available) continue;
+    for (final creator in _instanceCreators(classSpec, fieldSpecs)) {
+      if (!creator.available) continue;
 
-      if (writer.needMixinMethodSelf) needMixinMethodSelf = true;
-      mixinMethods = mixinMethods.followedBy(writer.creteMixinMethods());
-      libraryClasses = libraryClasses.followedBy(writer.createLibraryClasses());
+      if (creator.needMixinMethodSelf) needMixinMethodSelf = true;
+      mixinMethods = mixinMethods.followedBy(creator.creteMixinMethods());
+      libraryClasses = libraryClasses.followedBy(creator.createLibraryClasses());
     }
 
     Method? mixinMethodSelf;
@@ -87,11 +87,11 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     return '${library.accept(_dartEmitter)}';
   }
 
-  Iterable<Writer> _writeGenerators(ClassSpec classSpec, List<FieldSpec> fieldSpecs) sync* {
-    yield EqualityWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    yield ToStringWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    yield CopyWithWriter(classSpec: classSpec, fieldSpecs: fieldSpecs);
-    yield ChangesWriter(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
-    yield FieldsClassWriter(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
+  Iterable<Creator> _instanceCreators(ClassSpec classSpec, List<FieldSpec> fieldSpecs) sync* {
+    yield EqualityCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    yield ToStringCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    yield CopyWithCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    yield ChangesCreator(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
+    yield FieldsClassCreator(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
   }
 }

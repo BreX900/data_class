@@ -1,10 +1,12 @@
 import 'package:code_builder/code_builder.dart';
+import 'package:mek_data_class_generator/src/creators/creator.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
-import 'package:mek_data_class_generator/src/writers/writer.dart';
 
-class EqualityWriter extends Writer {
-  EqualityWriter({required ClassSpec classSpec, required List<FieldSpec> fieldSpecs})
-      : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+class EqualityCreator extends Creator {
+  EqualityCreator({
+    required ClassSpec classSpec,
+    required List<FieldSpec> fieldSpecs,
+  }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
 
   @override
   bool get available => classSpec.comparable;
