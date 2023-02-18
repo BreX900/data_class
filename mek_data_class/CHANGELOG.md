@@ -1,4 +1,5 @@
 
+## 1.0.1
 - chore: introduced new api for the generator package
 
 ## 1.0.0
