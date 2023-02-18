@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:meta/meta_meta.dart';
 
 export 'package:class_to_string/class_to_string.dart' show ClassToString;
+export 'package:mek_data_class/src/helpers.dart';
 
 /// Enable and customize data class generation.
 ///
@@ -51,6 +52,7 @@ class DataClass {
   });
 
   /// Used by mek_data_class_generator
+  @Deprecated('Update mek_data_class_generator package and run code generation with build_runner.')
   static bool $equals(Iterable<Object?> self, Iterable<Object?> other) {
     return const IterableEquality<Object?>(DeepCollectionEquality()).equals(self, other);
   }

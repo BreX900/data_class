@@ -8,18 +8,19 @@ part of 'fields_class_example.dart';
 
 mixin _$Father {
   Father get _self => this as Father;
-  Iterable<Object?> get _props sync* {
-    yield _self.child;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Father &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.child == other.child;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.child.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('Father')..add('child', _self.child)).toString();
@@ -37,18 +38,19 @@ class FatherFields {
 
 mixin _$Mother {
   Mother get _self => this as Mother;
-  Iterable<Object?> get _props sync* {
-    yield _self.child;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Mother &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.child == other.child;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.child.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('Mother')..add('child', _self.child)).toString();
@@ -67,18 +69,19 @@ class MotherFields {
 
 mixin _$Child {
   Child get _self => this as Child;
-  Iterable<Object?> get _props sync* {
-    yield _self.id;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Child &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.id == other.id;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.id.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('Child')..add('id', _self.id)).toString();
 }

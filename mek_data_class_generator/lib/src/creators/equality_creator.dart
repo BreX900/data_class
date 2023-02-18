@@ -18,39 +18,36 @@ class EqualityCreator extends Creator {
 
   @override
   Iterable<Method> creteMixinMethods() sync* {
-    yield _createMixinMethodProps();
     yield _createMixinMethodEqual();
     yield _createMixinMethodHashcode();
   }
 
-  Method _createMixinMethodProps() {
-    final props = _fieldSpecs.where((field) => field.equality == null).map((field) {
-      return 'yield _self.${field.name};';
-    });
-    return Method((b) => b
-      ..returns = Reference('Iterable<Object?>')
-      ..type = MethodType.getter
-      ..name = '_props'
-      ..modifier = MethodModifier.syncStar
-      ..body = Code(props.join()));
+  String? _codeEqualityVar(FieldSpec field) {
+    if (field.equality != null) return field.equality;
+
+    final type = field.element.type;
+    if (type.isDartCoreMap) {
+      return '\$mapEquality';
+    } else if (type.isDartCoreSet) {
+      return '\$setEquality';
+    } else if (type.isDartCoreList) {
+      return '\$listEquality';
+    }
+    return null;
   }
 
-  Iterable<String> _generateEquals() sync* {
-    for (var field in _fieldSpecs) {
-      if (field.equality == null) continue;
+  String _codeFieldEquals(FieldSpec field) {
+    final equality = _codeEqualityVar(field);
+    if (equality != null) return ' && $equality.equals(_self.${field.name}, other.${field.name})';
 
-      yield '${field.equality}.equals(_self.${field.name}, other.${field.name})';
-    }
+    return ' && _self.${field.name} == other.${field.name}';
   }
 
   Method _createMixinMethodEqual() {
-    var equals = _generateEquals().join(' && ');
-    if (equals.isNotEmpty) equals = ' && $equals';
-
-    final body = Code('''identical(this, other) ||
-      other is ${classSpec.self.typedName} &&
-          runtimeType == other.runtimeType &&
-          DataClass.\$equals(_props, other._props)$equals''');
+    final body = StringBuffer('identical(this, other) || other is ');
+    body.write(classSpec.self.typedName);
+    body.write(' && runtimeType == other.runtimeType ');
+    body.writeAll(_fieldSpecs.map(_codeFieldEquals));
 
     return Method((b) => b
       ..annotations.add(Annotations.override)
@@ -60,28 +57,30 @@ class EqualityCreator extends Creator {
         ..type = Refs.object
         ..name = 'other'))
       ..lambda = true
-      ..body = body);
+      ..body = Code('$body'));
   }
 
-  Iterable<String> _codeEqualityHashcode() sync* {
-    for (var field in _fieldSpecs) {
-      if (field.equality == null) continue;
+  String _codeEqualityHashcode(FieldSpec field) {
+    final equality = _codeEqualityVar(field);
+    if (equality != null) return '$equality.hash(_self.${field.name})';
 
-      yield '${field.equality}.hash(_self.${field.name})';
-    }
+    return '_self.${field.name}.hashCode\n';
   }
 
   Method _createMixinMethodHashcode() {
-    var propsStr = '_props';
-    final equalityHascode = _codeEqualityHashcode().join(', ');
-    if (equalityHascode.isNotEmpty) propsStr += '.followedBy([$equalityHascode])';
+    final hashVar = 'hashCode';
+
+    final body = StringBuffer('var $hashVar = 0;\n');
+    body.writeAll(_fieldSpecs.map((field) {
+      return '$hashVar = \$hashCombine($hashVar, ${_codeEqualityHashcode(field)});';
+    }));
+    body.write('return \$hashFinish($hashVar);');
 
     return Method((b) => b
       ..annotations.add(Annotations.override)
       ..returns = Refs.int
       ..type = MethodType.getter
       ..name = 'hashCode'
-      ..lambda = true
-      ..body = Code('Object.hashAll($propsStr)'));
+      ..body = Code('$body'));
   }
 }

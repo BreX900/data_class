@@ -8,17 +8,20 @@ part of 'basic_example.dart';
 
 mixin _$Order {
   Order get _self => this as Order;
-  Iterable<Object?> get _props sync* {}
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Order &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props) &&
           const ProductEquality().equals(_self.product, other.product);
   @override
-  int get hashCode => Object.hashAll(
-      _props.followedBy([const ProductEquality().hash(_self.product)]));
+  int get hashCode {
+    var hashCode = 0;
+    hashCode =
+        $hashCombine(hashCode, const ProductEquality().hash(_self.product));
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('Order')..add('product', _self.product)).toString();
@@ -40,19 +43,21 @@ class _OrderChanges {
 
 mixin _$Product {
   Product get _self => this as Product;
-  Iterable<Object?> get _props sync* {
-    yield _self.title;
-    yield _self.extraData;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Product &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.title == other.title &&
+          $mapEquality.equals(_self.extraData, other.extraData);
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.title.hashCode);
+    hashCode = $hashCombine(hashCode, $mapEquality.hash(_self.extraData));
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('Product')
         ..add('id', _self.id)
@@ -94,15 +99,16 @@ class _ProductChanges {
 }
 
 mixin _$EmptyClass {
-  Iterable<Object?> get _props sync* {}
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is EmptyClass &&
-          runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+      other is EmptyClass && runtimeType == other.runtimeType;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('EmptyClass')).toString();
 }

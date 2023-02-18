@@ -8,18 +8,19 @@ part of 'generics_example.dart';
 
 mixin _$Response<T> {
   Response<T> get _self => this as Response<T>;
-  Iterable<Object?> get _props sync* {
-    yield _self.data;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Response<T> &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.data == other.data;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.data.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('Response', [T])..add('data', _self.data)).toString();
@@ -47,19 +48,21 @@ class _ResponseChanges<T> {
 
 mixin _$PaginatedResponse<T extends Object> {
   PaginatedResponse<T> get _self => this as PaginatedResponse<T>;
-  Iterable<Object?> get _props sync* {
-    yield _self.data;
-    yield _self.total;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is PaginatedResponse<T> &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.data == other.data &&
+          _self.total == other.total;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.data.hashCode);
+    hashCode = $hashCombine(hashCode, _self.total.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('PaginatedResponse', [T])
         ..add('data', _self.data)
@@ -105,18 +108,19 @@ class _PaginatedResponseChanges<T extends Object>
 
 mixin _$ListResponse<T> {
   ListResponse<T> get _self => this as ListResponse<T>;
-  Iterable<Object?> get _props sync* {
-    yield _self.data;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ListResponse<T> &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          $listEquality.equals(_self.data, other.data);
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, $listEquality.hash(_self.data));
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('ListResponse', [T])..add('data', _self.data)).toString();
