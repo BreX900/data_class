@@ -8,18 +8,19 @@ part of 'inheritance_example.dart';
 
 mixin _$Animal {
   Animal get _self => this as Animal;
-  Iterable<Object?> get _props sync* {
-    yield _self.finalField;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Animal &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.finalField == other.finalField;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() =>
       (ClassToString('Animal')..add('finalField', _self.finalField)).toString();
@@ -39,19 +40,21 @@ abstract class _AnimalChanges {
 
 mixin _$Dog {
   Dog get _self => this as Dog;
-  Iterable<Object?> get _props sync* {
-    yield _self.finalField;
-    yield _self.getterField;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Dog &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.finalField == other.finalField &&
+          _self.getterField == other.getterField;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
+    hashCode = $hashCombine(hashCode, _self.getterField.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('Dog')
         ..add('finalField', _self.finalField)
@@ -93,19 +96,21 @@ class _DogChanges implements _AnimalChanges {
 
 mixin _$Cat {
   Cat get _self => this as Cat;
-  Iterable<Object?> get _props sync* {
-    yield _self.finalField;
-    yield _self.getterField;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Cat &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          _self.finalField == other.finalField &&
+          _self.getterField == other.getterField;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
+    hashCode = $hashCombine(hashCode, _self.getterField.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('Cat')
         ..add('finalField', _self.finalField)

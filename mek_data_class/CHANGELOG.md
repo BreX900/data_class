@@ -1,5 +1,5 @@
 
-
+- chore: introduced new api for the generator package
 
 ## 1.0.0
 - feat: `DataField.equality` to customize the equal operator and hashcode through the use of the Equality class

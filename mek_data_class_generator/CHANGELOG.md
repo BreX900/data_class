@@ -1,3 +1,5 @@
+- fix: hashcode generation
+- perf: New hashCode and == operator generation, have better performance. [#12](https://github.com/BreX900/data_class/issues/12)
 
 ## 1.1.0
 - feat: allow positional parameters on data class constructors

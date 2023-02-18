@@ -16,7 +16,7 @@ Auto generation of:
 ## Install package
 
 To use [DataClass], you will need your typical [build_runner]/code-generator setup.
-First, install [build_runner], data_class, [data_class_generator] by adding them to your pubspec.yaml file:
+First, install [build_runner], [data_class], [data_class_generator] by adding them to your pubspec.yaml file:
 
 ```yaml
 # pubspec.yaml
@@ -210,6 +210,7 @@ changeable: true
 
 [build_runner]: https://pub.dev/packages/build_runner
 [DataClass]: https://pub.dartlang.org/packages/mek_data_class
+[data_class]: https://pub.dartlang.org/packages/mek_data_class
 [data_class_generator]: https://pub.dartlang.org/packages/mek_data_class_generator
 [ClassToString]: https://pub.dartlang.org/packages/class_to_string
 [freezed]: https://pub.dartlang.org/packages/freezed

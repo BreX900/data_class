@@ -8,21 +8,25 @@ part of 'typedef_example.dart';
 
 mixin _$Extra {
   Extra get _self => this as Extra;
-  Iterable<Object?> get _props sync* {
-    yield _self.jsonMap;
-    yield _self.nullableJsonMap;
-    yield _self.product;
-    yield _self.product2;
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Extra &&
           runtimeType == other.runtimeType &&
-          DataClass.$equals(_props, other._props);
+          $mapEquality.equals(_self.jsonMap, other.jsonMap) &&
+          $mapEquality.equals(_self.nullableJsonMap, other.nullableJsonMap) &&
+          _self.product == other.product &&
+          _self.product2 == other.product2;
   @override
-  int get hashCode => Object.hashAll(_props);
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, $mapEquality.hash(_self.jsonMap));
+    hashCode = $hashCombine(hashCode, $mapEquality.hash(_self.nullableJsonMap));
+    hashCode = $hashCombine(hashCode, _self.product.hashCode);
+    hashCode = $hashCombine(hashCode, _self.product2.hashCode);
+    return $hashFinish(hashCode);
+  }
+
   @override
   String toString() => (ClassToString('Extra')
         ..add('jsonMap', _self.jsonMap)
