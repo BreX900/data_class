@@ -1,8 +1,15 @@
+import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:collection/collection.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
+import 'package:mek_data_class_generator/src/utils.dart';
+import 'package:source_gen/source_gen.dart';
 
 class EqualityCreator extends Creator {
+  static final _equalityChecker = TypeChecker.fromRuntime(Equality);
+
   EqualityCreator({
     required ClassSpec classSpec,
     required List<FieldSpec> fieldSpecs,
@@ -22,10 +29,56 @@ class EqualityCreator extends Creator {
     yield _createMixinMethodHashcode();
   }
 
-  String? _codeEqualityVar(FieldSpec field) {
-    if (field.equality != null) return field.equality;
+  String? _codeEqualityClasses(DartType type) {
+    for (final equality in classSpec.equalities) {
+      final extendedEqualityClassElement = equality.type!.element2 as ClassElement;
+      final equalityClassElement =
+          extendedEqualityClassElement.allSupertypes.singleWhereOrNull((e) {
+        return _equalityChecker.isExactly(e.element2);
+      });
+      if (equalityClassElement == null) continue;
+
+      final fieldType = equalityClassElement.typeArguments[0];
+      if (fieldType == type) {
+        return '${extendedEqualityClassElement.thisType}()';
+      }
+      if (fieldType == type.promoteNonNullable()) {
+        return '\$NullableEquality(${extendedEqualityClassElement.thisType}())';
+      }
+    }
+
+    if (type.isDartCoreMap) {
+      final typeArguments = (type as InterfaceType).typeArguments;
+      final keyEquality = _codeEqualityClasses(typeArguments[0]);
+      final valueEquality = _codeEqualityClasses(typeArguments[1]);
+
+      if (keyEquality != null && valueEquality != null) {
+        return '\$CollectionEquality(\$MultiEquality([$keyEquality, $valueEquality))';
+      } else if (keyEquality != null || valueEquality != null) {
+        return '\$CollectionEquality(${keyEquality ?? valueEquality})';
+      }
+      return null;
+    } else if (type.isDartCoreSet) {
+      final elementType = (type as InterfaceType).typeArguments[0];
+      final elementEquality = _codeEqualityClasses(elementType);
+      if (elementEquality == null) return null;
+      return '\$CollectionEquality($elementEquality)';
+    } else if (type.isDartCoreList) {
+      final elementType = (type as InterfaceType).typeArguments[0];
+      final elementEquality = _codeEqualityClasses(elementType);
+      if (elementEquality == null) return null;
+      return '\$CollectionEquality($elementEquality)';
+    }
+    return null;
+  }
+
+  String? _codeEquality(FieldSpec field) {
+    if (field.equality != null) return 'const ${field.equality!.type!}()';
 
     final type = field.element.type;
+    final externalEquality = _codeEqualityClasses(type);
+    if (externalEquality != null) return 'const $externalEquality';
+
     if (type.isDartCoreMap) {
       return '\$mapEquality';
     } else if (type.isDartCoreSet) {
@@ -37,7 +90,7 @@ class EqualityCreator extends Creator {
   }
 
   String _codeFieldEquals(FieldSpec field) {
-    final equality = _codeEqualityVar(field);
+    final equality = _codeEquality(field);
     if (equality != null) return ' && $equality.equals(_self.${field.name}, other.${field.name})';
 
     return ' && _self.${field.name} == other.${field.name}';
@@ -61,7 +114,7 @@ class EqualityCreator extends Creator {
   }
 
   String _codeEqualityHashcode(FieldSpec field) {
-    final equality = _codeEqualityVar(field);
+    final equality = _codeEquality(field);
     if (equality != null) return '$equality.hash(_self.${field.name})';
 
     return '_self.${field.name}.hashCode\n';

@@ -206,7 +206,7 @@ changeable: true
 
 > Similar packages [freezed], [built_value],  [dataclass_beta],  [functional_data]
 
-## Additional information
+
 
 [build_runner]: https://pub.dev/packages/build_runner
 [DataClass]: https://pub.dartlang.org/packages/mek_data_class
