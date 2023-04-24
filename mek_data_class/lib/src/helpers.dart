@@ -2,14 +2,16 @@ import 'package:collection/collection.dart';
 import 'package:mek_data_class/src/data_collection_equality.dart';
 
 /// For use by generated code in equal operator. Do not use directly.
-const Equality<List<Object?>?> $listEquality = ListEquality(DataCollectionEquality());
+const Equality<List<Object?>?> $listEquality = ListEquality($CollectionEquality());
 
 /// For use by generated code in equal operator. Do not use directly.
-const Equality<Set<Object?>?> $setEquality = SetEquality(DataCollectionEquality());
+const Equality<Set<Object?>?> $setEquality = SetEquality($CollectionEquality());
 
 /// For use by generated code in equal operator. Do not use directly.
 const Equality<Map<Object?, Object?>?> $mapEquality =
-    MapEquality(keys: DataCollectionEquality(), values: DataCollectionEquality());
+    MapEquality(keys: $CollectionEquality(), values: $CollectionEquality());
+
+typedef $MultiEquality<E> = MultiEquality<E>;
 
 /// For use by generated code in calculating hash codes. Do not use directly.
 int $hashCombine(int hash, int value) {

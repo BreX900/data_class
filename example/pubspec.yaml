@@ -6,7 +6,7 @@ environment:
 
 scripts:
   # To generate .g files:
-  build:watch: dart run build_runner watch -d -v
+  build:runner: dart run build_runner watch -d -v
 
 dependencies:
   collection: ^1.16.0

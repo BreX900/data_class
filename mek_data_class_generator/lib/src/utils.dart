@@ -39,3 +39,7 @@ bool isDataClassField(FieldElement field) {
   if (!field.isFinal) return false;
   return true;
 }
+
+extension DartTypeExtension on DartType {
+  DartType promoteNonNullable() => element2?.library?.typeSystem.promoteToNonNull(this) ?? this;
+}

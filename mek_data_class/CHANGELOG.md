@@ -1,4 +1,6 @@
 
+- feat: You can pass your `Equality` classes to `DataClass(equalities: [...])`
+
 ## 1.0.1
 - chore: introduced new api for the generator package
 

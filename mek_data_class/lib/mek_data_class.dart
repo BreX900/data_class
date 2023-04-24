@@ -7,7 +7,9 @@ import 'package:collection/collection.dart';
 import 'package:meta/meta_meta.dart';
 
 export 'package:class_to_string/class_to_string.dart' show ClassToString;
+export 'package:mek_data_class/src/data_collection_equality.dart';
 export 'package:mek_data_class/src/helpers.dart';
+export 'package:mek_data_class/src/optional_equality.dart';
 
 /// Enable and customize data class generation.
 ///
@@ -39,6 +41,9 @@ class DataClass {
   /// Default: `false`
   final bool? createFieldsClass;
 
+  /// This equality is used in the following methods [Object.==] and [Object.hashCode].
+  final List<Equality<dynamic>> equalities;
+
   /// Ex.
   /// @DataClass()
   /// class Product {}
@@ -49,6 +54,7 @@ class DataClass {
     this.changeable,
     this.changesVisible,
     this.createFieldsClass,
+    this.equalities = const [],
   });
 
   /// Used by mek_data_class_generator

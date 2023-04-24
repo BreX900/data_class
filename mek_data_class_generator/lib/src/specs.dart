@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -32,6 +33,7 @@ class ClassSpec {
   final bool changeable;
   final bool changesVisible;
   final bool createFieldsClass;
+  final List<DartObject> equalities;
 
   ClassSpec({
     required this.element,
@@ -43,6 +45,7 @@ class ClassSpec {
     required this.changeable,
     required this.changesVisible,
     required this.createFieldsClass,
+    required this.equalities,
   });
 
   late final selfTypes =
@@ -84,6 +87,7 @@ class ClassSpec {
       changesVisible: annotation.peek('changesVisible')?.boolValue ?? config.changesVisible,
       createFieldsClass:
           annotation.peek('createFieldsClass')?.boolValue ?? config.createFieldsClass,
+      equalities: annotation.peek('equalities')!.listValue,
     );
   }
 
@@ -104,7 +108,7 @@ class FieldSpec {
 
   final String name;
   final bool comparable;
-  final String? equality;
+  final DartObject? equality;
   final bool stringify;
   final String? stringifier;
   final bool updatable;
@@ -129,14 +133,12 @@ class FieldSpec {
   ) {
     final annotation = dataFieldAnnotation(element);
 
-    final equality = annotation.peek('equality')?.revive().source.fragment;
-
     return FieldSpec(
       parsedLibrary: parsedLibrary,
       element: element,
       name: element.displayName,
       comparable: annotation.peek('comparable')?.boolValue ?? true,
-      equality: equality != null ? 'const $equality()' : null,
+      equality: annotation.peek('equality')?.objectValue,
       stringify: annotation.peek('stringify')?.boolValue ?? true,
       stringifier: annotation.peek('stringifier')?.revive().accessor,
       updatable: annotation.peek('updatable')?.boolValue ?? true,
