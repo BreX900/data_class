@@ -1,4 +1,9 @@
 
+## 1.2.0
+
+- feat: You can pass your `Equality` classes to `DataClass(equalities: [...])`
+- chore: Added support for dart `3.0`
+
 ## 1.1.1
 - fix: hashcode generation
 - perf: New hashCode and == operator generation, have better performance. [#12](https://github.com/BreX900/data_class/issues/12)

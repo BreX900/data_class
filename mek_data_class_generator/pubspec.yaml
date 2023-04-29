@@ -1,5 +1,5 @@
 name: mek_data_class_generator
-version: 1.1.1
+version: 1.2.0
 description: >
   Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
   and `change` methods
@@ -7,15 +7,15 @@ homepage: https://github.com/BreX900/data_class/tree/main/mek_data_class_generat
 repository: https://github.com/BreX900/data_class
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 scripts:
   publish: dart pub publish
   # To generate .g files:
-  build:watch: dart run build_runner watch --delete-conflicting-outputs
+  build:runner: dart run build_runner watch --delete-conflicting-outputs
 
 dependencies:
-  mek_data_class: ^1.0.1
+  mek_data_class: ^1.1.0
 
   analyzer: ">=4.6.0 <6.0.0"
   build: ^2.0.0
