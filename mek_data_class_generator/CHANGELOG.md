@@ -1,4 +1,9 @@
 
+## 1.3.0
+- fix: unnecessary parentheses on `toString` method [#20](https://github.com/BreX900/data_class/issues/20)
+- fix: `Classes and mixins can only implement other classes and mixins` error [#19](https://github.com/BreX900/data_class/issues/19)
+- feat: `toString` method now print `null` values [#17](https://github.com/BreX900/data_class/issues/17), you can change this behavior by setting the yaml file `stringify_if_null: false`
+
 ## 1.2.0
 
 - feat: You can pass your `Equality` classes to `DataClass(equalities: [...])`

@@ -22,7 +22,6 @@ class ToStringCreator extends Creator {
         fieldSpecs = fieldSpecs.where((field) => field.isParam).toList();
         break;
       case StringifyType.fields:
-        break;
     }
     return fieldSpecs;
   })();
@@ -36,17 +35,21 @@ class ToStringCreator extends Creator {
     final types = classSpec.types.isEmpty ? '' : ', ${classSpec.types}';
 
     final fields = _effectiveFieldSpecs.map((field) {
+      final addType = classSpec.stringifyIfNull ? 'add' : 'addIfExist';
       final variable = '_self.${field.name}';
       final stringifier = field.stringifier;
       final stringifyVariable = stringifier != null ? '$stringifier($variable)' : variable;
-      return '..add(\'${field.name}\', $stringifyVariable)';
+      return '..$addType(\'${field.name}\', $stringifyVariable)';
     });
+
+    final classToString = "ClassToString('${classSpec.self.name}'$types)${fields.join()}";
 
     return Method((b) => b
       ..annotations.add(Annotations.override)
       ..returns = Refs.string
       ..name = 'toString'
       ..lambda = true
-      ..body = Code("(ClassToString('${classSpec.self.name}'$types)${fields.join()}).toString()"));
+      ..body =
+          Code("${_effectiveFieldSpecs.isEmpty ? classToString : '($classToString)'}.toString()"));
   }
 }

@@ -6,7 +6,7 @@ Generally used in code generators for example in [mek_data_class]
 - [x] Supported nested classes
 - [x] Generate a single-line string from a class
 - [x] Generate a multi-line string from a class
-- [ ] Generate a json string from a class
+- [x] Generate a json string from a class
 - [ ] Generate a yaml string from a class
 
 ## Usage

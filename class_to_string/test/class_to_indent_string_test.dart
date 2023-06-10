@@ -17,7 +17,8 @@ void main() {
         ..add('double', 1.1)
         ..add('boolean', true)
         ..add('string', 'text')
-        ..add('nullable', null));
+        ..add('null', null)
+        ..addIfExist('nullable', null));
 
       expect(
         object.toString(),
@@ -26,6 +27,7 @@ void main() {
         '  double=1.1,\n'
         '  boolean=true,\n'
         '  string=text,\n'
+        '  null=null,\n'
         ')',
       );
     });

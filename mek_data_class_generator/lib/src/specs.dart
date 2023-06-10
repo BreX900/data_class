@@ -29,6 +29,7 @@ class ClassSpec {
   final bool comparable;
   final bool stringify;
   final StringifyType stringifyType;
+  final bool stringifyIfNull;
   final bool copyable;
   final bool changeable;
   final bool changesVisible;
@@ -42,6 +43,7 @@ class ClassSpec {
     required this.copyable,
     required this.stringify,
     required this.stringifyType,
+    required this.stringifyIfNull,
     required this.changeable,
     required this.changesVisible,
     required this.createFieldsClass,
@@ -82,6 +84,7 @@ class ClassSpec {
       comparable: annotation.peek('comparable')?.boolValue ?? config.comparable,
       stringify: annotation.peek('stringify')?.boolValue ?? config.stringify,
       stringifyType: config.stringifyType,
+      stringifyIfNull: config.stringifyIfNull,
       copyable: annotation.peek('copyable')?.boolValue ?? config.copyable,
       changeable: annotation.peek('changeable')?.boolValue ?? config.changeable,
       changesVisible: annotation.peek('changesVisible')?.boolValue ?? config.changesVisible,
@@ -113,7 +116,7 @@ class FieldSpec {
   final String? stringifier;
   final bool updatable;
 
-  late final bool isParam = _isParam(element.enclosingElement3 as ClassElement, element);
+  late final bool isParam = _isParam(element.enclosingElement as InterfaceElement, element);
 
   FieldSpec({
     required this.parsedLibrary,
@@ -151,7 +154,7 @@ class FieldSpec {
       return e.namespace.definedNames.values;
     });
 
-    final type = prefixedElements.contains(element.type.element2)
+    final type = prefixedElements.contains(element.type.element)
         ? _getTypeWithPrefix(parsedLibrary, element)
         : _getType(element.type);
 
@@ -196,11 +199,12 @@ class FieldSpec {
     }
   }
 
-  static bool _isParam(ClassElement classElement, FieldElement element) {
+  static bool _isParam(InterfaceElement classOrMixinElement, FieldElement element) {
     if (element.isPrivate) return false;
     if (element.hasInitializer) return false;
 
-    final constructorElement = classElement.unnamedConstructor ?? classElement.constructors.first;
+    final constructorElement =
+        classOrMixinElement.unnamedConstructor ?? classOrMixinElement.constructors.first;
     return constructorElement.parameters.any((e) => e.name == element.name);
   }
 }

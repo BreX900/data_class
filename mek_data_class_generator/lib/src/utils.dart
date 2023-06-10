@@ -26,10 +26,10 @@ ConstantReader? dataClassAnnotation(ClassElement element) {
 InterfaceType? findSuperDataClass(ClassElement element) {
   InterfaceType? superType = element.supertype;
   while (superType != null) {
-    if (dataClassChecker.hasAnnotationOf(superType.element2)) {
+    if (dataClassChecker.hasAnnotationOf(superType.element)) {
       return superType;
     }
-    superType = superType.element2.supertype;
+    superType = superType.element.supertype;
   }
   return null;
 }
@@ -41,5 +41,5 @@ bool isDataClassField(FieldElement field) {
 }
 
 extension DartTypeExtension on DartType {
-  DartType promoteNonNullable() => element2?.library?.typeSystem.promoteToNonNull(this) ?? this;
+  DartType promoteNonNullable() => element?.library?.typeSystem.promoteToNonNull(this) ?? this;
 }

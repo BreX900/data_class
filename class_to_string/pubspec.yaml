@@ -1,11 +1,14 @@
 name: class_to_string
 description: It allows to get beautiful class to string.
-version: 0.0.3
+version: 1.0.0
 homepage: https://github.com/BreX900/data_class/tree/main/class_to_string
 repository: https://github.com/BreX900/data_class
 
 environment:
-  sdk: '>=2.12.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
+
+scripts:
+  publish: dart pub publish
 
 dev_dependencies:
   mek_lints: ^1.0.0

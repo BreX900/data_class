@@ -1,7 +1,8 @@
 import 'package:class_to_string/src/class_to_string.dart';
+import 'package:class_to_string/src/class_to_string_base.dart';
 
 /// A [ClassToString] that produces single line output.
-class ClassToFlatString implements ClassToString {
+class ClassToFlatString extends ClassToStringBase {
   StringBuffer? _result = StringBuffer();
 
   var _hasPreviousField = false;
@@ -21,11 +22,10 @@ class ClassToFlatString implements ClassToString {
   }
 
   @override
-  void add(String field, Object? value) {
-    if (value == null) return;
+  void add(String name, Object? value) {
     if (_hasPreviousField) _result!.write(',');
     _result!
-      ..write(field)
+      ..write(name)
       ..write('=')
       ..write(value);
     _hasPreviousField = true;

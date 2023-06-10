@@ -1,7 +1,8 @@
 import 'package:class_to_string/src/class_to_string.dart';
+import 'package:class_to_string/src/class_to_string_base.dart';
 
 /// A [ClassToString] that produces multi-line indented output.
-class ClassToIndentString implements ClassToString {
+class ClassToIndentString extends ClassToStringBase {
   StringBuffer? _result = StringBuffer();
 
   static var _indentCount = 0;
@@ -24,15 +25,14 @@ class ClassToIndentString implements ClassToString {
   }
 
   @override
-  void add(String field, Object? value) {
-    if (value == null) return;
+  void add(String name, Object? value) {
     if (_isEmpty) {
       _isEmpty = false;
       _result!.writeln();
     }
     _result!
       ..write(' ' * _indentCount)
-      ..write(field)
+      ..write(name)
       ..write('=')
       ..write(value)
       ..write(',\n');

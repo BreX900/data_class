@@ -174,6 +174,13 @@ class ProductFields {
 ## Global Configs
 See the docs of the DataClass class for more information
 
+| Key                  | Default  | Description                                                                                        |
+|----------------------|----------|----------------------------------------------------------------------------------------------------|
+| page_width           | `80`     | adjust the page formatting width of the generated dart code                                        |
+| stringify_if_null    | `true`   | if set to `false`, null values will not be included in the toString                                |
+| stringify_type       | `params` | if set to `fields`, fields of a class that are not passed to the constructor will also be included |
+| fields_class_visible | `true`   | if set to `false`, the fields classes is private                                                   |
+
 ```yaml
 # build.yaml
 targets:
@@ -186,10 +193,12 @@ targets:
           comparable: true
           stringify: true
           stringify_type: params | fields
+          stringify_if_null: true
           copyable: false
           changeable: false
           changes_visible: false
           create_fields_class: false
+          fields_class_visible: true
 ```
 
 ### Recommended options

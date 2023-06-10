@@ -3,7 +3,7 @@ import 'package:mek_data_class/mek_data_class.dart';
 part 'generics_example.g.dart';
 
 @DataClass(changeable: true, copyable: true)
-class Response<T> with _$Response<T> {
+sealed class Response<T> with _$Response<T> {
   final T data;
 
   const Response({
@@ -12,7 +12,7 @@ class Response<T> with _$Response<T> {
 }
 
 @DataClass(changeable: true, copyable: true)
-class PaginatedResponse<T extends Object> extends Response<T> with _$PaginatedResponse<T> {
+final class PaginatedResponse<T extends Object> extends Response<T> with _$PaginatedResponse<T> {
   final int total;
 
   const PaginatedResponse({
@@ -22,7 +22,7 @@ class PaginatedResponse<T extends Object> extends Response<T> with _$PaginatedRe
 }
 
 @DataClass(changeable: true, copyable: true)
-class ListResponse<T> extends Response<List<T>> with _$ListResponse<T> {
+base class ListResponse<T> extends Response<List<T>> with _$ListResponse<T> {
   ListResponse({
     required List<T> data,
   }) : super(data: data);
