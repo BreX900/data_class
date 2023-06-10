@@ -1,3 +1,5 @@
+## 1.3.1
+- fix: private fields class generation
 
 ## 1.3.0
 - fix: unnecessary parentheses on `toString` method [#20](https://github.com/BreX900/data_class/issues/20)
