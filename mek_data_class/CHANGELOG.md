@@ -1,6 +1,8 @@
 
-## 1.1.0
+## 1.2.0
+- chore: update `class_to_string` dependency to `1.0.0`
 
+## 1.1.0
 - feat: You can pass your `Equality` classes to `DataClass(equalities: [...])`
 - chore: Added support for dart `3.0`
 

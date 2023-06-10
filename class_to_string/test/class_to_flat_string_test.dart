@@ -17,9 +17,10 @@ void main() {
         ..add('double', 1.1)
         ..add('boolean', true)
         ..add('string', 'text')
-        ..add('nullable', null));
+        ..add('null', null)
+        ..addIfExist('nullable', null));
 
-      expect(object.toString(), 'Filled(integer=1,double=1.1,boolean=true,string=text)');
+      expect(object.toString(), 'Filled(integer=1,double=1.1,boolean=true,string=text,null=null)');
     });
 
     test('inner flat class', () {

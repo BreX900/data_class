@@ -68,15 +68,15 @@ class ChangesCreator extends Creator {
     var superFieldsName = const <String>[];
     String? implement;
     if (superType != null) {
-      final superElement = superType.element2 as ClassElement;
+      final superElement = superType.element as ClassElement;
       final superSpec = ClassSpec.from(
         config,
         superElement,
-        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element2)),
+        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element)),
       );
 
       final superTypes = ClassSpec.t(superType.typeArguments.join(', '));
-      final superName = '${visibility(superSpec.changesVisible)}${superType.element2.name}Changes';
+      final superName = '${visibility(superSpec.changesVisible)}${superType.element.name}Changes';
       implement = '$superName$superTypes';
       superFieldsName = superElement.fields.where(isDataClassField).map((e) => e.name).toList();
     }

@@ -31,10 +31,10 @@ class EqualityCreator extends Creator {
 
   String? _codeEqualityClasses(DartType type) {
     for (final equality in classSpec.equalities) {
-      final extendedEqualityClassElement = equality.type!.element2 as ClassElement;
+      final extendedEqualityClassElement = equality.type!.element as ClassElement;
       final equalityClassElement =
           extendedEqualityClassElement.allSupertypes.singleWhereOrNull((e) {
-        return _equalityChecker.isExactly(e.element2);
+        return _equalityChecker.isExactly(e.element);
       });
       if (equalityClassElement == null) continue;
 

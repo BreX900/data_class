@@ -34,7 +34,7 @@ class Dog extends Animal with Action, _$Dog {
 }
 
 @DataClass(changeable: true, copyable: true)
-class Cat extends Animal with Action, _$Cat {
+class Cat extends Animal with Action, Description, _$Cat {
   @override
   final String getterField;
 
@@ -54,6 +54,8 @@ mixin Action {
   String get name;
 
   String say();
+}
 
-  String get action => '$name say ${say()}';
+mixin Description on Action {
+  late final String description = '$name: ${say()}';
 }

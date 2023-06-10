@@ -110,5 +110,5 @@ mixin _$EmptyClass {
   }
 
   @override
-  String toString() => (ClassToString('EmptyClass')).toString();
+  String toString() => ClassToString('EmptyClass').toString();
 }

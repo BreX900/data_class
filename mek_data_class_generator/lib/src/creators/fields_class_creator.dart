@@ -33,7 +33,7 @@ class FieldsClassCreator extends Creator {
   }
 
   Method? _createMethodField(FieldSpec fieldSpec, String fieldPath) {
-    final fieldClassElement = fieldSpec.element.type.element2;
+    final fieldClassElement = fieldSpec.element.type.element;
     if (fieldClassElement is! ClassElement) return null;
 
     final fieldClassReader = dataClassAnnotation(fieldClassElement);
@@ -56,7 +56,7 @@ class FieldsClassCreator extends Creator {
     final jsonSerializable = _jsonSerializableType.firstAnnotationOf(classSpec.element);
     final hasFieldMap = ConstantReader(jsonSerializable).peek('createFieldMap')?.boolValue ?? false;
 
-    final className = '${classSpec.element.name}Fields';
+    final className = '${config.fieldsClassVisible ? '' : '_'}${classSpec.element.name}Fields';
 
     final methodsFields = _paramsSpecs.map((field) {
       final fieldPath = _createFieldPath(field, hasFieldMap);

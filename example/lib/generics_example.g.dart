@@ -24,26 +24,18 @@ mixin _$Response<T> {
   @override
   String toString() =>
       (ClassToString('Response', [T])..add('data', _self.data)).toString();
-  Response<T> copyWith({T? data}) {
-    return Response(
-      data: data ?? _self.data,
-    );
-  }
-
-  Response<T> change(void Function(_ResponseChanges<T> c) updates) =>
-      (_ResponseChanges<T>._(_self)..update(updates)).build();
-  _ResponseChanges<T> toChanges() => _ResponseChanges._(_self);
+  Response<T> copyWith({T? data});
+  Response<T> change(void Function(_ResponseChanges<T> c) updates);
+  _ResponseChanges<T> toChanges();
 }
 
-class _ResponseChanges<T> {
+abstract class _ResponseChanges<T> {
   _ResponseChanges._(Response<T> dc) : data = dc.data;
 
   T data;
 
-  void update(void Function(_ResponseChanges<T> c) updates) => updates(this);
-  Response<T> build() => Response(
-        data: data,
-      );
+  void update(void Function(_ResponseChanges<T> c) updates);
+  Response<T> build();
 }
 
 mixin _$PaginatedResponse<T extends Object> {

@@ -17,10 +17,12 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
             'comparable',
             'stringify',
             'stringify_type',
+            'stringify_if_null',
             'copyable',
             'changeable',
             'changes_visible',
-            'create_fields_class'
+            'create_fields_class',
+            'fields_class_visible'
           ],
         );
         final val = Config(
@@ -32,20 +34,26 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
               (v) =>
                   $enumDecodeNullable(_$StringifyTypeEnumMap, v) ??
                   StringifyType.params),
+          stringifyIfNull:
+              $checkedConvert('stringify_if_null', (v) => v as bool? ?? true),
           copyable: $checkedConvert('copyable', (v) => v as bool? ?? false),
           changeable: $checkedConvert('changeable', (v) => v as bool? ?? false),
           changesVisible:
               $checkedConvert('changes_visible', (v) => v as bool? ?? false),
           createFieldsClass: $checkedConvert(
               'create_fields_class', (v) => v as bool? ?? false),
+          fieldsClassVisible: $checkedConvert(
+              'fields_class_visible', (v) => v as bool? ?? true),
         );
         return val;
       },
       fieldKeyMap: const {
         'pageWidth': 'page_width',
         'stringifyType': 'stringify_type',
+        'stringifyIfNull': 'stringify_if_null',
         'changesVisible': 'changes_visible',
-        'createFieldsClass': 'create_fields_class'
+        'createFieldsClass': 'create_fields_class',
+        'fieldsClassVisible': 'fields_class_visible'
       },
     );
 
