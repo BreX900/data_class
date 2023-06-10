@@ -14,10 +14,10 @@ class Father with _$Father {
   });
 }
 
-@DataClass(createFieldsClass: true)
+@DataClass(createFieldsClass: true, fieldsClassVisible: false)
 @JsonSerializable(createFieldMap: true)
 class Mother with _$Mother {
-  static final fields = MotherFields();
+  static final fields = _MotherFields();
 
   @JsonKey(name: 'myChild')
   final Child child;

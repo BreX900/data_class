@@ -1,3 +1,7 @@
+## 1.4.0
+- feat: support change `*Fields` class visibility by `DataClass.fieldsClassVisible` param
+- fix: suppress `unused_element` lint when `*Fields` class is private
+
 ## 1.3.1
 - fix: private fields class generation
 
