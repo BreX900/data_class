@@ -41,6 +41,10 @@ class DataClass {
   /// Default: `false`
   final bool? createFieldsClass;
 
+  /// Makes public the `*Fields` classes generated when [createFieldsClass] is enabled.
+  /// Default: `true`
+  final bool? fieldsClassVisible;
+
   /// This equality is used in the following methods [Object.==] and [Object.hashCode].
   final List<Equality<dynamic>> equalities;
 
@@ -54,6 +58,7 @@ class DataClass {
     this.changeable,
     this.changesVisible,
     this.createFieldsClass,
+    this.fieldsClassVisible,
     this.equalities = const [],
   });
 

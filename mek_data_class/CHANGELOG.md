@@ -1,3 +1,5 @@
+## 1.3.0
+- feat: support change `*Fields` class visibility by `DataClass.fieldsClassVisible` param
 
 ## 1.2.0
 - chore: update `class_to_string` dependency to `1.0.0`

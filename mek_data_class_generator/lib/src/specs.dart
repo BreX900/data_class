@@ -34,6 +34,7 @@ class ClassSpec {
   final bool changeable;
   final bool changesVisible;
   final bool createFieldsClass;
+  final bool fieldsClassVisible;
   final List<DartObject> equalities;
 
   ClassSpec({
@@ -47,6 +48,7 @@ class ClassSpec {
     required this.changeable,
     required this.changesVisible,
     required this.createFieldsClass,
+    required this.fieldsClassVisible,
     required this.equalities,
   });
 
@@ -90,6 +92,8 @@ class ClassSpec {
       changesVisible: annotation.peek('changesVisible')?.boolValue ?? config.changesVisible,
       createFieldsClass:
           annotation.peek('createFieldsClass')?.boolValue ?? config.createFieldsClass,
+      fieldsClassVisible:
+          annotation.peek('fieldsClassVisible')?.boolValue ?? config.fieldsClassVisible,
       equalities: annotation.peek('equalities')!.listValue,
     );
   }

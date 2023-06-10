@@ -28,8 +28,6 @@ class FieldsClassCreator extends Creator {
     yield createLibraryClassFields();
   }
 
-  String get _classPrefix => config.fieldsClassVisible ? '' : '_';
-
   String _createFieldPath(FieldSpec fieldSpec, bool hasFieldMap) {
     return hasFieldMap ? '\$_path\${_get(\'${fieldSpec.name}\')}' : '\${_path}${fieldSpec.name}';
   }
@@ -44,7 +42,8 @@ class FieldsClassCreator extends Creator {
     final fieldClassSpec = ClassSpec.from(config, fieldClassElement, fieldClassReader);
     if (!fieldClassSpec.createFieldsClass) return null;
 
-    final keysClassName = '$_classPrefix${fieldClassElement.name}Fields';
+    final keysClassName =
+        '${fieldClassSpec.fieldsClassVisible ? '' : '_'}${fieldClassElement.name}Fields';
 
     return Method((b) => b
       ..returns = Reference(keysClassName)
@@ -58,7 +57,7 @@ class FieldsClassCreator extends Creator {
     final jsonSerializable = _jsonSerializableType.firstAnnotationOf(classSpec.element);
     final hasFieldMap = ConstantReader(jsonSerializable).peek('createFieldMap')?.boolValue ?? false;
 
-    final className = '$_classPrefix${classSpec.element.name}Fields';
+    final className = '${classSpec.fieldsClassVisible ? '' : '_'}${classSpec.element.name}Fields';
 
     final methodsFields = _paramsSpecs.map((field) {
       final fieldPath = _createFieldPath(field, hasFieldMap);
@@ -81,6 +80,7 @@ class FieldsClassCreator extends Creator {
         ..type = Refs.string
         ..name = '_path'))
       ..constructors.add(Constructor((b) => b
+        ..docs.returnIf(!classSpec.fieldsClassVisible)?.add('// ignore: unused_element')
         ..constant = true
         ..optionalParameters.add(Parameter((b) => b
           ..toThis = true

@@ -56,14 +56,15 @@ mixin _$Mother {
       (ClassToString('Mother')..add('child', _self.child)).toString();
 }
 
-class MotherFields {
-  const MotherFields([this._path = '']);
+class _MotherFields {
+  // ignore: unused_element
+  const _MotherFields([this._path = '']);
 
   final String _path;
 
   ChildFields get child => ChildFields('$_path${_get('child')}.');
   @override
-  String toString() => _path.isEmpty ? 'MotherFields()' : _path;
+  String toString() => _path.isEmpty ? '_MotherFields()' : _path;
   String _get(String key) => _$MotherFieldMap[key]!;
 }
 
