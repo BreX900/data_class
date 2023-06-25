@@ -29,6 +29,20 @@ mixin _$Order {
       (_OrderChanges._(_self)..update(updates)).build();
   _OrderChanges toChanges() => _OrderChanges._(_self);
 }
+Order _$buildOrder(void Function(OrderBuilder b) updates) =>
+    (OrderBuilder()..update(updates)).build();
+
+class OrderBuilder {
+  Product? product;
+
+  void update(void Function(OrderBuilder b) updates) => updates(this);
+  Order build() => Order(
+        product: product!,
+      );
+  void replace(Order other) {
+    product = other.product;
+  }
+}
 
 class _OrderChanges {
   _OrderChanges._(Order dc) : product = dc.product;

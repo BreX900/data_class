@@ -10,17 +10,18 @@ import 'package:source_gen/source_gen.dart';
 
 class NameSpec {
   final String name;
-  final String fullJoinedTypes;
-  final String joinedTypes;
+  final List<String> types;
+  final List<String> fullTypes;
 
   NameSpec({
     required this.name,
-    required this.fullJoinedTypes,
-    required this.joinedTypes,
+    required this.fullTypes,
+    required this.types,
   });
 
+  late final String fullJoinedTypes = ClassSpec.t(fullTypes);
   late final String fullTypedName = '$name$fullJoinedTypes';
-  late final String typedName = '$name$joinedTypes';
+  late final String typedName = '$name${ClassSpec.t(types)}';
 }
 
 class ClassSpec {
@@ -30,6 +31,7 @@ class ClassSpec {
   final bool stringify;
   final StringifyType stringifyType;
   final bool stringifyIfNull;
+  final bool buildable;
   final bool copyable;
   final bool changeable;
   final bool changesVisible;
@@ -41,6 +43,7 @@ class ClassSpec {
     required this.element,
     required this.types,
     required this.comparable,
+    required this.buildable,
     required this.copyable,
     required this.stringify,
     required this.stringifyType,
@@ -55,28 +58,34 @@ class ClassSpec {
   late final selfTypes =
       element.typeParameters.map((e) => e.getDisplayString(withNullability: true));
 
-  late final String _fullJoinedTypes =
-      t(element.typeParameters.map((e) => e.getDisplayString(withNullability: true)).join(', '));
-  late final String _joinedTypes = t(element.typeParameters.map((e) => e.displayName).join(', '));
+  late final List<String> _fullJoinedTypes =
+      element.typeParameters.map((e) => e.getDisplayString(withNullability: true)).toList();
+  late final List<String> _types = element.typeParameters.map((e) => e.displayName).toList();
 
-  static String t(String t) => t.isEmpty ? '' : '<$t>';
+  static String t(Iterable<String> t) => t.isEmpty ? '' : '<${t.join(', ')}>';
 
   late final NameSpec self = NameSpec(
     name: element.name,
-    fullJoinedTypes: _fullJoinedTypes,
-    joinedTypes: _joinedTypes,
+    fullTypes: _fullJoinedTypes,
+    types: _types,
   );
 
   late final NameSpec mixin = NameSpec(
     name: '_\$${element.name}',
-    fullJoinedTypes: _fullJoinedTypes,
-    joinedTypes: _joinedTypes,
+    fullTypes: _fullJoinedTypes,
+    types: _types,
   );
 
   late final NameSpec changes = NameSpec(
     name: '${changesVisible ? '' : '_'}${element.name}Changes',
-    fullJoinedTypes: _fullJoinedTypes,
-    joinedTypes: _joinedTypes,
+    fullTypes: _fullJoinedTypes,
+    types: _types,
+  );
+
+  late final NameSpec builder = NameSpec(
+    name: '${element.name}Builder',
+    fullTypes: _fullJoinedTypes,
+    types: _types,
   );
 
   factory ClassSpec.from(Config config, ClassElement element, ConstantReader annotation) {
@@ -87,6 +96,7 @@ class ClassSpec {
       stringify: annotation.peek('stringify')?.boolValue ?? config.stringify,
       stringifyType: config.stringifyType,
       stringifyIfNull: config.stringifyIfNull,
+      buildable: annotation.peek('buildable')?.boolValue ?? config.buildable,
       copyable: annotation.peek('copyable')?.boolValue ?? config.copyable,
       changeable: annotation.peek('changeable')?.boolValue ?? config.changeable,
       changesVisible: annotation.peek('changesVisible')?.boolValue ?? config.changesVisible,
