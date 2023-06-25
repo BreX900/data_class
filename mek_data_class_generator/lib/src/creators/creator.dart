@@ -12,7 +12,7 @@ abstract class Creator {
 
   Iterable<Method> creteMixinMethods() sync* {}
 
-  Iterable<Class> createLibraryClasses() sync* {}
+  Iterable<Spec> createLibraryClasses() sync* {}
 
   String visibility(bool isVisible) => isVisible ? '' : '_';
 }

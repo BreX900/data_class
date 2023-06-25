@@ -11,6 +11,7 @@ class Config {
   final bool stringify;
   final StringifyType stringifyType;
   final bool stringifyIfNull;
+  final bool buildable;
   final bool copyable;
   final bool changeable;
   final bool changesVisible;
@@ -23,6 +24,7 @@ class Config {
     this.stringify = true,
     this.stringifyType = StringifyType.params,
     this.stringifyIfNull = true,
+    this.buildable = false,
     this.copyable = false,
     this.changeable = false,
     this.changesVisible = false,

@@ -3,7 +3,7 @@ import 'package:mek_data_class/mek_data_class.dart';
 
 part 'basic_example.g.dart';
 
-@DataClass(changeable: true)
+@DataClass(buildable: true, changeable: true)
 class Order with _$Order {
   @DataField(equality: ProductEquality())
   final Product product;
@@ -11,6 +11,8 @@ class Order with _$Order {
   const Order({
     required this.product,
   });
+
+  factory Order.build(void Function(OrderBuilder b) updates) => _$buildOrder(updates);
 }
 
 @DataClass(changeable: true, copyable: true)

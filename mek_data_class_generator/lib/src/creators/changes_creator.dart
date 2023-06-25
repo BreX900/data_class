@@ -74,11 +74,12 @@ class ChangesCreator extends Creator {
         superElement,
         ConstantReader(dataClassChecker.firstAnnotationOf(superType.element)),
       );
-
-      final superTypes = ClassSpec.t(superType.typeArguments.join(', '));
-      final superName = '${visibility(superSpec.changesVisible)}${superType.element.name}Changes';
-      implement = '$superName$superTypes';
-      superFieldsName = superElement.fields.where(isDataClassField).map((e) => e.name).toList();
+      if (superSpec.changeable) {
+        final superTypes = ClassSpec.t(superType.typeArguments.map((e) => '$e'));
+        final superName = '${visibility(superSpec.changesVisible)}${superType.element.name}Changes';
+        implement = '$superName$superTypes';
+        superFieldsName = superElement.fields.where(isDataClassField).map((e) => e.name).toList();
+      }
     }
 
     final isAbstract = classSpec.element.isAbstract;

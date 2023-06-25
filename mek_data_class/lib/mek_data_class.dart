@@ -25,6 +25,10 @@ class DataClass {
   /// Inserting `stringify_type: fields` in the yaml file, the toString method will use all the fields
   final bool? stringify;
 
+  /// Create a build class function and `*Builder` class.
+  /// Default: `false`
+  final bool? buildable;
+
   /// Adds the `copyWith` method to the class.
   /// Default: `false`
   final bool? copyable;
@@ -55,6 +59,7 @@ class DataClass {
     this.comparable,
     this.stringify,
     this.copyable,
+    this.buildable,
     this.changeable,
     this.changesVisible,
     this.createFieldsClass,

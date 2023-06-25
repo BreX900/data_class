@@ -6,6 +6,7 @@ import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
+import 'package:mek_data_class_generator/src/creators/builder_creator.dart';
 import 'package:mek_data_class_generator/src/creators/changes_creator.dart';
 import 'package:mek_data_class_generator/src/creators/copy_with_creator.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
@@ -56,7 +57,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
     var needMixinMethodSelf = false;
     var mixinMethods = Iterable<Method>.empty();
-    var libraryClasses = Iterable<Class>.empty();
+    var libraryClasses = Iterable<Spec>.empty();
 
     for (final creator in _instanceCreators(classSpec, fieldSpecs)) {
       if (!creator.available) continue;
@@ -88,6 +89,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
   }
 
   Iterable<Creator> _instanceCreators(ClassSpec classSpec, List<FieldSpec> fieldSpecs) sync* {
+    yield BuilderCreator(config: config, classSpec: classSpec, fieldSpecs: fieldSpecs);
     yield EqualityCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);
     yield ToStringCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);
     yield CopyWithCreator(classSpec: classSpec, fieldSpecs: fieldSpecs);

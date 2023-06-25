@@ -1,3 +1,6 @@
+## 1.5.0
+- feat: Added support for `*Builder`. You can now build your class via a Builder
+
 ## 1.4.0
 - feat: support change `*Fields` class visibility by `DataClass.fieldsClassVisible` param
 - fix: suppress `unused_element` lint when `*Fields` class is private

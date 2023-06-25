@@ -11,7 +11,7 @@ Auto generation of:
 - [x] pretty `toString` method
 - [x] `copyWith` method
 - [x] `*Changes` class and `change`, `toChanges` methods in data class
-- [ ] `*Builder` class and `rebuild`, `toBuilder` methods in data class
+- [x] `*Builder` class to build your class
 
 ## Install package
 
@@ -154,6 +154,23 @@ Build the `DataClass` from `*Changes` class
 Product product = productChanges.build();
 ```
 
+### *Builder
+Build your class using a builder.
+It is not safe to construct a class using a builder but it allows you to complete the construction whenever you want.
+```dart
+@DataClass(buildable: true)
+class Product with _$Product {
+  final int id;
+  const Product({required this.id});
+  factory Product.build(void Function(ProductBuilder b) updates) => 
+          (ProductBuilder().update(updates)).build();
+}
+
+final builder = ProductBuilder();
+builder.id = 12;
+final product = builder.build();
+```
+
 ### DataClassFields
 Generate a class that contains the names of the fields of the Data Class. `@DataClass(createFieldsClass)`
 Example:
@@ -194,6 +211,7 @@ targets:
           stringify: true
           stringify_type: params | fields
           stringify_if_null: true
+          buildable: false
           copyable: false
           changeable: false
           changes_visible: false

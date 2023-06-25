@@ -18,6 +18,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
             'stringify',
             'stringify_type',
             'stringify_if_null',
+            'buildable',
             'copyable',
             'changeable',
             'changes_visible',
@@ -36,6 +37,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
                   StringifyType.params),
           stringifyIfNull:
               $checkedConvert('stringify_if_null', (v) => v as bool? ?? true),
+          buildable: $checkedConvert('buildable', (v) => v as bool? ?? false),
           copyable: $checkedConvert('copyable', (v) => v as bool? ?? false),
           changeable: $checkedConvert('changeable', (v) => v as bool? ?? false),
           changesVisible:
