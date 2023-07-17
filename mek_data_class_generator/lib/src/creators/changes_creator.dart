@@ -11,9 +11,9 @@ class ChangesCreator extends Creator {
 
   ChangesCreator({
     required this.config,
-    required ClassSpec classSpec,
-    required List<FieldSpec> fieldSpecs,
-  }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    required super.classSpec,
+    required super.fieldSpecs,
+  });
 
   late final List<FieldSpec> _paramsSpecs = fieldSpecs.where((e) => e.isParam).toList();
 

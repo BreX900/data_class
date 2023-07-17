@@ -12,7 +12,8 @@ class Order with _$Order {
     required this.product,
   });
 
-  factory Order.build(void Function(OrderBuilder b) updates) => _$buildOrder(updates);
+  factory Order.build(void Function(OrderBuilder b) updates) =>
+      (OrderBuilder()..update(updates)).build();
 }
 
 @DataClass(changeable: true, copyable: true)

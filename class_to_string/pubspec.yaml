@@ -11,5 +11,5 @@ scripts:
   publish: dart pub publish
 
 dev_dependencies:
-  mek_lints: ^1.0.0
+  mek_lints: ^2.0.0
   test: ^1.16.0

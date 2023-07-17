@@ -1,3 +1,7 @@
+## 1.5.1
+- fix: Fixes prefer_final_locals lint on hashcode method
+- chore: Update analyzer dependency
+
 ## 1.5.0
 - feat: Added support for `*Builder`. You can now build your class via a Builder
 

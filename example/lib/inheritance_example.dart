@@ -22,9 +22,9 @@ class Dog extends Animal with Action, _$Dog {
   final String getterField;
 
   Dog({
-    required String finalField,
+    required super.finalField,
     required this.getterField,
-  }) : super(finalField: finalField);
+  });
 
   @override
   final String name = 'Dog';
@@ -39,9 +39,9 @@ class Cat extends Animal with Action, Description, _$Cat {
   final String getterField;
 
   Cat({
-    required String finalField,
+    required super.finalField,
     required this.getterField,
-  }) : super(finalField: finalField);
+  });
 
   @override
   final String name = 'Cat';

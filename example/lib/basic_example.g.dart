@@ -17,20 +17,16 @@ mixin _$Order {
   @override
   int get hashCode {
     var hashCode = 0;
-    hashCode =
-        $hashCombine(hashCode, const ProductEquality().hash(_self.product));
+    hashCode = $hashCombine(hashCode, const ProductEquality().hash(_self.product));
     return $hashFinish(hashCode);
   }
 
   @override
-  String toString() =>
-      (ClassToString('Order')..add('product', _self.product)).toString();
+  String toString() => (ClassToString('Order')..add('product', _self.product)).toString();
   Order change(void Function(_OrderChanges c) updates) =>
       (_OrderChanges._(_self)..update(updates)).build();
   _OrderChanges toChanges() => _OrderChanges._(_self);
 }
-Order _$buildOrder(void Function(OrderBuilder b) updates) =>
-    (OrderBuilder()..update(updates)).build();
 
 class OrderBuilder {
   Product? product;
@@ -115,10 +111,10 @@ class _ProductChanges {
 mixin _$EmptyClass {
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EmptyClass && runtimeType == other.runtimeType;
+      identical(this, other) || other is EmptyClass && runtimeType == other.runtimeType;
   @override
   int get hashCode {
+    // ignore: prefer_final_locals
     var hashCode = 0;
     return $hashFinish(hashCode);
   }

@@ -5,9 +5,9 @@ import 'package:mek_data_class_generator/src/specs.dart';
 
 class ToStringCreator extends Creator {
   ToStringCreator({
-    required ClassSpec classSpec,
-    required List<FieldSpec> fieldSpecs,
-  }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    required super.classSpec,
+    required super.fieldSpecs,
+  });
 
   @override
   bool get available => classSpec.stringify;
