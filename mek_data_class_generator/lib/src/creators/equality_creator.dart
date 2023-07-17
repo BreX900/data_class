@@ -11,9 +11,9 @@ class EqualityCreator extends Creator {
   static final _equalityChecker = TypeChecker.fromRuntime(Equality);
 
   EqualityCreator({
-    required ClassSpec classSpec,
-    required List<FieldSpec> fieldSpecs,
-  }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    required super.classSpec,
+    required super.fieldSpecs,
+  });
 
   @override
   bool get available => classSpec.comparable;
@@ -123,7 +123,7 @@ class EqualityCreator extends Creator {
   Method _createMixinMethodHashcode() {
     final hashVar = 'hashCode';
 
-    final body = StringBuffer('var $hashVar = 0;\n');
+    final body = StringBuffer('${_fieldSpecs.isEmpty ? 'final' : 'var'} $hashVar = 0;\n');
     body.writeAll(_fieldSpecs.map((field) {
       return '$hashVar = \$hashCombine($hashVar, ${_codeEqualityHashcode(field)});';
     }));

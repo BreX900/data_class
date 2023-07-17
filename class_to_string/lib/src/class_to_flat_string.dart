@@ -34,7 +34,7 @@ class ClassToFlatString extends ClassToStringBase {
   @override
   String toString() {
     _result!.write(')');
-    var stringResult = _result.toString();
+    final stringResult = _result.toString();
     _result = null;
     return stringResult;
   }

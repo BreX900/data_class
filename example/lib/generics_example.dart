@@ -16,14 +16,14 @@ final class PaginatedResponse<T extends Object> extends Response<T> with _$Pagin
   final int total;
 
   const PaginatedResponse({
-    required T data,
+    required super.data,
     required this.total,
-  }) : super(data: data);
+  });
 }
 
 @DataClass(changeable: true, copyable: true)
 base class ListResponse<T> extends Response<List<T>> with _$ListResponse<T> {
   ListResponse({
-    required List<T> data,
-  }) : super(data: data);
+    required super.data,
+  });
 }

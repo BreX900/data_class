@@ -14,9 +14,9 @@ class FieldsClassCreator extends Creator {
 
   FieldsClassCreator({
     required this.config,
-    required ClassSpec classSpec,
-    required List<FieldSpec> fieldSpecs,
-  }) : super(classSpec: classSpec, fieldSpecs: fieldSpecs);
+    required super.classSpec,
+    required super.fieldSpecs,
+  });
 
   late final List<FieldSpec> _paramsSpecs = fieldSpecs.where((e) => e.isParam).toList();
 
@@ -100,6 +100,6 @@ class FieldsClassCreator extends Creator {
           ..type = Refs.string
           ..name = 'key'))
         ..lambda = true
-        ..body = Code("_\$${classSpec.self.name}FieldMap[key]!"))));
+        ..body = Code('_\$${classSpec.self.name}FieldMap[key]!'))));
   }
 }
