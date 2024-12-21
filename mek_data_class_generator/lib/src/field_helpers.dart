@@ -11,8 +11,6 @@ class _FieldSet implements Comparable<_FieldSet> {
   final FieldElement field;
   final FieldElement sortField;
 
-  _FieldSet._(this.field, this.sortField) : assert(field.name == sortField.name);
-
   factory _FieldSet(FieldElement? classField, FieldElement? superField) {
     // At least one of these will != null, perhaps both.
     final fields = [classField, superField].whereType<FieldElement>().toList();
@@ -27,23 +25,25 @@ class _FieldSet implements Comparable<_FieldSet> {
     return _FieldSet._(fieldHasJsonKey, sortField);
   }
 
+  _FieldSet._(this.field, this.sortField) : assert(field.name == sortField.name);
+
   @override
   int compareTo(_FieldSet other) => _sortByLocation(sortField, other.sortField);
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
-    final checkerA = TypeChecker.fromStatic((a.enclosingElement as InterfaceElement).thisType);
+    final checkerA = TypeChecker.fromStatic((a.enclosingElement3 as InterfaceElement).thisType);
 
-    if (!checkerA.isExactly(b.enclosingElement)) {
+    if (!checkerA.isExactly(b.enclosingElement3)) {
       // in this case, you want to prioritize the enclosingElement that is more
       // "super".
 
-      if (checkerA.isAssignableFrom(b.enclosingElement)) {
+      if (checkerA.isAssignableFrom(b.enclosingElement3)) {
         return -1;
       }
 
-      final checkerB = TypeChecker.fromStatic((b.enclosingElement as InterfaceElement).thisType);
+      final checkerB = TypeChecker.fromStatic((b.enclosingElement3 as InterfaceElement).thisType);
 
-      if (checkerB.isAssignableFrom(a.enclosingElement)) {
+      if (checkerB.isAssignableFrom(a.enclosingElement3)) {
         return 1;
       }
     }
@@ -75,13 +75,13 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
 
   for (final v in manager.getInheritedConcreteMap2(element).values) {
     assert(v is! FieldElement);
-    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement3)) {
       continue;
     }
 
     if (v is PropertyAccessorElement && v.isGetter) {
-      assert(v.variable is FieldElement);
-      final variable = v.variable as FieldElement;
+      assert(v.variable2 is FieldElement);
+      final variable = v.variable2! as FieldElement;
       assert(!inheritedFields.containsKey(variable.name));
       inheritedFields[variable.name] = variable;
     }

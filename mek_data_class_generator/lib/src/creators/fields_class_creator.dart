@@ -8,7 +8,7 @@ import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
 class FieldsClassCreator extends Creator {
-  static final _jsonSerializableType = TypeChecker.fromRuntime(JsonSerializable);
+  static const _jsonSerializableType = TypeChecker.fromRuntime(JsonSerializable);
 
   final Config config;
 
@@ -29,7 +29,7 @@ class FieldsClassCreator extends Creator {
   }
 
   String _createFieldPath(FieldSpec fieldSpec, bool hasFieldMap) {
-    return hasFieldMap ? '\$_path\${_get(\'${fieldSpec.name}\')}' : '\${_path}${fieldSpec.name}';
+    return hasFieldMap ? "\$_path\${_get('${fieldSpec.name}')}" : '\${_path}${fieldSpec.name}';
   }
 
   Method? _createMethodField(FieldSpec fieldSpec, String fieldPath) {
@@ -85,7 +85,7 @@ class FieldsClassCreator extends Creator {
         ..optionalParameters.add(Parameter((b) => b
           ..toThis = true
           ..name = '_path'
-          ..defaultTo = Code("''")))))
+          ..defaultTo = const Code("''")))))
       ..methods.addAll(methodsFields)
       ..methods.add(Method((b) => b
         ..annotations.add(Annotations.override)

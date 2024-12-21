@@ -115,7 +115,7 @@ class BuilderCreator extends Creator {
         ..type = Reference('void Function(${classSpec.builder.typedName} b)')
         ..name = 'updates'))
       ..lambda = !isAbstract
-      ..returnIf(!isAbstract)?.body = Code('updates(this)'));
+      ..returnIf(!isAbstract)?.body = const Code('updates(this)'));
 
     Code? methodBuildCode;
     if (!isAbstract) {

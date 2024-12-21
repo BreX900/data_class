@@ -112,7 +112,7 @@ class ChangesCreator extends Creator {
         ..type = Reference('void Function(${classSpec.changes.typedName} c)')
         ..name = 'updates'))
       ..lambda = !isAbstract
-      ..returnIf(!isAbstract)?.body = Code('updates(this)'));
+      ..returnIf(!isAbstract)?.body = const Code('updates(this)'));
 
     Code? methodBuildCode;
     if (!isAbstract) {

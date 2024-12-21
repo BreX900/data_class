@@ -56,10 +56,10 @@ class ClassSpec {
   });
 
   late final selfTypes =
-      element.typeParameters.map((e) => e.getDisplayString(withNullability: true));
+      element.typeParameters.map((e) => e.getDisplayString()); // TODO: withNullability: true
 
-  late final List<String> _fullJoinedTypes =
-      element.typeParameters.map((e) => e.getDisplayString(withNullability: true)).toList();
+  late final List<String> _fullJoinedTypes = // TODO: withNullability: true
+      element.typeParameters.map((e) => e.getDisplayString()).toList();
   late final List<String> _types = element.typeParameters.map((e) => e.displayName).toList();
 
   static String t(Iterable<String> t) => t.isEmpty ? '' : '<${t.join(', ')}>';
@@ -130,7 +130,7 @@ class FieldSpec {
   final String? stringifier;
   final bool updatable;
 
-  late final bool isParam = _isParam(element.enclosingElement as InterfaceElement, element);
+  late final bool isParam = _isParam(element.enclosingElement3 as InterfaceElement, element);
 
   FieldSpec({
     required this.parsedLibrary,
@@ -145,7 +145,6 @@ class FieldSpec {
 
   factory FieldSpec.from(
     ParsedLibraryResult parsedLibrary,
-    ClassSpec classSpec,
     FieldElement element,
   ) {
     final annotation = dataFieldAnnotation(element);
@@ -163,7 +162,8 @@ class FieldSpec {
   }
 
   String getType(Nullability nullability) {
-    final prefixedElements = element.library.libraryImports.expand<Element>((e) {
+    final prefixedElements =
+        element.library.definingCompilationUnit.libraryImports.expand<Element>((e) {
       if (e.prefix == null) return [];
       return e.namespace.definedNames.values;
     });
@@ -189,10 +189,11 @@ class FieldSpec {
       final nullable = type.nullabilitySuffix != NullabilitySuffix.none;
       return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${nullable ? '?' : ''}';
     }
-    return type.getDisplayString(withNullability: true);
+    // TODO: withNullability: true
+    return type.getDisplayString();
   }
 
-  /// The [builderElementType] plus any import prefix.
+  /// The builderElementType plus any import prefix.
   static String _getTypeWithPrefix(ParsedLibraryResult parsedLibrary, FieldElement element) {
     // final parsedLibrary = parsedLibraryResult(classSpec.element.library);
     // If it's a real field, it's a [VariableDeclaration] which is guaranteed
@@ -200,7 +201,7 @@ class FieldSpec {
     final fieldDeclaration = parsedLibrary.getElementDeclaration(element);
     // print(fieldDeclaration != null);
     if (fieldDeclaration != null) {
-      return (((fieldDeclaration.node as VariableDeclaration).parent) as VariableDeclarationList)
+      return ((fieldDeclaration.node as VariableDeclaration).parent! as VariableDeclarationList)
               .type
               ?.toSource() ??
           'dynamic';

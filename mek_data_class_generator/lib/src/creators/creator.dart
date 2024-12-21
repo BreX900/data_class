@@ -30,5 +30,5 @@ abstract class Refs {
 }
 
 abstract class Annotations {
-  static final Expression override = CodeExpression(Code('override'));
+  static const Expression override = CodeExpression(Code('override'));
 }

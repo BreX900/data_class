@@ -8,7 +8,7 @@ import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
 class EqualityCreator extends Creator {
-  static final _equalityChecker = TypeChecker.fromRuntime(Equality);
+  static const _equalityChecker = TypeChecker.fromRuntime(Equality);
 
   EqualityCreator({
     required super.classSpec,
@@ -31,7 +31,7 @@ class EqualityCreator extends Creator {
 
   String? _codeEqualityClasses(DartType type) {
     for (final equality in classSpec.equalities) {
-      final extendedEqualityClassElement = equality.type!.element as ClassElement;
+      final extendedEqualityClassElement = equality.type!.element! as ClassElement;
       final equalityClassElement =
           extendedEqualityClassElement.allSupertypes.singleWhereOrNull((e) {
         return _equalityChecker.isExactly(e.element);
@@ -80,11 +80,11 @@ class EqualityCreator extends Creator {
     if (externalEquality != null) return 'const $externalEquality';
 
     if (type.isDartCoreMap) {
-      return '\$mapEquality';
+      return r'$mapEquality';
     } else if (type.isDartCoreSet) {
-      return '\$setEquality';
+      return r'$setEquality';
     } else if (type.isDartCoreList) {
-      return '\$listEquality';
+      return r'$listEquality';
     }
     return null;
   }
@@ -121,7 +121,7 @@ class EqualityCreator extends Creator {
   }
 
   Method _createMixinMethodHashcode() {
-    final hashVar = 'hashCode';
+    const hashVar = 'hashCode';
 
     final body = StringBuffer('${_fieldSpecs.isEmpty ? 'final' : 'var'} $hashVar = 0;\n');
     body.writeAll(_fieldSpecs.map((field) {

@@ -17,12 +17,14 @@ mixin _$Order {
   @override
   int get hashCode {
     var hashCode = 0;
-    hashCode = $hashCombine(hashCode, const ProductEquality().hash(_self.product));
+    hashCode =
+        $hashCombine(hashCode, const ProductEquality().hash(_self.product));
     return $hashFinish(hashCode);
   }
 
   @override
-  String toString() => (ClassToString('Order')..add('product', _self.product)).toString();
+  String toString() =>
+      (ClassToString('Order')..add('product', _self.product)).toString();
   Order change(void Function(_OrderChanges c) updates) =>
       (_OrderChanges._(_self)..update(updates)).build();
   _OrderChanges toChanges() => _OrderChanges._(_self);
@@ -32,9 +34,11 @@ class OrderBuilder {
   Product? product;
 
   void update(void Function(OrderBuilder b) updates) => updates(this);
+
   Order build() => Order(
         product: product!,
       );
+
   void replace(Order other) {
     product = other.product;
   }
@@ -46,6 +50,7 @@ class _OrderChanges {
   Product product;
 
   void update(void Function(_OrderChanges c) updates) => updates(this);
+
   Order build() => Order(
         product: product,
       );
@@ -101,6 +106,7 @@ class _ProductChanges {
   Map<String, int?>? extraData;
 
   void update(void Function(_ProductChanges c) updates) => updates(this);
+
   Product build() => Product(
         id,
         _dc.title,
@@ -111,11 +117,11 @@ class _ProductChanges {
 mixin _$EmptyClass {
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is EmptyClass && runtimeType == other.runtimeType;
+      identical(this, other) ||
+      other is EmptyClass && runtimeType == other.runtimeType;
   @override
   int get hashCode {
-    // ignore: prefer_final_locals
-    var hashCode = 0;
+    final hashCode = 0;
     return $hashFinish(hashCode);
   }
 

@@ -91,6 +91,7 @@ class _PaginatedResponseChanges<T extends Object>
   @override
   void update(void Function(_PaginatedResponseChanges<T> c) updates) =>
       updates(this);
+
   @override
   PaginatedResponse<T> build() => PaginatedResponse(
         data: data,
@@ -136,6 +137,7 @@ class _ListResponseChanges<T> implements _ResponseChanges<List<T>> {
   @override
   void update(void Function(_ListResponseChanges<T> c) updates) =>
       updates(this);
+
   @override
   ListResponse<T> build() => ListResponse(
         data: data,

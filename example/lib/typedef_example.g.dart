@@ -69,6 +69,7 @@ class _ExtraChanges {
   be.Product product2;
 
   void update(void Function(_ExtraChanges c) updates) => updates(this);
+
   Extra build() => Extra(
         jsonMap: jsonMap,
         nullableJsonMap: nullableJsonMap,

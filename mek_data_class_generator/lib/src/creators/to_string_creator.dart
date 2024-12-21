@@ -20,7 +20,6 @@ class ToStringCreator extends Creator {
     switch (classSpec.stringifyType) {
       case StringifyType.params:
         fieldSpecs = fieldSpecs.where((field) => field.isParam).toList();
-        break;
       case StringifyType.fields:
     }
     return fieldSpecs;
@@ -39,7 +38,7 @@ class ToStringCreator extends Creator {
       final variable = '_self.${field.name}';
       final stringifier = field.stringifier;
       final stringifyVariable = stringifier != null ? '$stringifier($variable)' : variable;
-      return '..$addType(\'${field.name}\', $stringifyVariable)';
+      return "..$addType('${field.name}', $stringifyVariable)";
     });
 
     final classToString = "ClassToString('${classSpec.self.name}'$types)${fields.join()}";

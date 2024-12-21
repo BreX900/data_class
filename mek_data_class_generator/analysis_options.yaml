@@ -1,1 +1,5 @@
 include: package:mek_lints/dart.yaml
+
+analyzer:
+  errors:
+    avoid_positional_boolean_parameters: false

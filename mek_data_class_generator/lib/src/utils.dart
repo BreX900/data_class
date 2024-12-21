@@ -16,7 +16,7 @@ ConstantReader dataFieldAnnotation(FieldElement element) =>
 /// Returns `true` if [element] is annotated with [DataField].
 bool hasDataFieldAnnotation(FieldElement element) => _dataFieldAnnotation(element) != null;
 
-final dataClassChecker = TypeChecker.fromRuntime(DataClass);
+const dataClassChecker = TypeChecker.fromRuntime(DataClass);
 
 ConstantReader? dataClassAnnotation(ClassElement element) {
   final dartObject = dataClassChecker.firstAnnotationOf(element, throwOnUnresolved: false);
@@ -24,7 +24,7 @@ ConstantReader? dataClassAnnotation(ClassElement element) {
 }
 
 InterfaceType? findSuperDataClass(ClassElement element) {
-  InterfaceType? superType = element.supertype;
+  var superType = element.supertype;
   while (superType != null) {
     if (dataClassChecker.hasAnnotationOf(superType.element)) {
       return superType;

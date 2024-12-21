@@ -32,6 +32,7 @@ class FatherFields {
   final String _path;
 
   ChildFields get child => ChildFields('${_path}child.');
+
   @override
   String toString() => _path.isEmpty ? 'FatherFields()' : _path;
 }
@@ -63,8 +64,10 @@ class _MotherFields {
   final String _path;
 
   ChildFields get child => ChildFields('$_path${_get('child')}.');
+
   @override
   String toString() => _path.isEmpty ? '_MotherFields()' : _path;
+
   String _get(String key) => _$MotherFieldMap[key]!;
 }
 
@@ -93,8 +96,10 @@ class ChildFields {
   final String _path;
 
   String get id => '$_path${_get('id')}';
+
   @override
   String toString() => _path.isEmpty ? 'ChildFields()' : _path;
+
   String _get(String key) => _$ChildFieldMap[key]!;
 }
 
@@ -115,7 +120,7 @@ Map<String, dynamic> _$MotherToJson(Mother instance) => <String, dynamic>{
     };
 
 Child _$ChildFromJson(Map<String, dynamic> json) => Child(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
     );
 
 const _$ChildFieldMap = <String, String>{

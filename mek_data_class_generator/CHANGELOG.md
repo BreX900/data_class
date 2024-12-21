@@ -1,3 +1,14 @@
+
+## 2.0.0
+- refactor!: renamed builder on `build.yaml` file from `mek_data_class_generator:data_class` to `mek_data_class_generator`
+- refactor!: removed support of `page_width` from `build.yaml` runner options. Please use `formatter: { page_width: 100 }`
+  in `analysis_options.yaml` file
+- build: bumped `analyzer` dependency to `>=6.9.0 <8.0.0`
+- build: bumped `build` dependency to `^2.4.1`
+- build: bumped `dart_style` dependency to `^3.0.0`
+- build: bumped `code_builder` dependency to `^4.5.0`
+
+
 ## 1.5.1
 - fix: Fixes prefer_final_locals lint on hashcode method
 - chore: Update analyzer dependency

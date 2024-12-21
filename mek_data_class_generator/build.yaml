@@ -17,7 +17,7 @@ targets:
           field_rename: snake
 
 builders:
-  data_class:
+  mek_data_class_generator:
     import: "package:mek_data_class_generator/builder.dart"
     builder_factories: ["dataClass"]
     build_extensions: {".dart": [".data_class.g.part"]}

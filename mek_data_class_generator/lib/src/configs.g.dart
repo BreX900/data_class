@@ -27,7 +27,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
           ],
         );
         final val = Config(
-          pageWidth: $checkedConvert('page_width', (v) => v as int? ?? 80),
+          pageWidth:
+              $checkedConvert('page_width', (v) => (v as num?)?.toInt() ?? 80),
           comparable: $checkedConvert('comparable', (v) => v as bool? ?? true),
           stringify: $checkedConvert('stringify', (v) => v as bool? ?? true),
           stringifyType: $checkedConvert(

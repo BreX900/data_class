@@ -44,7 +44,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
     final classSpec = ClassSpec.from(config, element, annotation);
     final fieldSpecs = fieldElements.map((element) {
-      return FieldSpec.from(parsedLibrary, classSpec, element);
+      return FieldSpec.from(parsedLibrary, element);
     }).toList();
 
     final missingFields = constructorElement.parameters.where((param) {
@@ -52,12 +52,15 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     }).toList();
 
     if (missingFields.isNotEmpty) {
-      throw 'Missing constructor parameters declaration for ${missingFields.join(', ')}.';
+      throw InvalidGenerationSource(
+        'Missing constructor parameters declaration for ${missingFields.join(', ')}.',
+        element: constructorElement,
+      );
     }
 
     var needMixinMethodSelf = false;
-    var mixinMethods = Iterable<Method>.empty();
-    var libraryClasses = Iterable<Spec>.empty();
+    var mixinMethods = const Iterable<Method>.empty();
+    var libraryClasses = const Iterable<Spec>.empty();
 
     for (final creator in _instanceCreators(classSpec, fieldSpecs)) {
       if (!creator.available) continue;

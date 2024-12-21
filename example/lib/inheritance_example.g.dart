@@ -87,6 +87,7 @@ class _DogChanges implements _AnimalChanges {
 
   @override
   void update(void Function(_DogChanges c) updates) => updates(this);
+
   @override
   Dog build() => Dog(
         finalField: finalField,
@@ -143,6 +144,7 @@ class _CatChanges implements _AnimalChanges {
 
   @override
   void update(void Function(_CatChanges c) updates) => updates(this);
+
   @override
   Cat build() => Cat(
         finalField: finalField,

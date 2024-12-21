@@ -193,7 +193,6 @@ See the docs of the DataClass class for more information
 
 | Key                  | Default  | Description                                                                                        |
 |----------------------|----------|----------------------------------------------------------------------------------------------------|
-| page_width           | `80`     | adjust the page formatting width of the generated dart code                                        |
 | stringify_if_null    | `true`   | if set to `false`, null values will not be included in the toString                                |
 | stringify_type       | `params` | if set to `fields`, fields of a class that are not passed to the constructor will also be included |
 | fields_class_visible | `true`   | if set to `false`, the fields classes is private                                                   |
@@ -203,7 +202,7 @@ See the docs of the DataClass class for more information
 targets:
   $default:
     builders:
-      mek_data_class_generator:data_class:
+      mek_data_class_generator:
         enabled: true
         options:
           page_width: 80
