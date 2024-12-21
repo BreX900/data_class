@@ -7,10 +7,17 @@ part 'basic_example.g.dart';
 class Order with _$Order {
   @DataField(equality: ProductEquality())
   final Product product;
+  final bool isSent;
+  final bool? isNew;
 
-  const Order({
+  Order({
     required this.product,
-  });
+    required bool? isSent,
+    required this.isNew,
+  }) : isSent = isSent ?? false;
+
+  bool get isSentAndNew => isSent && (isNew ?? true);
+  late final bool isSentOrNew = isSent || (isNew ?? true);
 
   factory Order.build(void Function(OrderBuilder b) updates) =>
       (OrderBuilder()..update(updates)).build();

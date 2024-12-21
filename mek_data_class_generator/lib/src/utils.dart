@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:source_gen/source_gen.dart';
@@ -42,4 +43,5 @@ bool isDataClassField(FieldElement field) {
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() => element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+  bool get isNullable => nullabilitySuffix != NullabilitySuffix.none;
 }

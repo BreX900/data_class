@@ -13,18 +13,25 @@ mixin _$Order {
       identical(this, other) ||
       other is Order &&
           runtimeType == other.runtimeType &&
-          const ProductEquality().equals(_self.product, other.product);
+          const ProductEquality().equals(_self.product, other.product) &&
+          _self.isSent == other.isSent &&
+          _self.isNew == other.isNew;
   @override
   int get hashCode {
     var hashCode = 0;
     hashCode =
         $hashCombine(hashCode, const ProductEquality().hash(_self.product));
+    hashCode = $hashCombine(hashCode, _self.isSent.hashCode);
+    hashCode = $hashCombine(hashCode, _self.isNew.hashCode);
     return $hashFinish(hashCode);
   }
 
   @override
-  String toString() =>
-      (ClassToString('Order')..add('product', _self.product)).toString();
+  String toString() => (ClassToString('Order')
+        ..add('product', _self.product)
+        ..add('isSent', _self.isSent)
+        ..add('isNew', _self.isNew))
+      .toString();
   Order change(void Function(_OrderChanges c) updates) =>
       (_OrderChanges._(_self)..update(updates)).build();
   _OrderChanges toChanges() => _OrderChanges._(_self);
@@ -33,26 +40,43 @@ mixin _$Order {
 class OrderBuilder {
   Product? product;
 
+  bool? isSent;
+
+  bool? isNew;
+
   void update(void Function(OrderBuilder b) updates) => updates(this);
 
   Order build() => Order(
         product: product!,
+        isSent: isSent,
+        isNew: isNew,
       );
 
   void replace(Order other) {
     product = other.product;
+    isSent = other.isSent;
+    isNew = other.isNew;
   }
 }
 
 class _OrderChanges {
-  _OrderChanges._(Order dc) : product = dc.product;
+  _OrderChanges._(Order dc)
+      : product = dc.product,
+        isSent = dc.isSent,
+        isNew = dc.isNew;
 
   Product product;
+
+  bool isSent;
+
+  bool? isNew;
 
   void update(void Function(_OrderChanges c) updates) => updates(this);
 
   Order build() => Order(
         product: product,
+        isSent: isSent,
+        isNew: isNew,
       );
 }
 

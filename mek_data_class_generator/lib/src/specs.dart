@@ -4,6 +4,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:collection/collection.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
@@ -55,10 +56,9 @@ class ClassSpec {
     required this.equalities,
   });
 
-  late final selfTypes =
-      element.typeParameters.map((e) => e.getDisplayString()); // TODO: withNullability: true
+  late final selfTypes = element.typeParameters.map((e) => e.getDisplayString());
 
-  late final List<String> _fullJoinedTypes = // TODO: withNullability: true
+  late final List<String> _fullJoinedTypes =
       element.typeParameters.map((e) => e.getDisplayString()).toList();
   late final List<String> _types = element.typeParameters.map((e) => e.displayName).toList();
 
@@ -121,6 +121,8 @@ enum Nullability { none, inherit, always }
 
 class FieldSpec {
   final ParsedLibraryResult parsedLibrary;
+
+  final ConstructorElement _constructorElement;
   final FieldElement element;
 
   final String name;
@@ -130,10 +132,12 @@ class FieldSpec {
   final String? stringifier;
   final bool updatable;
 
-  late final bool isParam = _isParam(element.enclosingElement3 as InterfaceElement, element);
+  late final bool isParam = _isParam(_constructorElement, element);
+  late final bool isParamNullable = _isParamNullable(_constructorElement, element);
 
   FieldSpec({
     required this.parsedLibrary,
+    required ConstructorElement constructorElement,
     required this.element,
     required this.name,
     required this.comparable,
@@ -141,16 +145,18 @@ class FieldSpec {
     required this.stringify,
     required this.stringifier,
     required this.updatable,
-  });
+  }) : _constructorElement = constructorElement;
 
   factory FieldSpec.from(
     ParsedLibraryResult parsedLibrary,
+    ConstructorElement constructorElement,
     FieldElement element,
   ) {
     final annotation = dataFieldAnnotation(element);
 
     return FieldSpec(
       parsedLibrary: parsedLibrary,
+      constructorElement: constructorElement,
       element: element,
       name: element.displayName,
       comparable: annotation.peek('comparable')?.boolValue ?? true,
@@ -189,7 +195,6 @@ class FieldSpec {
       final nullable = type.nullabilitySuffix != NullabilitySuffix.none;
       return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${nullable ? '?' : ''}';
     }
-    // TODO: withNullability: true
     return type.getDisplayString();
   }
 
@@ -214,12 +219,16 @@ class FieldSpec {
     }
   }
 
-  static bool _isParam(InterfaceElement classOrMixinElement, FieldElement element) {
+  static bool _isParam(ConstructorElement constructorElement, FieldElement element) {
     if (element.isPrivate) return false;
     if (element.hasInitializer) return false;
 
-    final constructorElement =
-        classOrMixinElement.unnamedConstructor ?? classOrMixinElement.constructors.first;
     return constructorElement.parameters.any((e) => e.name == element.name);
+  }
+
+  static bool _isParamNullable(ConstructorElement constructorElement, FieldElement element) {
+    final param = constructorElement.parameters.firstWhereOrNull((e) => e.name == element.name);
+    if (param == null) return false;
+    return param.type.isNullable;
   }
 }

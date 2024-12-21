@@ -43,8 +43,8 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
     final fieldElements = createSortedFieldSet(element).where(isDataClassField).toList();
 
     final classSpec = ClassSpec.from(config, element, annotation);
-    final fieldSpecs = fieldElements.map((element) {
-      return FieldSpec.from(parsedLibrary, element);
+    final fieldSpecs = fieldElements.map((e) {
+      return FieldSpec.from(parsedLibrary, constructorElement, e);
     }).toList();
 
     final missingFields = constructorElement.parameters.where((param) {

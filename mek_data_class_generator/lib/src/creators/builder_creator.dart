@@ -1,5 +1,4 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
@@ -120,8 +119,7 @@ class BuilderCreator extends Creator {
     Code? methodBuildCode;
     if (!isAbstract) {
       final params = _paramsSpecs.map((field) {
-        return MapEntry(field.name,
-            '${field.name}${field.element.type.nullabilitySuffix == NullabilitySuffix.none ? '!' : ''}');
+        return MapEntry(field.name, '${field.name}${field.isParamNullable ? '' : '!'}');
       });
       methodBuildCode = Code(classSpec.instance(Map.fromEntries(params)));
     }

@@ -6,7 +6,7 @@ enum StringifyType { params, fields }
 
 @JsonSerializable()
 class Config {
-  final int pageWidth;
+  final int? pageWidth;
   final bool comparable;
   final bool stringify;
   final StringifyType stringifyType;
@@ -19,7 +19,7 @@ class Config {
   final bool fieldsClassVisible;
 
   const Config({
-    this.pageWidth = 80,
+    this.pageWidth,
     this.comparable = true,
     this.stringify = true,
     this.stringifyType = StringifyType.params,
