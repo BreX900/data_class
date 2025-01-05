@@ -1,4 +1,7 @@
 
+## 2.0.2
+- fix: use raw strings when the class or field name contains the `$` character
+
 ## 2.0.1
 - fix: Removed unnecessary null assertion in *Builder classes [#32](https://github.com/BreX900/data_class/issues/32)
 - chore: The user is informed with a warning if the no longer supported `page_width` property is used

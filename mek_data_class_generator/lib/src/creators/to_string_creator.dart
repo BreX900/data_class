@@ -2,6 +2,7 @@ import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
 import 'package:mek_data_class_generator/src/specs.dart';
+import 'package:mek_data_class_generator/src/utils.dart';
 
 class ToStringCreator extends Creator {
   ToStringCreator({
@@ -38,10 +39,11 @@ class ToStringCreator extends Creator {
       final variable = '_self.${field.name}';
       final stringifier = field.stringifier;
       final stringifyVariable = stringifier != null ? '$stringifier($variable)' : variable;
-      return "..$addType('${field.name}', $stringifyVariable)";
+      return '..$addType(${literalRawString(field.name)}, $stringifyVariable)';
     });
 
-    final classToString = "ClassToString('${classSpec.self.name}'$types)${fields.join()}";
+    final classToString =
+        'ClassToString(${literalRawString(classSpec.self.name)}$types)${fields.join()}';
 
     return Method((b) => b
       ..annotations.add(Annotations.override)

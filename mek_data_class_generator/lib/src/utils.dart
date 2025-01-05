@@ -2,6 +2,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -45,3 +46,5 @@ extension DartTypeExtension on DartType {
   DartType promoteNonNullable() => element?.library?.typeSystem.promoteToNonNull(this) ?? this;
   bool get isNullable => nullabilitySuffix != NullabilitySuffix.none;
 }
+
+Expression literalRawString(String text) => literalString(text, raw: text.contains(r'$'));
