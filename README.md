@@ -205,7 +205,6 @@ targets:
       mek_data_class_generator:
         enabled: true
         options:
-          page_width: 80
           comparable: true
           stringify: true
           stringify_type: params | fields

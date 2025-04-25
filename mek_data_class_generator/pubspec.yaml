@@ -1,5 +1,5 @@
 name: mek_data_class_generator
-version: 2.0.2
+version: 2.0.3
 description: >
   Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
   and `change` methods
@@ -11,7 +11,7 @@ topics:
   - codegen
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 
 scripts:
   publish: dart pub publish

@@ -1,4 +1,7 @@
 
+## 2.0.3
+- fix: fixed use of deprecated analyzer APIs
+
 ## 2.0.2
 - fix: use raw strings when the class or field name contains the `$` character
 
