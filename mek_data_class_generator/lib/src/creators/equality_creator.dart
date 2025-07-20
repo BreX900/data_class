@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:collection/collection.dart';
@@ -31,10 +31,10 @@ class EqualityCreator extends Creator {
 
   String? _codeEqualityClasses(DartType type) {
     for (final equality in classSpec.equalities) {
-      final extendedEqualityClassElement = equality.type!.element! as ClassElement;
+      final extendedEqualityClassElement = equality.type!.element3! as ClassElement2;
       final equalityClassElement =
           extendedEqualityClassElement.allSupertypes.singleWhereOrNull((e) {
-        return _equalityChecker.isExactly(e.element);
+        return _equalityChecker.isExactly(e.element3);
       });
       if (equalityClassElement == null) continue;
 

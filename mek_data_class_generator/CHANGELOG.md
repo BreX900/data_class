@@ -1,4 +1,9 @@
 
+## 3.0.0
+
+- build: bumped `analyzer` dependency to `>=7.4.0 <9.0.0`
+- refactor!: removed support to namespace (prefix imports): `library.Product`
+
 ## 2.0.3
 - fix: fixed use of deprecated analyzer APIs
 

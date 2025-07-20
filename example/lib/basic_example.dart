@@ -39,6 +39,8 @@ class Product with _$Product {
     this.title, {
     this.extraData,
   }) : idAndTitle = '$id - $title';
+
+  factory Product.fromJson(Map<String, dynamic> map) => Object() as Product;
 }
 
 class ProductEquality implements Equality<Product> {

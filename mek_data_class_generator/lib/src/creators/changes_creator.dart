@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
@@ -68,17 +68,19 @@ class ChangesCreator extends Creator {
     var superFieldsName = const <String>[];
     String? implement;
     if (superType != null) {
-      final superElement = superType.element as ClassElement;
+      final superElement = superType.element3 as ClassElement2;
       final superSpec = ClassSpec.from(
         config,
         superElement,
-        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element)),
+        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element3)),
       );
       if (superSpec.changeable) {
         final superTypes = ClassSpec.t(superType.typeArguments.map((e) => '$e'));
-        final superName = '${visibility(superSpec.changesVisible)}${superType.element.name}Changes';
+        final superName =
+            '${visibility(superSpec.changesVisible)}${superType.element3.name3}Changes';
         implement = '$superName$superTypes';
-        superFieldsName = superElement.fields.where(isDataClassField).map((e) => e.name).toList();
+        superFieldsName =
+            superElement.fields2.where(isDataClassField).map((e) => e.name3!).toList();
       }
     }
 
@@ -131,7 +133,7 @@ class ChangesCreator extends Creator {
     return Class((b) => b
       ..abstract = isAbstract
       ..name = classSpec.changes.name
-      ..types.addAll(classSpec.selfTypes.map(Reference.new))
+      ..types.addAll(classSpec.self.fullTypes.map(Reference.new))
       ..returnIf(implement != null)?.implements.add(Reference(implement))
       ..returnIf(hasNeedDataClass)?.fields.add(Field((b) => b
         ..modifier = FieldModifier.final$

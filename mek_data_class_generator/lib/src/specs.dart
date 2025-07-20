@@ -1,9 +1,5 @@
-import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:collection/collection.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
@@ -26,7 +22,7 @@ class NameSpec {
 }
 
 class ClassSpec {
-  final ClassElement element;
+  final ClassElement2 element;
   final List<String> types;
   final bool comparable;
   final bool stringify;
@@ -56,42 +52,40 @@ class ClassSpec {
     required this.equalities,
   });
 
-  late final selfTypes = element.typeParameters.map((e) => e.getDisplayString());
-
   late final List<String> _fullJoinedTypes =
-      element.typeParameters.map((e) => e.getDisplayString()).toList();
-  late final List<String> _types = element.typeParameters.map((e) => e.displayName).toList();
+      element.typeParameters2.map((e) => e.displayString2()).toList();
+  late final List<String> _types = element.typeParameters2.map((e) => e.displayName).toList();
 
   static String t(Iterable<String> t) => t.isEmpty ? '' : '<${t.join(', ')}>';
 
   late final NameSpec self = NameSpec(
-    name: element.name,
+    name: element.name3!,
     fullTypes: _fullJoinedTypes,
     types: _types,
   );
 
   late final NameSpec mixin = NameSpec(
-    name: '_\$${element.name}',
+    name: '_\$${element.name3!}',
     fullTypes: _fullJoinedTypes,
     types: _types,
   );
 
   late final NameSpec changes = NameSpec(
-    name: '${changesVisible ? '' : '_'}${element.name}Changes',
+    name: '${changesVisible ? '' : '_'}${element.name3!}Changes',
     fullTypes: _fullJoinedTypes,
     types: _types,
   );
 
   late final NameSpec builder = NameSpec(
-    name: '${element.name}Builder',
+    name: '${element.name3!}Builder',
     fullTypes: _fullJoinedTypes,
     types: _types,
   );
 
-  factory ClassSpec.from(Config config, ClassElement element, ConstantReader annotation) {
+  factory ClassSpec.from(Config config, ClassElement2 element, ConstantReader annotation) {
     return ClassSpec(
       element: element,
-      types: element.typeParameters.map((e) => e.displayName).toList(),
+      types: element.typeParameters2.map((e) => e.displayName).toList(),
       comparable: annotation.peek('comparable')?.boolValue ?? config.comparable,
       stringify: annotation.peek('stringify')?.boolValue ?? config.stringify,
       stringifyType: config.stringifyType,
@@ -109,9 +103,11 @@ class ClassSpec {
   }
 
   String instance(Map<String, String> params) {
-    final constructor = element.unnamedConstructor ?? element.constructors.first;
-    final parameters = constructor.parameters.map((param) {
-      return param.isNamed ? '${param.name}: ${params[param.name]!},' : '${params[param.name]!},';
+    final constructor = element.defaultConstructor;
+    final parameters = constructor.formalParameters.map((param) {
+      return param.isNamed
+          ? '${param.name3}: ${params[param.name3]!},'
+          : '${params[param.name3]!},';
     });
     return '${self.name}(${parameters.join()})';
   }
@@ -120,10 +116,8 @@ class ClassSpec {
 enum Nullability { none, inherit, always }
 
 class FieldSpec {
-  final ParsedLibraryResult parsedLibrary;
-
-  final ConstructorElement _constructorElement;
-  final FieldElement element;
+  final ConstructorElement2 _constructorElement;
+  final FieldElement2 element;
 
   final String name;
   final bool comparable;
@@ -136,8 +130,7 @@ class FieldSpec {
   late final bool isParamNullable = _isParamNullable(_constructorElement, element);
 
   FieldSpec({
-    required this.parsedLibrary,
-    required ConstructorElement constructorElement,
+    required ConstructorElement2 constructorElement,
     required this.element,
     required this.name,
     required this.comparable,
@@ -148,14 +141,12 @@ class FieldSpec {
   }) : _constructorElement = constructorElement;
 
   factory FieldSpec.from(
-    ParsedLibraryResult parsedLibrary,
-    ConstructorElement constructorElement,
-    FieldElement element,
+    ConstructorElement2 constructorElement,
+    FieldElement2 element,
   ) {
     final annotation = dataFieldAnnotation(element);
 
     return FieldSpec(
-      parsedLibrary: parsedLibrary,
       constructorElement: constructorElement,
       element: element,
       name: element.displayName,
@@ -168,15 +159,7 @@ class FieldSpec {
   }
 
   String getType(Nullability nullability) {
-    final prefixedElements =
-        element.library.definingCompilationUnit.libraryImports.expand<Element>((e) {
-      if (e.prefix == null) return [];
-      return e.namespace.definedNames.values;
-    });
-
-    final type = prefixedElements.contains(element.type.element)
-        ? _getTypeWithPrefix(parsedLibrary, element)
-        : _getType(element.type);
+    final type = element.type.getDisplayString();
 
     switch (nullability) {
       case Nullability.none:
@@ -188,46 +171,16 @@ class FieldSpec {
     }
   }
 
-  static String _getType(DartType type) {
-    final alias = type.alias;
-    if (alias != null) {
-      final args = alias.typeArguments.map(_getType).toList();
-      final nullable = type.nullabilitySuffix != NullabilitySuffix.none;
-      return '${alias.element.displayName}${args.isEmpty ? '' : '<${args.join(', ')}>'}${nullable ? '?' : ''}';
-    }
-    return type.getDisplayString();
-  }
-
-  /// The builderElementType plus any import prefix.
-  static String _getTypeWithPrefix(ParsedLibraryResult parsedLibrary, FieldElement element) {
-    // final parsedLibrary = parsedLibraryResult(classSpec.element.library);
-    // If it's a real field, it's a [VariableDeclaration] which is guaranteed
-    // to have parent node [VariableDeclarationList] giving the type.
-    final fieldDeclaration = parsedLibrary.getElementDeclaration(element);
-    // print(fieldDeclaration != null);
-    if (fieldDeclaration != null) {
-      return ((fieldDeclaration.node as VariableDeclaration).parent! as VariableDeclarationList)
-              .type
-              ?.toSource() ??
-          'dynamic';
-    } else {
-      // Otherwise it's an explicit getter/setter pair; get the type from the getter.
-      return (parsedLibrary.getElementDeclaration(element.getter!)!.node as MethodDeclaration)
-              .returnType
-              ?.toSource() ??
-          'dynamic';
-    }
-  }
-
-  static bool _isParam(ConstructorElement constructorElement, FieldElement element) {
+  static bool _isParam(ConstructorElement2 constructorElement, FieldElement2 element) {
     if (element.isPrivate) return false;
     if (element.hasInitializer) return false;
 
-    return constructorElement.parameters.any((e) => e.name == element.name);
+    return constructorElement.formalParameters.any((e) => e.name3 == element.name3);
   }
 
-  static bool _isParamNullable(ConstructorElement constructorElement, FieldElement element) {
-    final param = constructorElement.parameters.firstWhereOrNull((e) => e.name == element.name);
+  static bool _isParamNullable(ConstructorElement2 constructorElement, FieldElement2 element) {
+    final param =
+        constructorElement.formalParameters.firstWhereOrNull((e) => e.name3 == element.name3);
     if (param == null) return false;
     return param.type.isNullable;
   }

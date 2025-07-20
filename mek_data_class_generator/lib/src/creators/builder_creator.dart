@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
 import 'package:mek_data_class_generator/src/creators/creator.dart';
@@ -82,18 +82,19 @@ class BuilderCreator extends Creator {
     var superFieldsName = const <String>[];
     String? implement;
     if (superType != null) {
-      final superElement = superType.element as ClassElement;
+      final superElement = superType.element3 as ClassElement2;
       final superSpec = ClassSpec.from(
         config,
         superElement,
-        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element)),
+        ConstantReader(dataClassChecker.firstAnnotationOf(superType.element3)),
       );
 
       if (superSpec.buildable) {
         final superTypes = ClassSpec.t(superType.typeArguments.map((e) => '$e'));
-        final superName = '${superType.element.name}Builder';
+        final superName = '${superType.element3.name3}Builder';
         implement = '$superName$superTypes';
-        superFieldsName = superElement.fields.where(isDataClassField).map((e) => e.name).toList();
+        superFieldsName =
+            superElement.fields2.where(isDataClassField).map((e) => e.name3!).toList();
       }
     }
 
@@ -149,7 +150,7 @@ class BuilderCreator extends Creator {
     return Class((b) => b
       ..abstract = isAbstract
       ..name = classSpec.builder.name
-      ..types.addAll(classSpec.selfTypes.map(Reference.new))
+      ..types.addAll(classSpec.self.fullTypes.map(Reference.new))
       ..returnIf(implement != null)?.implements.add(Reference(implement))
       ..fields.addAll(fields)
       ..methods.add(methodUpdate)

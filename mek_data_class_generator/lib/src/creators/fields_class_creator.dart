@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mek_data_class_generator/src/configs.dart';
@@ -33,8 +33,8 @@ class FieldsClassCreator extends Creator {
   }
 
   Method? _createMethodField(FieldSpec fieldSpec, String fieldPath) {
-    final fieldClassElement = fieldSpec.element.type.element;
-    if (fieldClassElement is! ClassElement) return null;
+    final fieldClassElement = fieldSpec.element.type.element3;
+    if (fieldClassElement is! ClassElement2) return null;
 
     final fieldClassReader = dataClassAnnotation(fieldClassElement);
     if (fieldClassReader == null) return null;
@@ -43,7 +43,7 @@ class FieldsClassCreator extends Creator {
     if (!fieldClassSpec.createFieldsClass) return null;
 
     final keysClassName =
-        '${fieldClassSpec.fieldsClassVisible ? '' : '_'}${fieldClassElement.name}Fields';
+        '${fieldClassSpec.fieldsClassVisible ? '' : '_'}${fieldClassElement.name3}Fields';
 
     return Method((b) => b
       ..returns = Reference(keysClassName)
@@ -57,7 +57,7 @@ class FieldsClassCreator extends Creator {
     final jsonSerializable = _jsonSerializableType.firstAnnotationOf(classSpec.element);
     final hasFieldMap = ConstantReader(jsonSerializable).peek('createFieldMap')?.boolValue ?? false;
 
-    final className = '${classSpec.fieldsClassVisible ? '' : '_'}${classSpec.element.name}Fields';
+    final className = '${classSpec.fieldsClassVisible ? '' : '_'}${classSpec.element.name3}Fields';
 
     final methodsFields = _paramsSpecs.map((field) {
       final fieldPath = _createFieldPath(field, hasFieldMap);
@@ -80,7 +80,9 @@ class FieldsClassCreator extends Creator {
         ..type = Refs.string
         ..name = '_path'))
       ..constructors.add(Constructor((b) => b
-        ..docs.returnIf(!classSpec.fieldsClassVisible)?.add('// ignore: unused_element')
+        ..docs
+            .returnIf(!classSpec.fieldsClassVisible)
+            ?.add('// ignore: unused_element, unused_element_parameter')
         ..constant = true
         ..optionalParameters.add(Parameter((b) => b
           ..toThis = true

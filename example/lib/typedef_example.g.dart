@@ -35,10 +35,10 @@ mixin _$Extra {
         ..add('product2', _self.product2))
       .toString();
   Extra copyWith({
-    JsonMap<int>? jsonMap,
-    NullableJsonMap<double?>? nullableJsonMap,
-    be.Product? product,
-    be.Product? product2,
+    Map<String, int>? jsonMap,
+    Map<String, double?>? nullableJsonMap,
+    Product? product,
+    Product? product2,
   }) {
     return Extra(
       jsonMap: jsonMap ?? _self.jsonMap,
@@ -60,13 +60,13 @@ class _ExtraChanges {
         product = dc.product,
         product2 = dc.product2;
 
-  JsonMap<int>? jsonMap;
+  Map<String, int>? jsonMap;
 
-  NullableJsonMap<double?> nullableJsonMap;
+  Map<String, double?> nullableJsonMap;
 
-  be.Product product;
+  Product product;
 
-  be.Product product2;
+  Product product2;
 
   void update(void Function(_ExtraChanges c) updates) => updates(this);
 
@@ -77,3 +77,18 @@ class _ExtraChanges {
         product2: product2,
       );
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Extra _$ExtraFromJson(Map<String, dynamic> json) => Extra(
+      jsonMap: (json['jsonMap'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, (e as num).toInt()),
+      ),
+      nullableJsonMap: (json['nullableJsonMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(k, (e as num?)?.toDouble()),
+      ),
+      product: Product.fromJson(json['product'] as Map<String, dynamic>),
+      product2: Product.fromJson(json['product2'] as Map<String, dynamic>),
+    );

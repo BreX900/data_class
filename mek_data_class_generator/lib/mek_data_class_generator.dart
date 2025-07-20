@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:analyzer/dart/analysis/results.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class/mek_data_class.dart';
@@ -29,26 +28,22 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
   @override
   Future<String?> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    if (element is! ClassElement) return null;
-    // Pick new valid library element: https://github.com/dart-lang/build/issues/2634#issuecomment-670603224
-    final libraryElement = await buildStep.resolver.libraryFor(buildStep.inputId);
-    final parsedLibrary =
-        libraryElement.session.getParsedLibraryByElement(libraryElement) as ParsedLibraryResult;
+    if (element is! ClassElement2) return null;
 
-    final constructorElement = element.unnamedConstructor ?? element.constructors.first;
+    final constructorElement = element.defaultConstructor;
     final fieldElements = createSortedFieldSet(element).where(isDataClassField).toList();
 
     final classSpec = ClassSpec.from(config, element, annotation);
     final fieldSpecs = fieldElements.map((e) {
-      return FieldSpec.from(parsedLibrary, constructorElement, e);
+      return FieldSpec.from(constructorElement, e);
     }).toList();
 
-    final missingFields = constructorElement.parameters.where((param) {
-      return fieldSpecs.every((e) => e.isParam && e.element.name != param.name);
+    final missingFields = constructorElement.formalParameters.where((param) {
+      return fieldSpecs.every((e) => e.isParam && e.element.name3 != param.name3);
     }).toList();
 
     if (missingFields.isNotEmpty) {
