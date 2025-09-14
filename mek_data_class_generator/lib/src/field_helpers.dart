@@ -101,4 +101,4 @@ List<FieldElement2> createSortedFieldSet(ClassElement2 element) {
   return fields.map((fs) => fs.field).toList(growable: false);
 }
 
-const _dartCoreObjectChecker = TypeChecker.fromRuntime(Object);
+const _dartCoreObjectChecker = TypeChecker.typeNamed(Object, inSdk: true);

@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:source_gen/source_gen.dart';
 
-const _dataFieldChecker = TypeChecker.fromRuntime(DataField);
+const _dataFieldChecker = TypeChecker.typeNamed(DataField, inPackage: 'mek_data_class');
 
 DartObject? _dataFieldAnnotation(FieldElement2 element) =>
     _dataFieldChecker.firstAnnotationOf(element) ??
@@ -19,7 +19,7 @@ ConstantReader dataFieldAnnotation(FieldElement2 element) =>
 /// Returns `true` if [element] is annotated with [DataField].
 bool hasDataFieldAnnotation(FieldElement2 element) => _dataFieldAnnotation(element) != null;
 
-const dataClassChecker = TypeChecker.fromRuntime(DataClass);
+const dataClassChecker = TypeChecker.typeNamed(DataClass, inPackage: 'mek_data_class');
 
 ConstantReader? dataClassAnnotation(ClassElement2 element) {
   final dartObject = dataClassChecker.firstAnnotationOf(element, throwOnUnresolved: false);

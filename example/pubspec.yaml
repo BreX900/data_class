@@ -23,7 +23,7 @@ dev_dependencies:
   mek_lints: ^2.0.0
   test: ^1.21.6
 
-  build_runner: ^2.4.14
+  build_runner: ^2.8.0
   mek_data_class_generator:
     path: ../mek_data_class_generator
-  json_serializable: ^6.9.2
+  json_serializable: ^6.11.1

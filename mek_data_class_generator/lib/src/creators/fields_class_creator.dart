@@ -8,7 +8,8 @@ import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
 class FieldsClassCreator extends Creator {
-  static const _jsonSerializableType = TypeChecker.fromRuntime(JsonSerializable);
+  static const _jsonSerializableType =
+      TypeChecker.typeNamed(JsonSerializable, inPackage: 'json_annotation');
 
   final Config config;
 

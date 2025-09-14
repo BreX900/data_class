@@ -8,7 +8,7 @@ import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
 class EqualityCreator extends Creator {
-  static const _equalityChecker = TypeChecker.fromRuntime(Equality);
+  static const _equalityChecker = TypeChecker.typeNamed(Equality, inPackage: 'collection');
 
   EqualityCreator({
     required super.classSpec,
