@@ -1,3 +1,4 @@
+- build: Allow `code_builder: ^4.4.0`
 
 ## 3.0.1
 - build: Allow `build: '>=3.0.0 <5.0.0'`

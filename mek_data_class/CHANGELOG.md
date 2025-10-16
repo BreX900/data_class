@@ -1,3 +1,6 @@
+## 1.4.1
+- fix: fixed Set equality allowing all keys
+
 ## 1.4.0
 - feat: Added support for `*Builder`. You can now build your class via a Builder
 

@@ -22,5 +22,5 @@ class $CollectionEquality implements Equality<Object?> {
   }
 
   @override
-  bool isValidKey(Object? o) => o is List || o is Map || o is Set;
+  bool isValidKey(Object? o) => true;
 }
