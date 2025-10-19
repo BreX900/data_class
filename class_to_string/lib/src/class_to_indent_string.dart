@@ -1,5 +1,6 @@
 import 'package:class_to_string/src/class_to_string.dart';
 import 'package:class_to_string/src/class_to_string_base.dart';
+import 'package:class_to_string/src/utils.dart';
 
 /// A [ClassToString] that produces multi-line indented output.
 class ClassToIndentString extends ClassToStringBase {
@@ -33,8 +34,8 @@ class ClassToIndentString extends ClassToStringBase {
     _result!
       ..write(' ' * _indentCount)
       ..write(name)
-      ..write('=')
-      ..write(value)
+      ..write(': ')
+      ..writeValue(value)
       ..write(',\n');
   }
 

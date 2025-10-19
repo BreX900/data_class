@@ -25,9 +25,8 @@ class Order with _$Order {
 
 @DataClass(changeable: true, copyable: true)
 class Product with _$Product {
-  @DataField(comparable: false)
+  @DataField(equatable: false)
   final int id;
-  @DataField(updatable: false)
   final String? title;
   @DataField(stringify: false)
   final Map<String, int?>? extraData;
@@ -36,7 +35,7 @@ class Product with _$Product {
 
   const Product(
     this.id,
-    this.title, {
+    @DataParameter(updatable: false) this.title, {
     this.extraData,
   }) : idAndTitle = '$id - $title';
 
@@ -57,4 +56,6 @@ class ProductEquality implements Equality<Product> {
 }
 
 @DataClass(changeable: true)
-class EmptyClass with _$EmptyClass {}
+class EmptyClass with _$EmptyClass {
+  const EmptyClass._();
+}

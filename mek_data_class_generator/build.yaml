@@ -1,13 +1,7 @@
 targets:
   $default:
     builders:
-      source_gen:combining_builder:
-        generate_for:
-          - '**/configs.dart'
-
       json_serializable:
-        generate_for:
-          - '**/configs.dart'
         options:
           create_to_json: false
           create_factory: true

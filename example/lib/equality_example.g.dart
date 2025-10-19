@@ -9,6 +9,11 @@ part of 'equality_example.dart';
 mixin _$Order {
   Order get _self => this as Order;
   @override
+  String toString() => (ClassToString('Order')
+        ..add('product', _self.product)
+        ..add('freeProduct', _self.freeProduct))
+      .toString();
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Order &&
@@ -25,16 +30,15 @@ mixin _$Order {
         const $NullableEquality(ProductEquality()).hash(_self.freeProduct));
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() => (ClassToString('Order')
-        ..add('product', _self.product)
-        ..add('freeProduct', _self.freeProduct))
-      .toString();
 }
 
 mixin _$Category {
   Category get _self => this as Category;
+  @override
+  String toString() => (ClassToString('Category')
+        ..add('products', _self.products)
+        ..add('freeProducts', _self.freeProducts))
+      .toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -55,16 +59,13 @@ mixin _$Category {
             .hash(_self.freeProducts));
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() => (ClassToString('Category')
-        ..add('products', _self.products)
-        ..add('freeProducts', _self.freeProducts))
-      .toString();
 }
 
 mixin _$Product {
   Product get _self => this as Product;
+  @override
+  String toString() =>
+      (ClassToString('Product')..add('id', _self.id)).toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -77,8 +78,4 @@ mixin _$Product {
     hashCode = $hashCombine(hashCode, _self.id.hashCode);
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() =>
-      (ClassToString('Product')..add('id', _self.id)).toString();
 }

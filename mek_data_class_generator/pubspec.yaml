@@ -15,6 +15,7 @@ environment:
 
 scripts:
   publish: dart pub publish
+
   # To generate .g files:
   generate-code: dart run build_runner watch --delete-conflicting-outputs
 
@@ -26,6 +27,8 @@ dependencies:
   source_gen: '>=3.1.0 <5.0.0'
   dart_style: ^3.0.0
   code_builder: ^4.4.0
+  source_helper:
+  meta: ^1.15.0
 
   collection: ^1.16.0
 

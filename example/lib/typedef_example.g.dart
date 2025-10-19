@@ -8,6 +8,34 @@ part of 'typedef_example.dart';
 
 mixin _$Extra {
   Extra get _self => this as Extra;
+  Extra copyWith({
+    $Parameter<JsonMap<int>?> jsonMap = const Unspecified(),
+    $Parameter<NullableJsonMap<double?>> nullableJsonMap = const Unspecified(),
+    $Parameter<Product> product = const Unspecified(),
+    $Parameter<Product> product2 = const Unspecified(),
+  }) {
+    return Extra(
+      jsonMap: Unspecified.resolve(_self.jsonMap, jsonMap),
+      nullableJsonMap:
+          Unspecified.resolve(_self.nullableJsonMap, nullableJsonMap),
+      product: Unspecified.resolve(_self.product, product),
+      product2: Unspecified.resolve(_self.product2, product2),
+    );
+  }
+
+  Extra change(void Function(ExtraChanges c) updates) =>
+      (toChanges()..update(updates)).build();
+  ExtraChanges toChanges() => ExtraChanges._(_self);
+  Extra rebuild(void Function(ExtraBuilder b) updates) =>
+      (toBuilder()..update(updates)).build();
+  ExtraBuilder toBuilder() => ExtraBuilder()..replace(_self);
+  @override
+  String toString() => (ClassToString('Extra')
+        ..add('jsonMap', _self.jsonMap)
+        ..add('nullableJsonMap', _self.nullableJsonMap)
+        ..add('product', _self.product)
+        ..add('product2', _self.product2))
+      .toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -26,56 +54,60 @@ mixin _$Extra {
     hashCode = $hashCombine(hashCode, _self.product2.hashCode);
     return $hashFinish(hashCode);
   }
+}
 
-  @override
-  String toString() => (ClassToString('Extra')
-        ..add('jsonMap', _self.jsonMap)
-        ..add('nullableJsonMap', _self.nullableJsonMap)
-        ..add('product', _self.product)
-        ..add('product2', _self.product2))
-      .toString();
-  Extra copyWith({
-    Map<String, int>? jsonMap,
-    Map<String, double?>? nullableJsonMap,
-    Product? product,
-    Product? product2,
-  }) {
+class ExtraChanges {
+  ExtraChanges._(this._original);
+
+  final Extra _original;
+
+  late JsonMap<int>? jsonMap = _original.jsonMap;
+
+  late NullableJsonMap<double?> nullableJsonMap = _original.nullableJsonMap;
+
+  late ProductChanges product = _original.product.toChanges();
+
+  late ProductChanges product2 = _original.product2.toChanges();
+
+  void update(void Function(ExtraChanges c) updates) => updates(this);
+
+  Extra build() {
     return Extra(
-      jsonMap: jsonMap ?? _self.jsonMap,
-      nullableJsonMap: nullableJsonMap ?? _self.nullableJsonMap,
-      product: product ?? _self.product,
-      product2: product2 ?? _self.product2,
+      jsonMap: jsonMap,
+      nullableJsonMap: nullableJsonMap,
+      product: product.build(),
+      product2: product2.build(),
+    );
+  }
+}
+
+class ExtraBuilder {
+  JsonMap<int>? jsonMap;
+
+  NullableJsonMap<double?>? nullableJsonMap;
+
+  Product? product;
+
+  Product? product2;
+
+  void update(void Function(ExtraBuilder b) updates) => updates(this);
+
+  Extra build() {
+    return Extra(
+      jsonMap: jsonMap,
+      nullableJsonMap:
+          ArgumentError.checkNotNull(nullableJsonMap, 'nullableJsonMap'),
+      product: ArgumentError.checkNotNull(product, 'product'),
+      product2: ArgumentError.checkNotNull(product2, 'product2'),
     );
   }
 
-  Extra change(void Function(_ExtraChanges c) updates) =>
-      (_ExtraChanges._(_self)..update(updates)).build();
-  _ExtraChanges toChanges() => _ExtraChanges._(_self);
-}
-
-class _ExtraChanges {
-  _ExtraChanges._(Extra dc)
-      : jsonMap = dc.jsonMap,
-        nullableJsonMap = dc.nullableJsonMap,
-        product = dc.product,
-        product2 = dc.product2;
-
-  Map<String, int>? jsonMap;
-
-  Map<String, double?> nullableJsonMap;
-
-  Product product;
-
-  Product product2;
-
-  void update(void Function(_ExtraChanges c) updates) => updates(this);
-
-  Extra build() => Extra(
-        jsonMap: jsonMap,
-        nullableJsonMap: nullableJsonMap,
-        product: product,
-        product2: product2,
-      );
+  void replace(covariant Extra other) {
+    jsonMap = other.jsonMap;
+    nullableJsonMap = other.nullableJsonMap;
+    product = other.product;
+    product2 = other.product2;
+  }
 }
 
 // **************************************************************************

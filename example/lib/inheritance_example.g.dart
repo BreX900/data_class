@@ -7,147 +7,142 @@ part of 'inheritance_example.dart';
 // **************************************************************************
 
 mixin _$Animal {
-  Animal get _self => this as Animal;
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Animal &&
-          runtimeType == other.runtimeType &&
-          _self.finalField == other.finalField;
-  @override
-  int get hashCode {
-    var hashCode = 0;
-    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
-    return $hashFinish(hashCode);
-  }
-
-  @override
-  String toString() =>
-      (ClassToString('Animal')..add('finalField', _self.finalField)).toString();
-  Animal copyWith({String? finalField});
-  Animal change(void Function(_AnimalChanges c) updates);
-  _AnimalChanges toChanges();
+  Animal copyWith({$Parameter<String> finalField = const Unspecified()});
+  Animal change(void Function(AnimalChanges c) updates);
+  AnimalChanges toChanges();
 }
 
-abstract class _AnimalChanges {
-  _AnimalChanges._(Animal dc) : finalField = dc.finalField;
+abstract class AnimalChanges {
+  AnimalChanges._(this._original);
 
-  String finalField;
+  final Animal _original;
 
-  void update(void Function(_AnimalChanges c) updates);
+  late String finalField = _original.finalField;
+
+  void update(void Function(AnimalChanges c) updates);
   Animal build();
 }
 
 mixin _$Dog {
   Dog get _self => this as Dog;
+  Dog copyWith({
+    $Parameter<String> finalField = const Unspecified(),
+    $Parameter<String> getterField = const Unspecified(),
+  }) {
+    return Dog(
+      finalField: Unspecified.resolve(_self.finalField, finalField),
+      getterField: Unspecified.resolve(_self.getterField, getterField),
+    );
+  }
+
+  Dog change(void Function(DogChanges c) updates) =>
+      (toChanges()..update(updates)).build();
+  DogChanges toChanges() => DogChanges._(_self);
+  @override
+  String toString() => (ClassToString('Dog')
+        ..add('getterField', _self.getterField)
+        ..add('name', _self.name)
+        ..add('finalField', _self.finalField))
+      .toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Dog &&
           runtimeType == other.runtimeType &&
-          _self.finalField == other.finalField &&
-          _self.getterField == other.getterField;
+          _self.getterField == other.getterField &&
+          _self.name == other.name &&
+          _self.finalField == other.finalField;
   @override
   int get hashCode {
     var hashCode = 0;
-    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
     hashCode = $hashCombine(hashCode, _self.getterField.hashCode);
+    hashCode = $hashCombine(hashCode, _self.name.hashCode);
+    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() => (ClassToString('Dog')
-        ..add('finalField', _self.finalField)
-        ..add('getterField', _self.getterField))
-      .toString();
-  Dog copyWith({
-    String? finalField,
-    String? getterField,
-  }) {
-    return Dog(
-      finalField: finalField ?? _self.finalField,
-      getterField: getterField ?? _self.getterField,
-    );
-  }
-
-  Dog change(void Function(_DogChanges c) updates) =>
-      (_DogChanges._(_self)..update(updates)).build();
-  _DogChanges toChanges() => _DogChanges._(_self);
 }
 
-class _DogChanges implements _AnimalChanges {
-  _DogChanges._(Dog dc)
-      : finalField = dc.finalField,
-        getterField = dc.getterField;
+class DogChanges implements AnimalChanges {
+  DogChanges._(this._original);
 
   @override
-  String finalField;
-
-  String getterField;
+  final Dog _original;
 
   @override
-  void update(void Function(_DogChanges c) updates) => updates(this);
+  late String finalField = _original.finalField;
+
+  late String getterField = _original.getterField;
 
   @override
-  Dog build() => Dog(
-        finalField: finalField,
-        getterField: getterField,
-      );
+  void update(void Function(DogChanges c) updates) => updates(this);
+
+  @override
+  Dog build() {
+    return Dog(
+      finalField: finalField,
+      getterField: getterField,
+    );
+  }
 }
 
 mixin _$Cat {
   Cat get _self => this as Cat;
+  Cat copyWith({
+    $Parameter<String> finalField = const Unspecified(),
+    $Parameter<String> getterField = const Unspecified(),
+  }) {
+    return Cat(
+      finalField: Unspecified.resolve(_self.finalField, finalField),
+      getterField: Unspecified.resolve(_self.getterField, getterField),
+    );
+  }
+
+  Cat change(void Function(CatChanges c) updates) =>
+      (toChanges()..update(updates)).build();
+  CatChanges toChanges() => CatChanges._(_self);
+  @override
+  String toString() => (ClassToString('Cat')
+        ..add('getterField', _self.getterField)
+        ..add('name', _self.name)
+        ..add('finalField', _self.finalField))
+      .toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Cat &&
           runtimeType == other.runtimeType &&
-          _self.finalField == other.finalField &&
-          _self.getterField == other.getterField;
+          _self.getterField == other.getterField &&
+          _self.name == other.name &&
+          _self.finalField == other.finalField;
   @override
   int get hashCode {
     var hashCode = 0;
-    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
     hashCode = $hashCombine(hashCode, _self.getterField.hashCode);
+    hashCode = $hashCombine(hashCode, _self.name.hashCode);
+    hashCode = $hashCombine(hashCode, _self.finalField.hashCode);
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() => (ClassToString('Cat')
-        ..add('finalField', _self.finalField)
-        ..add('getterField', _self.getterField))
-      .toString();
-  Cat copyWith({
-    String? finalField,
-    String? getterField,
-  }) {
-    return Cat(
-      finalField: finalField ?? _self.finalField,
-      getterField: getterField ?? _self.getterField,
-    );
-  }
-
-  Cat change(void Function(_CatChanges c) updates) =>
-      (_CatChanges._(_self)..update(updates)).build();
-  _CatChanges toChanges() => _CatChanges._(_self);
 }
 
-class _CatChanges implements _AnimalChanges {
-  _CatChanges._(Cat dc)
-      : finalField = dc.finalField,
-        getterField = dc.getterField;
+class CatChanges implements AnimalChanges {
+  CatChanges._(this._original);
 
   @override
-  String finalField;
-
-  String getterField;
+  final Cat _original;
 
   @override
-  void update(void Function(_CatChanges c) updates) => updates(this);
+  late String finalField = _original.finalField;
+
+  late String getterField = _original.getterField;
 
   @override
-  Cat build() => Cat(
-        finalField: finalField,
-        getterField: getterField,
-      );
+  void update(void Function(CatChanges c) updates) => updates(this);
+
+  @override
+  Cat build() {
+    return Cat(
+      finalField: finalField,
+      getterField: getterField,
+    );
+  }
 }

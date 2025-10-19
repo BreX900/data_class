@@ -1,5 +1,6 @@
 import 'package:class_to_string/src/class_to_string.dart';
 import 'package:class_to_string/src/class_to_string_base.dart';
+import 'package:class_to_string/src/utils.dart';
 
 /// A [ClassToString] that produces single line output.
 class ClassToFlatString extends ClassToStringBase {
@@ -26,8 +27,8 @@ class ClassToFlatString extends ClassToStringBase {
     if (_hasPreviousField) _result!.write(',');
     _result!
       ..write(name)
-      ..write('=')
-      ..write(value);
+      ..write(':')
+      ..writeValue(value);
     _hasPreviousField = true;
   }
 

@@ -7,11 +7,101 @@ part of 'generics_example.dart';
 // **************************************************************************
 
 mixin _$Response<T> {
-  Response<T> get _self => this as Response<T>;
+  Response<T> copyWith({$Parameter<T> data = const Unspecified()});
+  Response<T> change(void Function(ResponseChanges<T> c) updates);
+  ResponseChanges<T> toChanges();
+}
+
+abstract class ResponseChanges<T> {
+  ResponseChanges._(this._original);
+
+  final Response<T> _original;
+
+  late T data = _original.data;
+
+  void update(void Function(ResponseChanges<T> c) updates);
+  Response<T> build();
+}
+
+mixin _$PaginatedResponse<T extends Object> {
+  PaginatedResponse<T> get _self => this as PaginatedResponse<T>;
+  PaginatedResponse<T> copyWith({
+    $Parameter<T> data = const Unspecified(),
+    $Parameter<int> total = const Unspecified(),
+  }) {
+    return PaginatedResponse(
+      data: Unspecified.resolve(_self.data, data),
+      total: Unspecified.resolve(_self.total, total),
+    );
+  }
+
+  PaginatedResponse<T> change(
+          void Function(PaginatedResponseChanges<T> c) updates) =>
+      (toChanges()..update(updates)).build();
+  PaginatedResponseChanges<T> toChanges() => PaginatedResponseChanges._(_self);
+  @override
+  String toString() => (ClassToString('PaginatedResponse', [T])
+        ..add('total', _self.total)
+        ..add('data', _self.data))
+      .toString();
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Response<T> &&
+      other is PaginatedResponse<T> &&
+          runtimeType == other.runtimeType &&
+          _self.total == other.total &&
+          _self.data == other.data;
+  @override
+  int get hashCode {
+    var hashCode = 0;
+    hashCode = $hashCombine(hashCode, _self.total.hashCode);
+    hashCode = $hashCombine(hashCode, _self.data.hashCode);
+    return $hashFinish(hashCode);
+  }
+}
+
+class PaginatedResponseChanges<T extends Object> implements ResponseChanges<T> {
+  PaginatedResponseChanges._(this._original);
+
+  @override
+  final PaginatedResponse<T> _original;
+
+  @override
+  late T data = _original.data;
+
+  late int total = _original.total;
+
+  @override
+  void update(void Function(PaginatedResponseChanges<T> c) updates) =>
+      updates(this);
+
+  @override
+  PaginatedResponse<T> build() {
+    return PaginatedResponse(
+      data: data,
+      total: total,
+    );
+  }
+}
+
+mixin _$ListResponse<T> {
+  ListResponse<T> get _self => this as ListResponse<T>;
+  ListResponse<T> copyWith({$Parameter<List<T>> data = const Unspecified()}) {
+    return ListResponse(
+      data: Unspecified.resolve(_self.data, data),
+    );
+  }
+
+  ListResponse<T> change(void Function(ListResponseChanges<T> c) updates) =>
+      (toChanges()..update(updates)).build();
+  ListResponseChanges<T> toChanges() => ListResponseChanges._(_self);
+  @override
+  String toString() =>
+      (ClassToString('ListResponse', [T])..add('data', _self.data)).toString();
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ListResponse<T> &&
           runtimeType == other.runtimeType &&
           _self.data == other.data;
   @override
@@ -20,126 +110,24 @@ mixin _$Response<T> {
     hashCode = $hashCombine(hashCode, _self.data.hashCode);
     return $hashFinish(hashCode);
   }
-
-  @override
-  String toString() =>
-      (ClassToString('Response', [T])..add('data', _self.data)).toString();
-  Response<T> copyWith({T? data});
-  Response<T> change(void Function(_ResponseChanges<T> c) updates);
-  _ResponseChanges<T> toChanges();
 }
 
-abstract class _ResponseChanges<T> {
-  _ResponseChanges._(Response<T> dc) : data = dc.data;
-
-  T data;
-
-  void update(void Function(_ResponseChanges<T> c) updates);
-  Response<T> build();
-}
-
-mixin _$PaginatedResponse<T extends Object> {
-  PaginatedResponse<T> get _self => this as PaginatedResponse<T>;
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PaginatedResponse<T> &&
-          runtimeType == other.runtimeType &&
-          _self.data == other.data &&
-          _self.total == other.total;
-  @override
-  int get hashCode {
-    var hashCode = 0;
-    hashCode = $hashCombine(hashCode, _self.data.hashCode);
-    hashCode = $hashCombine(hashCode, _self.total.hashCode);
-    return $hashFinish(hashCode);
-  }
+class ListResponseChanges<T> implements ResponseChanges<List<T>> {
+  ListResponseChanges._(this._original);
 
   @override
-  String toString() => (ClassToString('PaginatedResponse', [T])
-        ..add('data', _self.data)
-        ..add('total', _self.total))
-      .toString();
-  PaginatedResponse<T> copyWith({
-    T? data,
-    int? total,
-  }) {
-    return PaginatedResponse(
-      data: data ?? _self.data,
-      total: total ?? _self.total,
-    );
-  }
-
-  PaginatedResponse<T> change(
-          void Function(_PaginatedResponseChanges<T> c) updates) =>
-      (_PaginatedResponseChanges<T>._(_self)..update(updates)).build();
-  _PaginatedResponseChanges<T> toChanges() =>
-      _PaginatedResponseChanges._(_self);
-}
-
-class _PaginatedResponseChanges<T extends Object>
-    implements _ResponseChanges<T> {
-  _PaginatedResponseChanges._(PaginatedResponse<T> dc)
-      : data = dc.data,
-        total = dc.total;
+  final ListResponse<T> _original;
 
   @override
-  T data;
-
-  int total;
+  late List<T> data = _original.data;
 
   @override
-  void update(void Function(_PaginatedResponseChanges<T> c) updates) =>
-      updates(this);
+  void update(void Function(ListResponseChanges<T> c) updates) => updates(this);
 
   @override
-  PaginatedResponse<T> build() => PaginatedResponse(
-        data: data,
-        total: total,
-      );
-}
-
-mixin _$ListResponse<T> {
-  ListResponse<T> get _self => this as ListResponse<T>;
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ListResponse<T> &&
-          runtimeType == other.runtimeType &&
-          $listEquality.equals(_self.data, other.data);
-  @override
-  int get hashCode {
-    var hashCode = 0;
-    hashCode = $hashCombine(hashCode, $listEquality.hash(_self.data));
-    return $hashFinish(hashCode);
-  }
-
-  @override
-  String toString() =>
-      (ClassToString('ListResponse', [T])..add('data', _self.data)).toString();
-  ListResponse<T> copyWith({List<T>? data}) {
+  ListResponse<T> build() {
     return ListResponse(
-      data: data ?? _self.data,
+      data: data,
     );
   }
-
-  ListResponse<T> change(void Function(_ListResponseChanges<T> c) updates) =>
-      (_ListResponseChanges<T>._(_self)..update(updates)).build();
-  _ListResponseChanges<T> toChanges() => _ListResponseChanges._(_self);
-}
-
-class _ListResponseChanges<T> implements _ResponseChanges<List<T>> {
-  _ListResponseChanges._(ListResponse<T> dc) : data = dc.data;
-
-  @override
-  List<T> data;
-
-  @override
-  void update(void Function(_ListResponseChanges<T> c) updates) =>
-      updates(this);
-
-  @override
-  ListResponse<T> build() => ListResponse(
-        data: data,
-      );
 }
