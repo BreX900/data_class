@@ -14,10 +14,7 @@ class ParameterConfig {
   factory ParameterConfig.fromElement(ClassElements elements, FormalParameterElement element) {
     final annotation = ConstantReader(_typeChecker.firstAnnotationOf(element));
     if (annotation.isNull) {
-      return ParameterConfig(
-        accessor: _findAccessor(elements, element),
-        updatable: true,
-      );
+      return ParameterConfig(accessor: _findAccessor(elements, element), updatable: true);
     }
     return ParameterConfig(
       accessor: _findAccessor(elements, element),

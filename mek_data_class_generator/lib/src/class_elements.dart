@@ -11,10 +11,12 @@ class ClassElements {
 
   late final ConstructorElement2 constructor =
       element.unnamedConstructor2 ?? element.constructors2.first;
-  late final List<FieldElement2> allFields =
-      element.thisType.typeImplementations.expand(_fieldsOf).toList();
-  late final List<GetterElement> allGetters =
-      element.thisType.typeImplementations.expand(_gettersOf).toList();
+  late final List<FieldElement2> allFields = element.thisType.typeImplementations
+      .expand(_fieldsOf)
+      .toList();
+  late final List<GetterElement> allGetters = element.thisType.typeImplementations
+      .expand(_gettersOf)
+      .toList();
 
   ClassElements({required this.options, required this.element});
 
@@ -51,8 +53,10 @@ class ClassElements {
 
       if (!field.isFinal) {
         if (field.setter2 == null) continue;
-        throw InvalidGenerationSource('A comparable class cannot have `var` fields.',
-            element: field);
+        throw InvalidGenerationSource(
+          'A comparable class cannot have `var` fields.',
+          element: field,
+        );
       }
 
       yield field;
@@ -74,9 +78,5 @@ class ClassElements {
 class TypedClassElements extends ClassElements {
   final InterfaceType type;
 
-  TypedClassElements({
-    required super.options,
-    required this.type,
-    required super.element,
-  });
+  TypedClassElements({required super.options, required this.type, required super.element});
 }

@@ -20,8 +20,10 @@ abstract class HelperCore extends ClassElements {
   static final _parametersConfigs = Expando<Map<ClassConfig, ParameterConfig>>();
   @protected
   ParameterConfig parameterConfigOf(FormalParameterElement element) =>
-      (_parametersConfigs[element] ??= {})
-          .putIfAbsent(config, () => ParameterConfig.fromElement(this, element));
+      (_parametersConfigs[element] ??= {}).putIfAbsent(
+        config,
+        () => ParameterConfig.fromElement(this, element),
+      );
 
   @protected
   void registerMixinMethod(Method method);
@@ -37,7 +39,9 @@ abstract class HelperCore extends ClassElements {
 
   @protected
   void writeNewInstance(
-      StringBuffer buffer, void Function(FormalParameterElement parameter) writer) {
+    StringBuffer buffer,
+    void Function(FormalParameterElement parameter) writer,
+  ) {
     if (constructor.formalParameters.isEmpty) {
       if (constructor.isConst) buffer.write('const');
       buffer.write(constructor.displayName);

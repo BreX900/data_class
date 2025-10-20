@@ -12,13 +12,15 @@ void main() {
     });
 
     test('filled flat class', () {
-      final object = FakeClass(() => ClassToIndentString('Filled')
-        ..add('integer', 1)
-        ..add('double', 1.1)
-        ..add('boolean', true)
-        ..add('string', 'text')
-        ..add('null', null)
-        ..addIfExist('nullable', null));
+      final object = FakeClass(() {
+        return ClassToIndentString('Filled')
+          ..add('integer', 1)
+          ..add('double', 1.1)
+          ..add('boolean', true)
+          ..add('string', 'text')
+          ..add('null', null)
+          ..addIfExist('nullable', null);
+      });
 
       expect(
         object.toString(),
@@ -33,11 +35,16 @@ void main() {
     });
 
     test('inner flat class', () {
-      final stringify = FakeClass(() => ClassToIndentString('External')
-        ..add('externalValue', 1.1)
-        ..add('class', FakeClass(() {
-          return ClassToIndentString('Internal')..add('innerValue', true);
-        })));
+      final stringify = FakeClass(() {
+        return ClassToIndentString('External')
+          ..add('externalValue', 1.1)
+          ..add(
+            'class',
+            FakeClass(() {
+              return ClassToIndentString('Internal')..add('innerValue', true);
+            }),
+          );
+      });
 
       expect(
         stringify.toString(),

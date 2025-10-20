@@ -8,6 +8,7 @@ part of 'edge_cases.dart';
 
 mixin _$$Dollar {
   $Dollar get _self => this as $Dollar;
+
   $Dollar copyWith({
     $Parameter<$Dollar> $dollar = const Unspecified(),
     $Parameter<$Dollar?> euro = const Unspecified(),
@@ -17,18 +18,24 @@ mixin _$$Dollar {
     return $Dollar(
       $dollar: Unspecified.resolve(_self.$dollar, $dollar),
       euro: Unspecified.resolve(_self.euro, euro),
-      privateAndPublic:
-          Unspecified.resolve(_self.privateAndPublic, privateAndPublic),
+      privateAndPublic: Unspecified.resolve(
+        _self.privateAndPublic,
+        privateAndPublic,
+      ),
       private: Unspecified.resolve(_self._private, private),
     );
   }
 
   $Dollar change(void Function($DollarChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   $DollarChanges toChanges() => $DollarChanges._(_self);
+
   $Dollar rebuild(void Function($DollarBuilder b) updates) =>
       (toBuilder()..update(updates)).build();
+
   $DollarBuilder toBuilder() => $DollarBuilder()..replace(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -38,6 +45,7 @@ mixin _$$Dollar {
           _self.euro == other.euro &&
           _self._privateAndPublic == other._privateAndPublic &&
           _self._private == other._private;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -49,12 +57,13 @@ mixin _$$Dollar {
   }
 
   @override
-  String toString() => (ClassToString(r'$Dollar')
-        ..add(r'$dollar', _self.$dollar)
-        ..add('euro', _self.euro)
-        ..add('_privateAndPublic', _self._privateAndPublic)
-        ..add('_private', _self._private))
-      .toString();
+  String toString() =>
+      (ClassToString(r'$Dollar')
+            ..add(r'$dollar', _self.$dollar)
+            ..add('euro', _self.euro)
+            ..add('_privateAndPublic', _self._privateAndPublic)
+            ..add('_private', _self._private))
+          .toString();
 }
 
 class $DollarChanges {
@@ -97,8 +106,10 @@ class $DollarBuilder {
     return $Dollar(
       $dollar: $dollar.build(),
       euro: euro?.build(),
-      privateAndPublic:
-          ArgumentError.checkNotNull(privateAndPublic, 'privateAndPublic'),
+      privateAndPublic: ArgumentError.checkNotNull(
+        privateAndPublic,
+        'privateAndPublic',
+      ),
       private: ArgumentError.checkNotNull(private, 'private'),
     );
   }

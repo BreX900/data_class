@@ -29,11 +29,13 @@ mixin ChangeHelper on HelperCore {
       body = Code('${_classReference.symbol}._(_self)');
     }
 
-    return Method((b) => b
-      ..returns = _classReference
-      ..name = 'toChanges'
-      ..lambda = body != null
-      ..body = body);
+    return Method(
+      (b) => b
+        ..returns = _classReference
+        ..name = 'toChanges'
+        ..lambda = body != null
+        ..body = body,
+    );
   }
 
   Method _createChangeMethod() {
@@ -41,14 +43,20 @@ mixin ChangeHelper on HelperCore {
     if (!element.isAbstract) {
       body = const Code('(toChanges()..update(updates)).build()');
     }
-    return Method((b) => b
-      ..returns = Reference(element.thisType.getDisplayString())
-      ..name = 'change'
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = Reference('void Function(${_classReference.getDisplayString()} c)')
-        ..name = 'updates'))
-      ..lambda = body != null
-      ..body = body);
+    return Method(
+      (b) => b
+        ..returns = Reference(element.thisType.getDisplayString())
+        ..name = 'change'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = Reference('void Function(${_classReference.getDisplayString()} c)')
+              ..name = 'updates',
+          ),
+        )
+        ..lambda = body != null
+        ..body = body,
+    );
   }
 
   Class _createChangesClass(Iterable<FormalParameterElement> parameters) {
@@ -57,47 +65,66 @@ mixin ChangeHelper on HelperCore {
       if (elements.config.changeable) superElements = elements;
     }
 
-    final originalField = Field((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..modifier = FieldModifier.final$
-      ..type = Reference(element.thisType.getDisplayString())
-      ..name = '_original');
+    final originalField = Field(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..modifier = FieldModifier.final$
+        ..type = Reference(element.thisType.getDisplayString())
+        ..name = '_original',
+    );
     final fields = parameters.map((parameter) {
       TypeReference? type;
       if (elementsOf(parameter) case final data? when data.config.changeable) {
-        type = classReferenceFrom(data.element.thisType, _classNameSuffix)
-            .rebuild((b) => b..isNullable = parameter.type.isNullableType);
+        type = classReferenceFrom(
+          data.element.thisType,
+          _classNameSuffix,
+        ).rebuild((b) => b..isNullable = parameter.type.isNullableType);
       }
-      return Field((b) => b
-        ..annotations.addAll([
-          if (superElements case final elements? when elements.containsField(parameter.displayName))
-            Annotations.override,
-        ])
-        ..late = true
-        ..type = type ?? Reference(parameter.type.getAliasOrDisplayString())
-        ..name = parameter.displayName
-        ..assignment = lazyCode(() {
-          final code = '${originalField.name}.${parameterConfigOf(parameter).accessor}';
-          if (type == null) return Code(code);
-          return Code((type.isNullable ?? false) ? '$code?.toChanges()' : '$code.toChanges()');
-        }));
+      return Field(
+        (b) => b
+          ..annotations.addAll([
+            if (superElements case final elements?
+                when elements.containsField(parameter.displayName))
+              Annotations.override,
+          ])
+          ..late = true
+          ..type = type ?? Reference(parameter.type.getAliasOrDisplayString())
+          ..name = parameter.displayName
+          ..assignment = lazyCode(() {
+            final code = '${originalField.name}.${parameterConfigOf(parameter).accessor}';
+            if (type == null) return Code(code);
+            return Code((type.isNullable ?? false) ? '$code?.toChanges()' : '$code.toChanges()');
+          }),
+      );
     });
 
-    final constructor = Constructor((b) => b
-      ..name = '_'
-      ..requiredParameters.add(Parameter((b) => b
-        ..toThis = true
-        ..name = originalField.name)));
+    final constructor = Constructor(
+      (b) => b
+        ..name = '_'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..toThis = true
+              ..name = originalField.name,
+          ),
+        ),
+    );
 
-    final methodUpdate = Method((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..returns = const Reference('void')
-      ..name = 'update'
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = Reference('void Function(${_classReference.getDisplayString()} c)')
-        ..name = 'updates'))
-      ..lambda = !element.isAbstract
-      ..body = !element.isAbstract ? const Code('updates(this)') : null);
+    final methodUpdate = Method(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..returns = const Reference('void')
+        ..name = 'update'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = Reference('void Function(${_classReference.getDisplayString()} c)')
+              ..name = 'updates',
+          ),
+        )
+        ..lambda = !element.isAbstract
+        ..body = !element.isAbstract ? const Code('updates(this)') : null,
+    );
 
     Code? methodBuildCode;
     if (!element.isAbstract) {
@@ -122,23 +149,28 @@ mixin ChangeHelper on HelperCore {
         return Code(buffer.toString());
       });
     }
-    final methodBuild = Method((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..returns = Reference(element.thisType.getDisplayString())
-      ..name = 'build'
-      ..lambda = parameters.isEmpty
-      ..body = methodBuildCode);
+    final methodBuild = Method(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..returns = Reference(element.thisType.getDisplayString())
+        ..name = 'build'
+        ..lambda = parameters.isEmpty
+        ..body = methodBuildCode,
+    );
 
-    return Class((b) => b
-      ..abstract = element.isAbstract
-      ..name = _classReference.symbol
-      ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
-      ..implements.addAll(
-          [if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix)])
-      ..fields.add(originalField)
-      ..fields.addAll(fields)
-      ..constructors.add(constructor)
-      ..methods.add(methodUpdate)
-      ..methods.add(methodBuild));
+    return Class(
+      (b) => b
+        ..abstract = element.isAbstract
+        ..name = _classReference.symbol
+        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..implements.addAll([
+          if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix),
+        ])
+        ..fields.add(originalField)
+        ..fields.addAll(fields)
+        ..constructors.add(constructor)
+        ..methods.add(methodUpdate)
+        ..methods.add(methodBuild),
+    );
   }
 }

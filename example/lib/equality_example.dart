@@ -8,10 +8,7 @@ class Order with _$Order {
   final Product product;
   final Product? freeProduct;
 
-  const Order({
-    required this.product,
-    required this.freeProduct,
-  });
+  const Order({required this.product, required this.freeProduct});
 }
 
 @CustomDataClass()
@@ -19,10 +16,7 @@ class Category with _$Category {
   final List<Product> products;
   final List<Product?> freeProducts;
 
-  const Category({
-    required this.products,
-    required this.freeProducts,
-  });
+  const Category({required this.products, required this.freeProducts});
 }
 
 @CustomDataClass()
@@ -46,8 +40,5 @@ class ProductEquality implements Equality<Product> {
 }
 
 class CustomDataClass extends DataClass {
-  const CustomDataClass()
-      : super(
-          equalities: const [ProductEquality()],
-        );
+  const CustomDataClass() : super(equalities: const [ProductEquality()]);
 }

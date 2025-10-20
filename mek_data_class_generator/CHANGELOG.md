@@ -1,4 +1,6 @@
 
+## 4.1.0
+- chore: bumped min dart version to `3.8.0` 
 
 ## 4.0.0
 - feat: the `copyWith` method now supports `null` through the use of the `FutureOr` type and `Unspecified` class

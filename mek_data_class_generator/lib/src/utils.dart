@@ -8,9 +8,11 @@ abstract final class Annotations {
 }
 
 TypeReference classReferenceFrom(InterfaceType type, String suffix) {
-  return TypeReference((b) => b
-    ..symbol = '${type.element3.displayName.nonPrivate}$suffix'
-    ..types.addAll(type.typeArguments.map((e) => Reference('$e'))));
+  return TypeReference(
+    (b) => b
+      ..symbol = '${type.element3.displayName.nonPrivate}$suffix'
+      ..types.addAll(type.typeArguments.map((e) => Reference('$e'))),
+  );
 }
 
 extension TypeReferenceExtensions on TypeReference {

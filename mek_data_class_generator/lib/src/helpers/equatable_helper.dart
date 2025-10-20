@@ -24,38 +24,48 @@ mixin EquatableHelper on HelperCore {
   }
 
   Method _createEquals(Iterable<FieldElement2> fields) {
-    return Method((b) => b
-      ..annotations.add(const CodeExpression(Code('override')))
-      ..returns = const Reference('bool')
-      ..name = 'operator=='
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = const Reference('Object')
-        ..name = 'other'))
-      ..lambda = true
-      ..body = lazyCode(() {
-        final body = StringBuffer('identical(this, other) || other is ');
-        body.write(element.thisType.getDisplayString());
-        body.write(' && runtimeType == other.runtimeType ');
-        body.writeAll(fields.map(_codeFieldEquals));
-        return Code('$body');
-      }));
+    return Method(
+      (b) => b
+        ..annotations.add(const CodeExpression(Code('override')))
+        ..returns = const Reference('bool')
+        ..name = 'operator=='
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = const Reference('Object')
+              ..name = 'other',
+          ),
+        )
+        ..lambda = true
+        ..body = lazyCode(() {
+          final body = StringBuffer('identical(this, other) || other is ');
+          body.write(element.thisType.getDisplayString());
+          body.write(' && runtimeType == other.runtimeType ');
+          body.writeAll(fields.map(_codeFieldEquals));
+          return Code('$body');
+        }),
+    );
   }
 
   Method _createHashCode(Iterable<FieldElement2> fields) {
-    return Method((b) => b
-      ..annotations.add(const CodeExpression(Code('override')))
-      ..returns = const Reference('int')
-      ..type = MethodType.getter
-      ..name = 'hashCode'
-      ..body = lazyCode(() {
-        const hashVar = 'hashCode';
-        final body = StringBuffer('${fields.isEmpty ? 'final' : 'var'} $hashVar = 0;\n');
-        body.writeAll(fields.map((field) {
-          return '$hashVar = \$hashCombine($hashVar, ${_codeEqualityHashcode(field)});';
-        }));
-        body.write('return \$hashFinish($hashVar);');
-        return Code('$body');
-      }));
+    return Method(
+      (b) => b
+        ..annotations.add(const CodeExpression(Code('override')))
+        ..returns = const Reference('int')
+        ..type = MethodType.getter
+        ..name = 'hashCode'
+        ..body = lazyCode(() {
+          const hashVar = 'hashCode';
+          final body = StringBuffer('${fields.isEmpty ? 'final' : 'var'} $hashVar = 0;\n');
+          body.writeAll(
+            fields.map((field) {
+              return '$hashVar = \$hashCombine($hashVar, ${_codeEqualityHashcode(field)});';
+            }),
+          );
+          body.write('return \$hashFinish($hashVar);');
+          return Code('$body');
+        }),
+    );
   }
 
   String _codeFieldEquals(FieldElement2 field) {
@@ -96,8 +106,9 @@ mixin EquatableHelper on HelperCore {
   String? _codeEqualityClasses(DartType type) {
     for (final equality in config.equalities) {
       final extendedEqualityClassElement = equality.type!.element3! as ClassElement2;
-      final equalityClassElement =
-          extendedEqualityClassElement.allSupertypes.singleWhereOrNull((e) {
+      final equalityClassElement = extendedEqualityClassElement.allSupertypes.singleWhereOrNull((
+        e,
+      ) {
         return _equalityChecker.isExactly(e.element3);
       });
       if (equalityClassElement == null) continue;

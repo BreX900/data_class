@@ -10,11 +10,8 @@ class Order with _$Order {
   final bool isSent;
   final bool? isNew;
 
-  Order({
-    required this.product,
-    required bool? isSent,
-    required this.isNew,
-  }) : isSent = isSent ?? false;
+  Order({required this.product, required bool? isSent, required this.isNew})
+    : isSent = isSent ?? false;
 
   bool get isSentAndNew => isSent && (isNew ?? true);
   late final bool isSentOrNew = isSent || (isNew ?? true);
@@ -33,11 +30,8 @@ class Product with _$Product {
 
   final String idAndTitle;
 
-  const Product(
-    this.id,
-    @DataParameter(updatable: false) this.title, {
-    this.extraData,
-  }) : idAndTitle = '$id - $title';
+  const Product(this.id, @DataParameter(updatable: false) this.title, {this.extraData})
+    : idAndTitle = '$id - $title';
 
   factory Product.fromJson(Map<String, dynamic> map) => Object() as Product;
 }

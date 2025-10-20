@@ -7,9 +7,7 @@ abstract class Animal with _$Animal {
   final String finalField;
   String get getterField;
 
-  const Animal({
-    required this.finalField,
-  });
+  const Animal({required this.finalField});
 
   String get name;
 
@@ -21,10 +19,7 @@ class Dog extends Animal with Action, _$Dog {
   @override
   final String getterField;
 
-  Dog({
-    required super.finalField,
-    required this.getterField,
-  });
+  Dog({required super.finalField, required this.getterField});
 
   @override
   final String name = 'Dog';
@@ -38,10 +33,7 @@ class Cat extends Animal with Action, Description, _$Cat {
   @override
   final String getterField;
 
-  Cat({
-    required super.finalField,
-    required this.getterField,
-  });
+  Cat({required super.finalField, required this.getterField});
 
   @override
   final String name = 'Cat';

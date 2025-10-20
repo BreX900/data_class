@@ -8,6 +8,7 @@ part of 'typedef_example.dart';
 
 mixin _$Extra {
   Extra get _self => this as Extra;
+
   Extra copyWith({
     $Parameter<JsonMap<int>?> jsonMap = const Unspecified(),
     $Parameter<NullableJsonMap<double?>> nullableJsonMap = const Unspecified(),
@@ -16,8 +17,10 @@ mixin _$Extra {
   }) {
     return Extra(
       jsonMap: Unspecified.resolve(_self.jsonMap, jsonMap),
-      nullableJsonMap:
-          Unspecified.resolve(_self.nullableJsonMap, nullableJsonMap),
+      nullableJsonMap: Unspecified.resolve(
+        _self.nullableJsonMap,
+        nullableJsonMap,
+      ),
       product: Unspecified.resolve(_self.product, product),
       product2: Unspecified.resolve(_self.product2, product2),
     );
@@ -25,10 +28,14 @@ mixin _$Extra {
 
   Extra change(void Function(ExtraChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   ExtraChanges toChanges() => ExtraChanges._(_self);
+
   Extra rebuild(void Function(ExtraBuilder b) updates) =>
       (toBuilder()..update(updates)).build();
+
   ExtraBuilder toBuilder() => ExtraBuilder()..replace(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -38,6 +45,7 @@ mixin _$Extra {
           $mapEquality.equals(_self.nullableJsonMap, other.nullableJsonMap) &&
           _self.product == other.product &&
           _self.product2 == other.product2;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -49,12 +57,13 @@ mixin _$Extra {
   }
 
   @override
-  String toString() => (ClassToString('Extra')
-        ..add('jsonMap', _self.jsonMap)
-        ..add('nullableJsonMap', _self.nullableJsonMap)
-        ..add('product', _self.product)
-        ..add('product2', _self.product2))
-      .toString();
+  String toString() =>
+      (ClassToString('Extra')
+            ..add('jsonMap', _self.jsonMap)
+            ..add('nullableJsonMap', _self.nullableJsonMap)
+            ..add('product', _self.product)
+            ..add('product2', _self.product2))
+          .toString();
 }
 
 class ExtraChanges {
@@ -96,8 +105,10 @@ class ExtraBuilder {
   Extra build() {
     return Extra(
       jsonMap: jsonMap,
-      nullableJsonMap:
-          ArgumentError.checkNotNull(nullableJsonMap, 'nullableJsonMap'),
+      nullableJsonMap: ArgumentError.checkNotNull(
+        nullableJsonMap,
+        'nullableJsonMap',
+      ),
       product: ArgumentError.checkNotNull(product, 'product'),
       product2: ArgumentError.checkNotNull(product2, 'product2'),
     );
@@ -116,12 +127,12 @@ class ExtraBuilder {
 // **************************************************************************
 
 Extra _$ExtraFromJson(Map<String, dynamic> json) => Extra(
-      jsonMap: (json['jsonMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, (e as num).toInt()),
-      ),
-      nullableJsonMap: (json['nullableJsonMap'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, (e as num?)?.toDouble()),
-      ),
-      product: Product.fromJson(json['product'] as Map<String, dynamic>),
-      product2: Product.fromJson(json['product2'] as Map<String, dynamic>),
-    );
+  jsonMap: (json['jsonMap'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(k, (e as num).toInt()),
+  ),
+  nullableJsonMap: (json['nullableJsonMap'] as Map<String, dynamic>).map(
+    (k, e) => MapEntry(k, (e as num?)?.toDouble()),
+  ),
+  product: Product.fromJson(json['product'] as Map<String, dynamic>),
+  product2: Product.fromJson(json['product2'] as Map<String, dynamic>),
+);

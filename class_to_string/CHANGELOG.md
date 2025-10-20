@@ -1,3 +1,7 @@
+
+## 1.2.0
+- chore: bumped min dart version to `3.8.0`
+
 ## 1.1.0
 - feat: The output is formatted the same as some dart code
 

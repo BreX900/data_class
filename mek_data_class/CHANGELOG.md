@@ -1,4 +1,7 @@
 
+## 2.1.0
+- chore: bumped min dart version to `3.8.0`
+
 ## 2.0.0
 - feat!: the `DataClass.updatable` field has been moved to the `DataParameter` annotation which must be applied to constructor fields
 - feat: added the `Unspecified` class to support `null` as a parameter in the `copyWith` method

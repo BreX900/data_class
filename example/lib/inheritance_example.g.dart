@@ -25,6 +25,7 @@ abstract class AnimalChanges {
 
 mixin _$Dog {
   Dog get _self => this as Dog;
+
   Dog copyWith({
     $Parameter<String> finalField = const Unspecified(),
     $Parameter<String> getterField = const Unspecified(),
@@ -37,7 +38,9 @@ mixin _$Dog {
 
   Dog change(void Function(DogChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   DogChanges toChanges() => DogChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -46,6 +49,7 @@ mixin _$Dog {
           _self.getterField == other.getterField &&
           _self.name == other.name &&
           _self.finalField == other.finalField;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -56,11 +60,12 @@ mixin _$Dog {
   }
 
   @override
-  String toString() => (ClassToString('Dog')
-        ..add('getterField', _self.getterField)
-        ..add('name', _self.name)
-        ..add('finalField', _self.finalField))
-      .toString();
+  String toString() =>
+      (ClassToString('Dog')
+            ..add('getterField', _self.getterField)
+            ..add('name', _self.name)
+            ..add('finalField', _self.finalField))
+          .toString();
 }
 
 class DogChanges implements AnimalChanges {
@@ -79,15 +84,13 @@ class DogChanges implements AnimalChanges {
 
   @override
   Dog build() {
-    return Dog(
-      finalField: finalField,
-      getterField: getterField,
-    );
+    return Dog(finalField: finalField, getterField: getterField);
   }
 }
 
 mixin _$Cat {
   Cat get _self => this as Cat;
+
   Cat copyWith({
     $Parameter<String> finalField = const Unspecified(),
     $Parameter<String> getterField = const Unspecified(),
@@ -100,7 +103,9 @@ mixin _$Cat {
 
   Cat change(void Function(CatChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   CatChanges toChanges() => CatChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -109,6 +114,7 @@ mixin _$Cat {
           _self.getterField == other.getterField &&
           _self.name == other.name &&
           _self.finalField == other.finalField;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -119,11 +125,12 @@ mixin _$Cat {
   }
 
   @override
-  String toString() => (ClassToString('Cat')
-        ..add('getterField', _self.getterField)
-        ..add('name', _self.name)
-        ..add('finalField', _self.finalField))
-      .toString();
+  String toString() =>
+      (ClassToString('Cat')
+            ..add('getterField', _self.getterField)
+            ..add('name', _self.name)
+            ..add('finalField', _self.finalField))
+          .toString();
 }
 
 class CatChanges implements AnimalChanges {
@@ -142,9 +149,6 @@ class CatChanges implements AnimalChanges {
 
   @override
   Cat build() {
-    return Cat(
-      finalField: finalField,
-      getterField: getterField,
-    );
+    return Cat(finalField: finalField, getterField: getterField);
   }
 }

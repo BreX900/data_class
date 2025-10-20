@@ -16,6 +16,6 @@ class $Dollar with _$$Dollar {
     required this.euro,
     required String privateAndPublic,
     required String private,
-  })  : _privateAndPublic = privateAndPublic,
-        _private = private;
+  }) : _privateAndPublic = privateAndPublic,
+       _private = private;
 }

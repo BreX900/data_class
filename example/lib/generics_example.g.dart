@@ -25,6 +25,7 @@ abstract class ResponseChanges<T> {
 
 mixin _$PaginatedResponse<T extends Object> {
   PaginatedResponse<T> get _self => this as PaginatedResponse<T>;
+
   PaginatedResponse<T> copyWith({
     $Parameter<T> data = const Unspecified(),
     $Parameter<int> total = const Unspecified(),
@@ -36,9 +37,11 @@ mixin _$PaginatedResponse<T extends Object> {
   }
 
   PaginatedResponse<T> change(
-          void Function(PaginatedResponseChanges<T> c) updates) =>
-      (toChanges()..update(updates)).build();
+    void Function(PaginatedResponseChanges<T> c) updates,
+  ) => (toChanges()..update(updates)).build();
+
   PaginatedResponseChanges<T> toChanges() => PaginatedResponseChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -46,6 +49,7 @@ mixin _$PaginatedResponse<T extends Object> {
           runtimeType == other.runtimeType &&
           _self.total == other.total &&
           _self.data == other.data;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -55,10 +59,11 @@ mixin _$PaginatedResponse<T extends Object> {
   }
 
   @override
-  String toString() => (ClassToString('PaginatedResponse', [T])
-        ..add('total', _self.total)
-        ..add('data', _self.data))
-      .toString();
+  String toString() =>
+      (ClassToString('PaginatedResponse', [T])
+            ..add('total', _self.total)
+            ..add('data', _self.data))
+          .toString();
 }
 
 class PaginatedResponseChanges<T extends Object> implements ResponseChanges<T> {
@@ -78,30 +83,29 @@ class PaginatedResponseChanges<T extends Object> implements ResponseChanges<T> {
 
   @override
   PaginatedResponse<T> build() {
-    return PaginatedResponse(
-      data: data,
-      total: total,
-    );
+    return PaginatedResponse(data: data, total: total);
   }
 }
 
 mixin _$ListResponse<T> {
   ListResponse<T> get _self => this as ListResponse<T>;
+
   ListResponse<T> copyWith({$Parameter<List<T>> data = const Unspecified()}) {
-    return ListResponse(
-      data: Unspecified.resolve(_self.data, data),
-    );
+    return ListResponse(data: Unspecified.resolve(_self.data, data));
   }
 
   ListResponse<T> change(void Function(ListResponseChanges<T> c) updates) =>
       (toChanges()..update(updates)).build();
+
   ListResponseChanges<T> toChanges() => ListResponseChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ListResponse<T> &&
           runtimeType == other.runtimeType &&
           _self.data == other.data;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -128,8 +132,6 @@ class ListResponseChanges<T> implements ResponseChanges<List<T>> {
 
   @override
   ListResponse<T> build() {
-    return ListResponse(
-      data: data,
-    );
+    return ListResponse(data: data);
   }
 }

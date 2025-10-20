@@ -1,7 +1,7 @@
 name: mek_data_class
 description: >
   Generate `hashCode`, `==`, `toString`, `copyWith`, `change` methods and `Builder` class with low code
-version: 2.0.0
+version: 2.1.0
 homepage: https://github.com/BreX900/data_class/tree/main/mek_data_class
 repository: https://github.com/BreX900/data_class
 topics:
@@ -10,7 +10,7 @@ topics:
   - codegen
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.8.0
 
 scripts:
   publish: dart pub publish

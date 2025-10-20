@@ -8,8 +8,10 @@ const Equality<List<Object?>?> $listEquality = ListEquality($CollectionEquality(
 const Equality<Set<Object?>?> $setEquality = SetEquality($CollectionEquality());
 
 /// For use by generated code in equal operator. Do not use directly.
-const Equality<Map<Object?, Object?>?> $mapEquality =
-    MapEquality(keys: $CollectionEquality(), values: $CollectionEquality());
+const Equality<Map<Object?, Object?>?> $mapEquality = MapEquality(
+  keys: $CollectionEquality(),
+  values: $CollectionEquality(),
+);
 
 typedef $MultiEquality<E> = MultiEquality<E>;
 

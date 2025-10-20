@@ -26,11 +26,13 @@ mixin BuilderHelper on HelperCore {
     if (!element.isAbstract) {
       body = Code('${_classReference.symbol}()..replace(_self)');
     }
-    return Method((b) => b
-      ..returns = Reference(_classReference.getDisplayString())
-      ..name = 'toBuilder'
-      ..lambda = body != null
-      ..body = body);
+    return Method(
+      (b) => b
+        ..returns = Reference(_classReference.getDisplayString())
+        ..name = 'toBuilder'
+        ..lambda = body != null
+        ..body = body,
+    );
   }
 
   Method _createRebuildMixinMethod() {
@@ -38,14 +40,20 @@ mixin BuilderHelper on HelperCore {
     if (!element.isAbstract) {
       body = const Code('(toBuilder()..update(updates)).build()');
     }
-    return Method((b) => b
-      ..returns = Reference(element.thisType.getDisplayString())
-      ..name = 'rebuild'
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = Reference('void Function(${_classReference.getDisplayString()} b)')
-        ..name = 'updates'))
-      ..lambda = body != null
-      ..body = body);
+    return Method(
+      (b) => b
+        ..returns = Reference(element.thisType.getDisplayString())
+        ..name = 'rebuild'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = Reference('void Function(${_classReference.getDisplayString()} b)')
+              ..name = 'updates',
+          ),
+        )
+        ..lambda = body != null
+        ..body = body,
+    );
   }
 
   Class _createBuilderClass() {
@@ -57,30 +65,41 @@ mixin BuilderHelper on HelperCore {
     final fields = parameters.map((parameter) {
       TypeReference? type;
       if (elementsOf(parameter) case final data? when data.config.buildable) {
-        type = classReferenceFrom(data.element.thisType, _classNameSuffix)
-            .rebuild((b) => b..isNullable = parameter.type.isNullableType);
+        type = classReferenceFrom(
+          data.element.thisType,
+          _classNameSuffix,
+        ).rebuild((b) => b..isNullable = parameter.type.isNullableType);
       }
-      return Field((b) => b
-        ..annotations.addAll([
-          if (superElements case final elements? when elements.containsField(parameter.displayName))
-            Annotations.override,
-        ])
-        ..type = type ?? Reference(parameter.type.getAliasOrDisplayString().nullable)
-        ..name = parameter.displayName
-        ..assignment = type != null && !(type.isNullable ?? false)
-            ? Code('${type.getDisplayString()}()')
-            : null);
+      return Field(
+        (b) => b
+          ..annotations.addAll([
+            if (superElements case final elements?
+                when elements.containsField(parameter.displayName))
+              Annotations.override,
+          ])
+          ..type = type ?? Reference(parameter.type.getAliasOrDisplayString().nullable)
+          ..name = parameter.displayName
+          ..assignment = type != null && !(type.isNullable ?? false)
+              ? Code('${type.getDisplayString()}()')
+              : null,
+      );
     });
 
-    final methodUpdate = Method((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..returns = const Reference('void')
-      ..name = 'update'
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = Reference('void Function(${_classReference.getDisplayString()} b)')
-        ..name = 'updates'))
-      ..lambda = !element.isAbstract
-      ..body = element.isAbstract ? null : const Code('updates(this)'));
+    final methodUpdate = Method(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..returns = const Reference('void')
+        ..name = 'update'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = Reference('void Function(${_classReference.getDisplayString()} b)')
+              ..name = 'updates',
+          ),
+        )
+        ..lambda = !element.isAbstract
+        ..body = element.isAbstract ? null : const Code('updates(this)'),
+    );
 
     Code? methodBuildCode;
     if (!element.isAbstract) {
@@ -105,11 +124,13 @@ mixin BuilderHelper on HelperCore {
         return Code(buffer.toString());
       });
     }
-    final methodBuild = Method((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..returns = Reference(element.thisType.getDisplayString())
-      ..name = 'build'
-      ..body = methodBuildCode);
+    final methodBuild = Method(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..returns = Reference(element.thisType.getDisplayString())
+        ..name = 'build'
+        ..body = methodBuildCode,
+    );
 
     Code? methodReplaceCode;
     if (!element.isAbstract) {
@@ -129,24 +150,33 @@ mixin BuilderHelper on HelperCore {
         return Code(buffer.toString());
       });
     }
-    final methodReplace = Method((b) => b
-      ..annotations.addAll([if (superElements != null) Annotations.override])
-      ..returns = const Reference('void')
-      ..name = 'replace'
-      ..requiredParameters.add(Parameter((b) => b
-        ..type = Reference('covariant ${element.thisType.getDisplayString()}')
-        ..name = 'other'))
-      ..body = methodReplaceCode);
+    final methodReplace = Method(
+      (b) => b
+        ..annotations.addAll([if (superElements != null) Annotations.override])
+        ..returns = const Reference('void')
+        ..name = 'replace'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..type = Reference('covariant ${element.thisType.getDisplayString()}')
+              ..name = 'other',
+          ),
+        )
+        ..body = methodReplaceCode,
+    );
 
-    return Class((b) => b
-      ..abstract = element.isAbstract
-      ..name = _classReference.symbol
-      ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
-      ..implements.addAll(
-          [if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix)])
-      ..fields.addAll(fields)
-      ..methods.add(methodUpdate)
-      ..methods.add(methodBuild)
-      ..methods.add(methodReplace));
+    return Class(
+      (b) => b
+        ..abstract = element.isAbstract
+        ..name = _classReference.symbol
+        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..implements.addAll([
+          if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix),
+        ])
+        ..fields.addAll(fields)
+        ..methods.add(methodUpdate)
+        ..methods.add(methodBuild)
+        ..methods.add(methodReplace),
+    );
   }
 }

@@ -63,26 +63,32 @@ class _RegistryHelper extends HelperCore
   void registerMixinSelfGetter() => _shouldCreateSelfMixinGetter = true;
 
   Library createLibrary() {
-    return Library((b) => b
-      ..body.add(_createMixin())
-      ..body.addAll(_libraryBody));
+    return Library(
+      (b) => b
+        ..body.add(_createMixin())
+        ..body.addAll(_libraryBody),
+    );
   }
 
   Mixin _createMixin() {
     Method? selfMethod;
     if (_shouldCreateSelfMixinGetter) {
-      selfMethod = Method((b) => b
-        ..returns = Reference(element.thisType.getDisplayString())
-        ..type = MethodType.getter
-        ..name = '_self'
-        ..lambda = true
-        ..body = Code('this as ${element.thisType.getDisplayString()}'));
+      selfMethod = Method(
+        (b) => b
+          ..returns = Reference(element.thisType.getDisplayString())
+          ..type = MethodType.getter
+          ..name = '_self'
+          ..lambda = true
+          ..body = Code('this as ${element.thisType.getDisplayString()}'),
+      );
     }
 
-    return Mixin((b) => b
-      ..name = '_\$${element.displayName.nonPrivate}'
-      ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
-      ..methods.addAll([if (selfMethod != null) selfMethod])
-      ..methods.addAll(_mixinMethods));
+    return Mixin(
+      (b) => b
+        ..name = '_\$${element.displayName.nonPrivate}'
+        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..methods.addAll([if (selfMethod != null) selfMethod])
+        ..methods.addAll(_mixinMethods),
+    );
   }
 }

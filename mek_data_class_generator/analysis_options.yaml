@@ -1,5 +1,8 @@
 include: package:mek_lints/dart.yaml
 
+formatter:
+  page_width: 100
+
 analyzer:
   errors:
     avoid_positional_boolean_parameters: false

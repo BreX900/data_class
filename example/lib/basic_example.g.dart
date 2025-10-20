@@ -8,12 +8,17 @@ part of 'basic_example.dart';
 
 mixin _$Order {
   Order get _self => this as Order;
+
   Order change(void Function(OrderChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   OrderChanges toChanges() => OrderChanges._(_self);
+
   Order rebuild(void Function(OrderBuilder b) updates) =>
       (toBuilder()..update(updates)).build();
+
   OrderBuilder toBuilder() => OrderBuilder()..replace(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -22,22 +27,26 @@ mixin _$Order {
           const ProductEquality().equals(_self.product, other.product) &&
           _self.isSent == other.isSent &&
           _self.isNew == other.isNew;
+
   @override
   int get hashCode {
     var hashCode = 0;
-    hashCode =
-        $hashCombine(hashCode, const ProductEquality().hash(_self.product));
+    hashCode = $hashCombine(
+      hashCode,
+      const ProductEquality().hash(_self.product),
+    );
     hashCode = $hashCombine(hashCode, _self.isSent.hashCode);
     hashCode = $hashCombine(hashCode, _self.isNew.hashCode);
     return $hashFinish(hashCode);
   }
 
   @override
-  String toString() => (ClassToString('Order')
-        ..add('product', _self.product)
-        ..add('isSent', _self.isSent)
-        ..add('isNew', _self.isNew))
-      .toString();
+  String toString() =>
+      (ClassToString('Order')
+            ..add('product', _self.product)
+            ..add('isSent', _self.isSent)
+            ..add('isNew', _self.isNew))
+          .toString();
 }
 
 class OrderChanges {
@@ -54,11 +63,7 @@ class OrderChanges {
   void update(void Function(OrderChanges c) updates) => updates(this);
 
   Order build() {
-    return Order(
-      product: product.build(),
-      isSent: isSent,
-      isNew: isNew,
-    );
+    return Order(product: product.build(), isSent: isSent, isNew: isNew);
   }
 }
 
@@ -88,6 +93,7 @@ class OrderBuilder {
 
 mixin _$Product {
   Product get _self => this as Product;
+
   Product copyWith({
     $Parameter<int> id = const Unspecified(),
     $Parameter<Map<String, int?>?> extraData = const Unspecified(),
@@ -101,7 +107,9 @@ mixin _$Product {
 
   Product change(void Function(ProductChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   ProductChanges toChanges() => ProductChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -110,6 +118,7 @@ mixin _$Product {
           _self.title == other.title &&
           $mapEquality.equals(_self.extraData, other.extraData) &&
           _self.idAndTitle == other.idAndTitle;
+
   @override
   int get hashCode {
     var hashCode = 0;
@@ -120,11 +129,12 @@ mixin _$Product {
   }
 
   @override
-  String toString() => (ClassToString('Product')
-        ..add('id', _self.id)
-        ..add('title', _self.title)
-        ..add('idAndTitle', _self.idAndTitle))
-      .toString();
+  String toString() =>
+      (ClassToString('Product')
+            ..add('id', _self.id)
+            ..add('title', _self.title)
+            ..add('idAndTitle', _self.idAndTitle))
+          .toString();
 }
 
 class ProductChanges {
@@ -139,23 +149,23 @@ class ProductChanges {
   void update(void Function(ProductChanges c) updates) => updates(this);
 
   Product build() {
-    return Product(
-      id,
-      _original.title,
-      extraData: extraData,
-    );
+    return Product(id, _original.title, extraData: extraData);
   }
 }
 
 mixin _$EmptyClass {
   EmptyClass get _self => this as EmptyClass;
+
   EmptyClass change(void Function(EmptyClassChanges c) updates) =>
       (toChanges()..update(updates)).build();
+
   EmptyClassChanges toChanges() => EmptyClassChanges._(_self);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is EmptyClass && runtimeType == other.runtimeType;
+
   @override
   int get hashCode {
     final hashCode = 0;

@@ -74,12 +74,7 @@ class DataField {
   ///   @DataField(stringify: false)
   ///   final String field;
   /// }
-  const DataField({
-    this.equatable = true,
-    this.equality,
-    this.stringify = true,
-    this.stringifier,
-  });
+  const DataField({this.equatable = true, this.equality, this.stringify = true, this.stringifier});
 }
 
 /// Customize data class parameter generation

@@ -1,1 +1,4 @@
 include: package:mek_lints/dart.yaml
+
+formatter:
+  page_width: 100

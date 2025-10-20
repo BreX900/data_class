@@ -37,16 +37,26 @@ mixin CopyWithHelper on HelperCore {
         return Code(buffer.toString());
       });
     }
-    return Method((b) => b
-      ..returns = Reference(element.thisType.getDisplayString())
-      ..name = 'copyWith'
-      ..optionalParameters.addAll(parameters.map((parameter) => Parameter((b) => b
-        ..named = true
-        ..type = TypeReference((b) => b
-          ..symbol = r'$Parameter'
-          ..types.add(Reference(parameter.type.getAliasOrDisplayString())))
-        ..name = parameter.displayName
-        ..defaultTo = const Code('const Unspecified()'))))
-      ..body = body);
+    return Method(
+      (b) => b
+        ..returns = Reference(element.thisType.getDisplayString())
+        ..name = 'copyWith'
+        ..optionalParameters.addAll(
+          parameters.map(
+            (parameter) => Parameter(
+              (b) => b
+                ..named = true
+                ..type = TypeReference(
+                  (b) => b
+                    ..symbol = r'$Parameter'
+                    ..types.add(Reference(parameter.type.getAliasOrDisplayString())),
+                )
+                ..name = parameter.displayName
+                ..defaultTo = const Code('const Unspecified()'),
+            ),
+          ),
+        )
+        ..body = body,
+    );
   }
 }
