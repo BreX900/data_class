@@ -23,11 +23,11 @@ void main() {
       expect(
         object.toString(),
         'Filled(\n'
-        '  integer=1,\n'
-        '  double=1.1,\n'
-        '  boolean=true,\n'
-        '  string=text,\n'
-        '  null=null,\n'
+        '  integer: 1,\n'
+        '  double: 1.1,\n'
+        '  boolean: true,\n'
+        '  string: \'text\',\n'
+        '  null: null,\n'
         ')',
       );
     });
@@ -42,9 +42,9 @@ void main() {
       expect(
         stringify.toString(),
         'External(\n'
-        '  externalValue=1.1,\n'
-        '  class=Internal(\n'
-        '    innerValue=true,\n'
+        '  externalValue: 1.1,\n'
+        '  class: Internal(\n'
+        '    innerValue: true,\n'
         '  ),\n'
         ')',
       );

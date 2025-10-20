@@ -20,7 +20,8 @@ void main() {
         ..add('null', null)
         ..addIfExist('nullable', null));
 
-      expect(object.toString(), 'Filled(integer=1,double=1.1,boolean=true,string=text,null=null)');
+      expect(
+          object.toString(), "Filled(integer:1,double:1.1,boolean:true,string:'text',null:null)");
     });
 
     test('inner flat class', () {
@@ -30,7 +31,7 @@ void main() {
           return ClassToFlatString('Internal')..add('innerValue', true);
         })));
 
-      expect(object.toString(), 'External(externalValue=1.1,class=Internal(innerValue=true))');
+      expect(object.toString(), 'External(externalValue:1.1,class:Internal(innerValue:true))');
     });
   });
 }

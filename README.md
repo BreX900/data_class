@@ -9,9 +9,9 @@ Auto generation of:
 - [x] Inheritance and generic classes supported
 - [x] `hashCode` and `==` methods
 - [x] pretty `toString` method
-- [x] `copyWith` method
-- [x] `*Changes` class and `change`, `toChanges` methods in data class
-- [x] `*Builder` class to build your class
+- [x] `copyWith` method with support a `null` values
+- [x] `*Changes` class to updated your data class
+- [x] `*Builder` class to build or update your data class
 
 ## Install package
 
@@ -51,25 +51,22 @@ You can see some examples in
 ### Basic
 
 Because the boiler plate is generated as a mixin, it is minimally intrusive on the interface of the class.
-You only have to provide a constructor with named arguments for all fields and extend the generated mixin.
+You only have to provide a constructor with positional or named arguments for all fields and extend the generated mixin.
 
 ```dart
 @DataClass()
 class Product with _$Product {
   final String title;
-  @DataField(equality: DefaultEquality())
   final double price;
 
   const Product({
     required this.title,
     required this.price,
   });
-  
-  String get titlePrice => '$title$price';
 }
 ```
 
-Customization of the equal operator and hashcode through the use of the Equality class is supported. See example.
+Customization of the equal operator and hashcode through the use of the Equality class is supported. [See example.](https://github.com/BreX900/data_class/blob/main/example/lib/equality_example.dart)
 
 ### Inheritance
 Taking into consideration the previous example you can write and inherit all methods
@@ -80,10 +77,10 @@ class PrettyProduct extends Product with _$PrettyProduct {
   final String color;
 
   const Product({
-    required String title,
-    required double price,
+    required super.title,
+    required super.price,
     required this.color,
-  }) : super(title: title, price: price);
+  });
 
   String get titlePriceColor => '$titlePrice$color';
 }
@@ -108,20 +105,20 @@ Use the [ClassToString] package to perform the `toString` method
 ```dart
 final product = Product(...);
 /// Product(
-///   title=Overlord,
-///   price=12,
+///   title: "Overlord",
+///   price: 12,
 /// )
 print(product);
 ```
 
 ### CopyWith
-The classic copyWith, need explanations? No, but try to prefer using `*Changes` which supports nullability
+The classic copyWith, need explanations? No, but it also supports `null` values!
 ```dart
 final product = Product(...);
 print(product.copyWith(title: 'Raisekamika'));
 ```
 
-> Enable in `build.yaml` with `copyable: true`
+> Enable in `DataClass` annotation or `build.yaml` file with `copyable: true`
 
 ### *Changes
 Unlike a builder you cannot set values to null but the field is not defined as such and cannot be instantiated
@@ -134,7 +131,7 @@ changes.title = 'Raisekamika';
 final updatedProduct = changes.build();
 ```
 
-> Enable in `build.yaml` with `changeable: true`
+> Enable in `DataClass` annotation or `build.yaml` file with `changeable: true`
 
 #### *Changes.update
 Update the `*Changes` class by passing a function
@@ -171,31 +168,8 @@ builder.id = 12;
 final product = builder.build();
 ```
 
-### DataClassFields
-Generate a class that contains the names of the fields of the Data Class. `@DataClass(createFieldsClass)`
-Example:
-```dart
-@DataClass(createFieldsClass: true)
-class Product with _$Product {
-  final int id;
-  const Product({required this.id});
-}
-// GENERATED CODE
-class ProductFields {
-  final String _path;
-  const ProductFields([this._path = '']);
-  String get id => '${_path}id';
-}
-```
-
 ## Global Configs
 See the docs of the DataClass class for more information
-
-| Key                  | Default  | Description                                                                                        |
-|----------------------|----------|----------------------------------------------------------------------------------------------------|
-| stringify_if_null    | `true`   | if set to `false`, null values will not be included in the toString                                |
-| stringify_type       | `params` | if set to `fields`, fields of a class that are not passed to the constructor will also be included |
-| fields_class_visible | `true`   | if set to `false`, the fields classes is private                                                   |
 
 ```yaml
 # build.yaml
@@ -205,23 +179,12 @@ targets:
       mek_data_class_generator:
         enabled: true
         options:
-          comparable: true
+          equatable: true
           stringify: true
-          stringify_type: params | fields
-          stringify_if_null: true
+          stringify_if_null: true # if set to `false`, null values will not be included in the toString 
           buildable: false
           copyable: false
           changeable: false
-          changes_visible: false
-          create_fields_class: false
-          fields_class_visible: true
-```
-
-### Recommended options
-```yaml
-comparable: true
-stringify: true
-changeable: true
 ```
 
 ## Motivations

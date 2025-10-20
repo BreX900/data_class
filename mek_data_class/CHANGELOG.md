@@ -1,3 +1,12 @@
+
+## 2.0.0
+- feat!: the `DataClass.updatable` field has been moved to the `DataParameter` annotation which must be applied to constructor fields
+- feat: added the `Unspecified` class to support `null` as a parameter in the `copyWith` method
+- refactor!: removed class visibility fields, now all `*Changes` and `*Builder` classes are public
+- refactor!: removed support for `DataClass.createFieldsClass` as it is supported by the `json_serializable` package
+- refactor!: renamed the `DataField.comparable` field to `DataField.comparable`
+
+
 ## 1.4.1
 - fix: fixed Set equality allowing all keys
 

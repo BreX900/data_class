@@ -1,11 +1,21 @@
-- build: Allow `code_builder: ^4.4.0`
+
+
+## 4.0.0
+- feat: the `copyWith` method now supports `null` through the use of the `FutureOr` type and `Unspecified` class
+- feat!: The `*Changes` and `*Builder` classes now expose `*Changes` and `*Builder` fields when possible
+- feat: to string only use non-abstract and non-late class fields
+- feat: equality only use non-abstract and non-late class fields
+- feat: data class modifiers only use constructor parameters
+- build: allow `code_builder: ^4.4.0`
+- refactor!: removed support for `DataClass.createFieldsClass` as it is supported by the `json_serializable` package
+- refactor!: all `*Changes` and `*Builder` classes are public
+
 
 ## 3.0.1
 - build: Allow `build: '>=3.0.0 <5.0.0'`
 - build: Allow `source_gen: '>=3.1.0 <5.0.0'`, stop using deprecated `TypeChecker.fromRuntime` and use the new `TypeChecker.typeNamed` instead
 
 ## 3.0.0
-
 - build: bumped `analyzer` dependency to `>=7.4.0 <9.0.0`
 - refactor!: removed support to namespace (prefix imports): `library.Product`
 
