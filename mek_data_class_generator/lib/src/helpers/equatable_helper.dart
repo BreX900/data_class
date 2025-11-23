@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:collection/collection.dart';
@@ -23,7 +23,7 @@ mixin EquatableHelper on HelperCore {
     registerMixinMethod(_createHashCode(fields));
   }
 
-  Method _createEquals(Iterable<FieldElement2> fields) {
+  Method _createEquals(Iterable<FieldElement> fields) {
     return Method(
       (b) => b
         ..annotations.add(const CodeExpression(Code('override')))
@@ -47,7 +47,7 @@ mixin EquatableHelper on HelperCore {
     );
   }
 
-  Method _createHashCode(Iterable<FieldElement2> fields) {
+  Method _createHashCode(Iterable<FieldElement> fields) {
     return Method(
       (b) => b
         ..annotations.add(const CodeExpression(Code('override')))
@@ -68,7 +68,7 @@ mixin EquatableHelper on HelperCore {
     );
   }
 
-  String _codeFieldEquals(FieldElement2 field) {
+  String _codeFieldEquals(FieldElement field) {
     final equality = _codeEquality(field);
     if (equality != null) {
       return ' && $equality.equals(_self.${field.displayName}, other.${field.displayName})';
@@ -77,7 +77,7 @@ mixin EquatableHelper on HelperCore {
     return ' && _self.${field.displayName} == other.${field.displayName}';
   }
 
-  String _codeEqualityHashcode(FieldElement2 field) {
+  String _codeEqualityHashcode(FieldElement field) {
     final equality = _codeEquality(field);
     if (equality != null) return '$equality.hash(_self.${field.displayName})';
 
@@ -86,7 +86,7 @@ mixin EquatableHelper on HelperCore {
 
   // COMMON
 
-  String? _codeEquality(FieldElement2 field) {
+  String? _codeEquality(FieldElement field) {
     if (fieldConfigOf(field).equality case final equality?) return 'const ${equality.type!}()';
 
     final type = field.type;
@@ -105,11 +105,11 @@ mixin EquatableHelper on HelperCore {
 
   String? _codeEqualityClasses(DartType type) {
     for (final equality in config.equalities) {
-      final extendedEqualityClassElement = equality.type!.element3! as ClassElement2;
+      final extendedEqualityClassElement = equality.type!.element! as ClassElement;
       final equalityClassElement = extendedEqualityClassElement.allSupertypes.singleWhereOrNull((
         e,
       ) {
-        return _equalityChecker.isExactly(e.element3);
+        return _equalityChecker.isExactly(e.element);
       });
       if (equalityClassElement == null) continue;
 

@@ -1,4 +1,10 @@
 
+## 4.1.1
+- build: require `analyzer: ^9.0.0`
+- build: require `build: ^4.0.3`
+- build: require `source_gen: ^4.1.1`
+- build: require `source_helper: ^1.3.9`
+
 ## 4.1.0
 - chore: bumped min dart version to `3.8.0` 
 

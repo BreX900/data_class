@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/class_elements.dart';
 import 'package:mek_data_class_generator/src/configs/class_config.dart';
@@ -9,12 +9,12 @@ import 'package:meta/meta.dart';
 abstract class HelperCore extends ClassElements {
   HelperCore({required super.options, required super.element});
 
-  late final List<FieldElement2> fields = allFields.where(_checkFieldConcrete).toList();
+  late final List<FieldElement> fields = allFields.where(_checkFieldConcrete).toList();
   late final List<FormalParameterElement> parameters = constructor.formalParameters;
 
   static final _fieldConfigs = Expando<Map<ClassConfig, FieldConfig>>();
   @protected
-  FieldConfig fieldConfigOf(FieldElement2 element) =>
+  FieldConfig fieldConfigOf(FieldElement element) =>
       (_fieldConfigs[element] ??= {}).putIfAbsent(config, () => FieldConfig.fromElement(element));
 
   static final _parametersConfigs = Expando<Map<ClassConfig, ParameterConfig>>();
@@ -62,5 +62,5 @@ abstract class HelperCore extends ClassElements {
     }
   }
 
-  static bool _checkFieldConcrete(FieldElement2 field) => !field.isAbstract && !field.isLate;
+  static bool _checkFieldConcrete(FieldElement field) => !field.isAbstract && !field.isLate;
 }

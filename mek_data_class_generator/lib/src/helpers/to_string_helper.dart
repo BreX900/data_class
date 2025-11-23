@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/helpers/helper_core.dart';
 import 'package:source_helper/source_helper.dart';
@@ -17,7 +17,7 @@ mixin ToStringHelper on HelperCore {
     registerMixinMethod(_createToStringMixinMethod(fields));
   }
 
-  Method _createToStringMixinMethod(Iterable<FieldElement2> fields) {
+  Method _createToStringMixinMethod(Iterable<FieldElement> fields) {
     return Method(
       (b) => b
         ..annotations.add(const CodeExpression(Code('override')))
@@ -30,9 +30,9 @@ mixin ToStringHelper on HelperCore {
           if (fields.isNotEmpty) buffer.write('(');
           buffer.write('ClassToString(');
           buffer.write(escapeDartString(element.displayName));
-          if (element.typeParameters2.isNotEmpty) {
+          if (element.typeParameters.isNotEmpty) {
             buffer.write(', [');
-            buffer.writeAll(element.typeParameters2.map((e) => e.displayName), ', ');
+            buffer.writeAll(element.typeParameters.map((e) => e.displayName), ', ');
             buffer.write(']');
           }
           buffer.write(')');

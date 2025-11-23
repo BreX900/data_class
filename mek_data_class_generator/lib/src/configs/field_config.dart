@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
 import 'package:source_gen/source_gen.dart';
@@ -19,7 +19,7 @@ class FieldConfig {
     required this.stringifier,
   });
 
-  factory FieldConfig.fromElement(FieldElement2 element) {
+  factory FieldConfig.fromElement(FieldElement element) {
     final annotation = ConstantReader(_typeChecker.firstAnnotationOf(element));
     if (annotation.isNull) {
       return const FieldConfig(equatable: true, equality: null, stringify: true, stringifier: null);

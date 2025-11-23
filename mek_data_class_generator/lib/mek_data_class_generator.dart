@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class/mek_data_class.dart';
@@ -23,18 +23,18 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
   @override
   Future<String?> generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    if (element is! ClassElement2) return null;
+    if (element is! ClassElement) return null;
 
     final library = _createLibrary(element);
 
     return '${library.accept(_dartEmitter)}';
   }
 
-  Library _createLibrary(ClassElement2 element) {
+  Library _createLibrary(ClassElement element) {
     final registry = _RegistryHelper(options: options, element: element);
 
     registry.register();
@@ -86,7 +86,7 @@ class _RegistryHelper extends HelperCore
     return Mixin(
       (b) => b
         ..name = '_\$${element.displayName.nonPrivate}'
-        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..types.addAll(element.typeParameters.map((e) => Reference(e.displayString())))
         ..methods.addAll([if (selfMethod != null) selfMethod])
         ..methods.addAll(_mixinMethods),
     );

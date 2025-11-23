@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:mek_data_class_generator/src/configs/class_config.dart';
 import 'package:mek_data_class_generator/src/configs/options.dart';
@@ -7,11 +7,11 @@ import 'package:source_helper/source_helper.dart';
 
 class ClassElements {
   final Options options;
-  final ClassElement2 element;
+  final ClassElement element;
 
-  late final ConstructorElement2 constructor =
-      element.unnamedConstructor2 ?? element.constructors2.first;
-  late final List<FieldElement2> allFields = element.thisType.typeImplementations
+  late final ConstructorElement constructor =
+      element.unnamedConstructor ?? element.constructors.first;
+  late final List<FieldElement> allFields = element.thisType.typeImplementations
       .expand(_fieldsOf)
       .toList();
   late final List<GetterElement> allGetters = element.thisType.typeImplementations
@@ -23,12 +23,12 @@ class ClassElements {
   static final _configs = Expando<ClassConfig>();
   ClassConfig get config => configOf(element);
 
-  ClassConfig configOf(ClassElement2 element) =>
+  ClassConfig configOf(ClassElement element) =>
       _configs[element] ??= ClassConfig.fromElement(options, element);
 
   ClassElements? elementsOf(FormalParameterElement parameter) {
-    final element = parameter.type.element3;
-    if (element is! ClassElement2) return null;
+    final element = parameter.type.element;
+    if (element is! ClassElement) return null;
     return ClassElements(options: options, element: element);
   }
 
@@ -38,21 +38,21 @@ class ClassElements {
     final supertype = element.supertype;
     if (supertype == null) return null;
 
-    final superelement = supertype.element3;
-    if (superelement is! ClassElement2) return null;
+    final superelement = supertype.element;
+    if (superelement is! ClassElement) return null;
 
     return TypedClassElements(options: options, type: supertype, element: superelement);
   }
 
-  static Iterable<FieldElement2> _fieldsOf(DartType type) sync* {
-    final element = type.element3;
-    if (element is! ClassElement2) return;
+  static Iterable<FieldElement> _fieldsOf(DartType type) sync* {
+    final element = type.element;
+    if (element is! ClassElement) return;
 
-    for (final field in element.fields2) {
+    for (final field in element.fields) {
       if (field.isStatic) continue;
 
       if (!field.isFinal) {
-        if (field.setter2 == null) continue;
+        if (field.setter == null) continue;
         throw InvalidGenerationSource(
           'A comparable class cannot have `var` fields.',
           element: field,
@@ -64,10 +64,10 @@ class ClassElements {
   }
 
   static Iterable<GetterElement> _gettersOf(DartType type) sync* {
-    final element = type.element3;
-    if (element is! ClassElement2) return;
+    final element = type.element;
+    if (element is! ClassElement) return;
 
-    for (final getter in element.getters2) {
+    for (final getter in element.getters) {
       if (getter.isStatic) continue;
 
       yield getter;

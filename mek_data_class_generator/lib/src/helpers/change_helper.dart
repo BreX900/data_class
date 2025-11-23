@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/class_elements.dart';
 import 'package:mek_data_class_generator/src/helpers/helper_core.dart';
@@ -162,7 +162,7 @@ mixin ChangeHelper on HelperCore {
       (b) => b
         ..abstract = element.isAbstract
         ..name = _classReference.symbol
-        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..types.addAll(element.typeParameters.map((e) => Reference(e.displayString())))
         ..implements.addAll([
           if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix),
         ])

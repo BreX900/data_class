@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:mek_data_class_generator/src/class_elements.dart';
 import 'package:source_gen/source_gen.dart';

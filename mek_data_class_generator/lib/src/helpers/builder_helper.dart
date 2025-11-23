@@ -169,7 +169,7 @@ mixin BuilderHelper on HelperCore {
       (b) => b
         ..abstract = element.isAbstract
         ..name = _classReference.symbol
-        ..types.addAll(element.typeParameters2.map((e) => Reference(e.displayString2())))
+        ..types.addAll(element.typeParameters.map((e) => Reference(e.displayString())))
         ..implements.addAll([
           if (superElements?.type case final type?) classReferenceFrom(type, _classNameSuffix),
         ])

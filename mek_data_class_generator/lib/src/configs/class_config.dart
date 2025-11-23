@@ -1,5 +1,5 @@
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:mek_data_class/mek_data_class.dart';
 import 'package:mek_data_class_generator/src/configs/options.dart';
 import 'package:mek_data_class_generator/src/utils.dart';
@@ -24,7 +24,7 @@ class ClassConfig {
     required this.equalities,
   });
 
-  factory ClassConfig.fromElement(Options config, Element2 element) {
+  factory ClassConfig.fromElement(Options config, Element element) {
     final annotation = ConstantReader(_typeChecker.firstAnnotationOf(element));
     if (annotation.isNull) {
       return const ClassConfig(

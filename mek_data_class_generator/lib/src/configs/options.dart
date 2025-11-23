@@ -4,6 +4,7 @@ part 'options.g.dart';
 
 @JsonSerializable()
 class Options {
+  final Object? runOnlyIfTriggered;
   final bool equatable;
   final bool stringify;
   final bool stringifyIfNull;
@@ -12,6 +13,7 @@ class Options {
   final bool changeable;
 
   const Options({
+    this.runOnlyIfTriggered,
     this.equatable = true,
     this.stringify = true,
     this.stringifyIfNull = true,

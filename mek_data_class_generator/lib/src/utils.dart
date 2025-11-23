@@ -10,7 +10,7 @@ abstract final class Annotations {
 TypeReference classReferenceFrom(InterfaceType type, String suffix) {
   return TypeReference(
     (b) => b
-      ..symbol = '${type.element3.displayName.nonPrivate}$suffix'
+      ..symbol = '${type.element.displayName.nonPrivate}$suffix'
       ..types.addAll(type.typeArguments.map((e) => Reference('$e'))),
   );
 }
@@ -23,13 +23,13 @@ extension TypeReferenceExtensions on TypeReference {
 }
 
 extension DartTypeExtensions on DartType {
-  DartType promoteNonNullable() => element3?.library2?.typeSystem.promoteToNonNull(this) ?? this;
+  DartType promoteNonNullable() => element?.library?.typeSystem.promoteToNonNull(this) ?? this;
 
   String getAliasOrDisplayString() {
     if (alias case final element?) {
       var buffer = element.typeArguments.map((e) => e.getAliasOrDisplayString()).join(', ');
       if (buffer.isNotEmpty) buffer = '<$buffer>';
-      buffer = '${element.element2.displayName}$buffer';
+      buffer = '${element.element.displayName}$buffer';
       if (isNullableType) buffer = '$buffer?';
       return buffer;
     }
