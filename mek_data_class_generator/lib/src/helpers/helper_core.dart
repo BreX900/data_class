@@ -43,7 +43,7 @@ abstract class HelperCore extends ClassElements {
     void Function(FormalParameterElement parameter) writer,
   ) {
     if (constructor.formalParameters.isEmpty) {
-      if (constructor.isConst) buffer.write('const');
+      if (constructor.isConst) buffer.write('const ');
       buffer.write(constructor.displayName);
       buffer.write('()');
     } else {
