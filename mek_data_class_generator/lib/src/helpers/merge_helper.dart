@@ -1,17 +1,17 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:mek_data_class_generator/src/helpers/helper_core.dart';
-import 'package:mek_data_class_generator/src/utils.dart';
+import 'package:source_helper/source_helper.dart';
 
-mixin CopyWithHelper on HelperCore {
+mixin MergeHelper on HelperCore {
   @override
   void register() {
     super.register();
 
-    if (!config.copyable) return;
+    if (!config.mergeable) return;
 
     final parameters = this.parameters.where((e) => parameterConfigOf(e).updatable);
-    if (!element.isAbstract && parameters.isNotEmpty) registerMixinSelfGetter();
+    if (!element.isAbstract) registerMixinSelfGetter();
 
     registerMixinMethod(_createCopyWithMethod(parameters));
   }
@@ -23,14 +23,16 @@ mixin CopyWithHelper on HelperCore {
         body = const Code('_self');
       } else {
         body = lazyCode(() {
-          final buffer = StringBuffer('return ');
+          final buffer = StringBuffer('if (other == null) return _self;');
+          buffer.write('return ');
           writeNewInstance(buffer, (parameter) {
             if (parameterConfigOf(parameter).updatable) {
-              buffer.write('Unspecified.resolve(_self.');
+              buffer.write('other.');
               buffer.write(parameterConfigOf(parameter).accessor);
-              buffer.write(', ');
-              buffer.write(parameter.displayName);
-              buffer.write(')');
+              if (parameter.type.isNullableType) {
+                buffer.write(' ?? _self.');
+                buffer.write(parameterConfigOf(parameter).accessor);
+              }
             } else {
               buffer.write('_self.');
               buffer.write(parameterConfigOf(parameter).accessor);
@@ -44,21 +46,18 @@ mixin CopyWithHelper on HelperCore {
     return Method(
       (b) => b
         ..returns = Reference(element.thisType.getDisplayString())
-        ..name = 'copyWith'
-        ..optionalParameters.addAll(
-          parameters.map((parameter) {
-            return Parameter(
-              (b) => b
-                ..named = true
-                ..type = TypeReference(
-                  (b) => b
-                    ..symbol = r'$Parameter'
-                    ..types.add(Reference(parameter.type.getAliasOrDisplayString())),
-                )
-                ..name = parameter.displayName
-                ..defaultTo = const Code('const Unspecified()'),
-            );
-          }),
+        ..name = 'merge'
+        ..requiredParameters.add(
+          Parameter(
+            (b) => b
+              ..covariant = true
+              ..type = TypeReference(
+                (b) => b
+                  ..isNullable = true
+                  ..symbol = element.thisType.getDisplayString(),
+              )
+              ..name = 'other',
+          ),
         )
         ..lambda = body is StaticCode
         ..body = body,

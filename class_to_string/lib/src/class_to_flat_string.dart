@@ -6,7 +6,7 @@ import 'package:class_to_string/src/utils.dart';
 class ClassToFlatString extends ClassToStringBase {
   StringBuffer? _result = StringBuffer();
 
-  var _hasPreviousField = false;
+  var _isEmpty = true;
 
   ClassToFlatString(String className, [Iterable<Type> types = const []]) {
     _result!.write(className);
@@ -24,12 +24,15 @@ class ClassToFlatString extends ClassToStringBase {
 
   @override
   void add(String name, Object? value) {
-    if (_hasPreviousField) _result!.write(',');
+    if (_isEmpty) {
+      _isEmpty = false;
+    } else {
+      _result!.write(',');
+    }
     _result!
       ..write(name)
       ..write(':')
       ..writeValue(value);
-    _hasPreviousField = true;
   }
 
   @override
@@ -37,6 +40,7 @@ class ClassToFlatString extends ClassToStringBase {
     _result!.write(')');
     final stringResult = _result.toString();
     _result = null;
+    _isEmpty = true;
     return stringResult;
   }
 }

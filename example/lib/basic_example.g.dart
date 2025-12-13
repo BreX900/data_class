@@ -156,10 +156,19 @@ class ProductChanges {
 mixin _$EmptyClass {
   EmptyClass get _self => this as EmptyClass;
 
+  EmptyClass copyWith() => _self;
+
+  EmptyClass merge(covariant EmptyClass? other) => _self;
+
   EmptyClass change(void Function(EmptyClassChanges c) updates) =>
       (toChanges()..update(updates)).build();
 
   EmptyClassChanges toChanges() => EmptyClassChanges._(_self);
+
+  EmptyClass rebuild(void Function(EmptyClassBuilder b) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  EmptyClassBuilder toBuilder() => EmptyClassBuilder()..replace(_self);
 
   @override
   bool operator ==(Object other) =>
@@ -184,4 +193,14 @@ class EmptyClassChanges {
   void update(void Function(EmptyClassChanges c) updates) => updates(this);
 
   EmptyClass build() => _original;
+}
+
+class EmptyClassBuilder {
+  void update(void Function(EmptyClassBuilder b) updates) => updates(this);
+
+  EmptyClass build() {
+    return const EmptyClass._();
+  }
+
+  void replace(covariant EmptyClass other) {}
 }

@@ -10,6 +10,7 @@ import 'package:mek_data_class_generator/src/helpers/change_helper.dart';
 import 'package:mek_data_class_generator/src/helpers/copy_with_helper.dart';
 import 'package:mek_data_class_generator/src/helpers/equatable_helper.dart';
 import 'package:mek_data_class_generator/src/helpers/helper_core.dart';
+import 'package:mek_data_class_generator/src/helpers/merge_helper.dart';
 import 'package:mek_data_class_generator/src/helpers/to_string_helper.dart';
 import 'package:source_gen/source_gen.dart' hide LibraryBuilder;
 import 'package:source_helper/source_helper.dart';
@@ -44,7 +45,7 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 }
 
 class _RegistryHelper extends HelperCore
-    with CopyWithHelper, ChangeHelper, BuilderHelper, EquatableHelper, ToStringHelper {
+    with CopyWithHelper, MergeHelper, ChangeHelper, BuilderHelper, EquatableHelper, ToStringHelper {
   final _libraryBody = <Spec>[];
   final _mixinMethods = <Method>[];
   var _shouldCreateSelfMixinGetter = false;
