@@ -49,7 +49,7 @@ class ProductEquality implements Equality<Product> {
   bool isValidKey(Object? o) => throw UnimplementedError();
 }
 
-@DataClass(changeable: true)
+@DataClass(buildable: true, copyable: true, mergeable: true, changeable: true)
 class EmptyClass with _$EmptyClass {
   const EmptyClass._();
 }

@@ -1,4 +1,11 @@
 
+
+## 4.2.0
+- feat: added the ability to generate the `merge` method to copy the values of another instance into the current instance
+- fix: fixed missing space when generating an empty const constructor
+- chore: `copyWith` and `merge` methods return the original data class instance if constructor has no parameters
+- chore: allowed analyzer `>=8.1.1 <10.0.0`
+
 ## 4.1.1
 - build: require `analyzer: ^9.0.0`
 - build: require `build: ^4.0.3`

@@ -12,14 +12,16 @@ class ClassConfig {
   final bool stringify;
   final bool buildable;
   final bool copyable;
+  final bool mergeable;
   final bool changeable;
   final List<DartObject> equalities;
 
   const ClassConfig({
     required this.comparable,
     required this.stringify,
-    required this.copyable,
     required this.buildable,
+    required this.copyable,
+    required this.mergeable,
     required this.changeable,
     required this.equalities,
   });
@@ -32,6 +34,7 @@ class ClassConfig {
         stringify: false,
         buildable: false,
         copyable: false,
+        mergeable: false,
         changeable: false,
         equalities: [],
       );
@@ -45,6 +48,7 @@ class ClassConfig {
       stringify: annotation.get('stringify')?.boolValue ?? config.stringify,
       buildable: annotation.get('buildable')?.boolValue ?? config.buildable,
       copyable: annotation.get('copyable')?.boolValue ?? config.copyable,
+      mergeable: annotation.get('mergeable')?.boolValue ?? config.mergeable,
       changeable: annotation.get('changeable')?.boolValue ?? config.changeable,
       equalities: annotation.read('equalities').listValue,
     );

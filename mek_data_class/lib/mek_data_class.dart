@@ -33,6 +33,10 @@ class DataClass {
   /// Default: `false`
   final bool? copyable;
 
+  /// Adds the `merge` method to the class.
+  /// Default: `false`
+  final bool? mergeable;
+
   /// Adds the `change` and `toChanges` method to the class.
   /// Default: `false`
   final bool? changeable;
@@ -46,8 +50,9 @@ class DataClass {
   const DataClass({
     this.comparable,
     this.stringify,
-    this.copyable,
     this.buildable,
+    this.copyable,
+    this.mergeable,
     this.changeable,
     this.equalities = const [],
   });

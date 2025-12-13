@@ -2,7 +2,7 @@ import 'package:mek_data_class/mek_data_class.dart';
 
 part 'edge_cases.g.dart';
 
-@DataClass(changeable: true, buildable: true, copyable: true)
+@DataClass(buildable: true, copyable: true, mergeable: true, changeable: true)
 class $Dollar with _$$Dollar {
   final $Dollar $dollar;
   final $Dollar? euro;

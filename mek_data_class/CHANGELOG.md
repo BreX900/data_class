@@ -1,4 +1,7 @@
 
+## 2.2.0
+- feat: added `DataClass.mergeable` which generates the `merge` method to copy the values of another instance into the current instance
+
 ## 2.1.0
 - chore: bumped min dart version to `3.8.0`
 

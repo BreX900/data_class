@@ -46,6 +46,7 @@ class ClassToIndentString extends ClassToStringBase {
     _result!.write(')');
     final stringResult = _result.toString();
     _result = null;
+    _isEmpty = true;
     return stringResult;
   }
 }

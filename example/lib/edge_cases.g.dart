@@ -26,6 +26,16 @@ mixin _$$Dollar {
     );
   }
 
+  $Dollar merge(covariant $Dollar? other) {
+    if (other == null) return _self;
+    return $Dollar(
+      $dollar: other.$dollar,
+      euro: other.euro ?? _self.euro,
+      privateAndPublic: other.privateAndPublic,
+      private: other._private,
+    );
+  }
+
   $Dollar change(void Function($DollarChanges c) updates) =>
       (toChanges()..update(updates)).build();
 

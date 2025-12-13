@@ -10,6 +10,7 @@ Auto generation of:
 - [x] `hashCode` and `==` methods
 - [x] pretty `toString` method
 - [x] `copyWith` method with support a `null` values
+- [x] `merge` to merge current instance values with another
 - [x] `*Changes` class to updated your data class
 - [x] `*Builder` class to build or update your data class
 

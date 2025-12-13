@@ -1,5 +1,5 @@
 name: mek_data_class_generator
-version: 4.1.1
+version: 4.2.0
 description: >
   Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
   and `change` methods
@@ -20,23 +20,21 @@ scripts:
   generate-code: dart run build_runner watch --delete-conflicting-outputs
 
 dependencies:
-  mek_data_class: ^2.0.0
+  mek_data_class: ^2.2.0
 
-  analyzer: ^9.0.0
-  build: ^4.0.3
-  source_gen: ^4.1.1
+  analyzer: '>=8.1.1 <10.0.0'
+  build: ^4.0.2
+  source_gen: ^4.0.0
   code_builder: ^4.4.0
-  source_helper: ^1.3.9
+  source_helper: ^1.3.8
 
   meta: ^1.16.0
   collection: ^1.16.0
   json_annotation: ^4.9.0
 
 dependency_overrides:
-  class_to_string:
-    path: ../class_to_string
-  mek_data_class:
-    path: ../mek_data_class
+  class_to_string: { path: ../class_to_string }
+  mek_data_class: { path: ../mek_data_class }
 
 dev_dependencies:
   mek_lints: ^4.0.0
