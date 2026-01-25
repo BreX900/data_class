@@ -1,4 +1,6 @@
 
+## 4.2.1
+- build: allow `analyzer: '>=8.1.1 <11.0.0'`
 
 ## 4.2.0
 - feat: added the ability to generate the `merge` method to copy the values of another instance into the current instance

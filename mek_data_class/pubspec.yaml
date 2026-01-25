@@ -13,7 +13,7 @@ environment:
   sdk: ^3.8.0
 
 scripts:
-  publish: dart pub publish
+  publish: dart format . && dart pub publish
 
 dependencies:
   class_to_string: ^1.1.0
