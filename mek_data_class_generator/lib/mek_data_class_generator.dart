@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:analyzer/dart/analysis/results.dart';
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
@@ -30,13 +32,24 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
   ) async {
     if (element is! ClassElement) return null;
 
-    final library = _createLibrary(element);
+    final mixinName = '_\$${element.displayName.nonPrivate}';
+    final node = _getNodeDeclaration<ClassDeclaration>(element);
+    final hasMixin = node?.withClause?.mixinTypes.any((e) => e.name.toString() == mixinName);
+
+    if (!(hasMixin ?? false)) {
+      throw InvalidGenerationSourceError(
+        'Missing mixin clause `with $mixinName`',
+        element: element,
+      );
+    }
+
+    final library = _createLibrary(element, mixinName);
 
     return '${library.accept(_dartEmitter)}';
   }
 
-  Library _createLibrary(ClassElement element) {
-    final registry = _RegistryHelper(options: options, element: element);
+  Library _createLibrary(ClassElement element, String mixinName) {
+    final registry = _RegistryHelper(options: options, element: element, mixinName: mixinName);
 
     registry.register();
 
@@ -46,13 +59,14 @@ class DataClassGenerator extends GeneratorForAnnotation<DataClass> {
 
 class _RegistryHelper extends HelperCore
     with CopyWithHelper, MergeHelper, ChangeHelper, BuilderHelper, EquatableHelper, ToStringHelper {
+  final String mixinName;
   final _libraryBody = <Spec>[];
   final _mixinMethods = <Method>[];
   var _shouldCreateSelfMixinGetter = false;
 
   List<Spec> get libraryBody => _libraryBody;
 
-  _RegistryHelper({required super.options, required super.element});
+  _RegistryHelper({required super.options, required super.element, required this.mixinName});
 
   @override
   void registerMixinMethod(Method method) => _mixinMethods.add(method);
@@ -86,10 +100,24 @@ class _RegistryHelper extends HelperCore
 
     return Mixin(
       (b) => b
-        ..name = '_\$${element.displayName.nonPrivate}'
+        ..name = mixinName
         ..types.addAll(element.typeParameters.map((e) => Reference(e.displayString())))
         ..methods.addAll([if (selfMethod != null) selfMethod])
         ..methods.addAll(_mixinMethods),
     );
   }
+}
+
+/// Returns an AstNode type from a InterfaceElement2.
+///
+/// Inspired by go_router_builder
+T? _getNodeDeclaration<T extends AstNode>(InterfaceElement element) {
+  final session = element.session;
+  if (session == null) return null;
+
+  final parsedLibrary = session.getParsedLibraryByElement(element.library) as ParsedLibraryResult;
+  final declaration = parsedLibrary.getFragmentDeclaration(element.firstFragment);
+  final node = declaration?.node;
+
+  return node is T ? node : null;
 }
