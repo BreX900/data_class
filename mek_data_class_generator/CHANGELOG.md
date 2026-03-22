@@ -1,3 +1,8 @@
+## 4.2.2
+- build: require `analyzer: '>=10.0.0 <13.0.0'`
+- build: require `build: ^4.0.4`
+- build: require `source_gen: ^4.1.2`
+- build: require `source_helper: ^1.3.10`
 
 ## 4.2.1
 - build: allow `analyzer: '>=8.1.1 <11.0.0'`
