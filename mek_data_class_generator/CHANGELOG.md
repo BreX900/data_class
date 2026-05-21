@@ -1,4 +1,7 @@
 
+## 4.3.1
+- build: require `analyzer: '>=10.0.0 <14.0.0'`
+
 ## 4.3.0
 - feat: throw invalid source error when class not mix the generated mixin
 
