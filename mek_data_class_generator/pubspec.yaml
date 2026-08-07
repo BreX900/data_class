@@ -1,5 +1,5 @@
 name: mek_data_class_generator
-version: 4.3.1
+version: 4.3.2
 description: >
   Code generator for data_class to generate `hashCode`, `==`, `toString`, `copyWith` 
   and `change` methods
@@ -22,7 +22,7 @@ scripts:
 dependencies:
   mek_data_class: ^2.2.0
 
-  analyzer: '>=10.0.0 <14.0.0'
+  analyzer: '>=10.0.0 <15.0.0'
   build: ^4.0.4
   source_gen: ^4.1.2
   code_builder: ^4.4.0
