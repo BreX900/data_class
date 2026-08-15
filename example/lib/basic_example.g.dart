@@ -176,10 +176,7 @@ mixin _$EmptyClass {
       other is EmptyClass && runtimeType == other.runtimeType;
 
   @override
-  int get hashCode {
-    final hashCode = 0;
-    return $hashFinish(hashCode);
-  }
+  int get hashCode => $hashFinish(0);
 
   @override
   String toString() => ClassToString('EmptyClass').toString();

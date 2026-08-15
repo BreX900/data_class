@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
         with:
-          sdk: 3.8.0
+          sdk: 3.13.0
 
       - name: Resolve dependencies
         run: dart pub get
@@ -28,7 +28,7 @@ jobs:
 
       - name: Check code formatting
         run: >-
-          dart format --line-length 100 --set-exit-if-changed --output none
+          dart format --set-exit-if-changed --output none
           $(find . ! -path "./.dart_tool/**" ! -path "./build/**" -name "*.dart" ! -name "*.g.dart")
 
       - name: Analyze code

@@ -4,9 +4,9 @@ import 'package:test/scaffolding.dart';
 
 void main() {
   group('basic_example', () {
-    final mouse1 = Product(1, 'mouse', extraData: {});
-    final mouse2 = Product(1, 'mouse', extraData: {});
-    final monitor = Product(2, 'monitor', extraData: {});
+    const mouse1 = Product(1, 'mouse', extraData: {});
+    const mouse2 = Product(1, 'mouse', extraData: {});
+    const monitor = Product(2, 'monitor', extraData: {});
 
     test('Success data class comparison', () {
       expect(mouse1, mouse2);

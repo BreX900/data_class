@@ -33,6 +33,7 @@ class Product with _$Product {
   const Product(this.id, @DataParameter(updatable: false) this.title, {this.extraData})
     : idAndTitle = '$id - $title';
 
+  // ignore: avoid_unused_constructor_parameters
   factory Product.fromJson(Map<String, dynamic> map) => Object() as Product;
 }
 

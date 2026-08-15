@@ -12,7 +12,7 @@ class ClassToFlatString extends ClassToStringBase {
     _result!.write(className);
     if (types.isNotEmpty) {
       _result!.write('<');
-      int i = 0;
+      var i = 0;
       for (final type in types) {
         if (i++ > 0) _result!.write(',');
         _result!.write(type);

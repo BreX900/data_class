@@ -71,6 +71,7 @@ class DataField {
   final bool stringify;
 
   /// Allows you to override the toString
+  // ignore: avoid_annotating_with_dynamic
   final Object? Function(dynamic value)? stringifier;
 
   /// Ex.

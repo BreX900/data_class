@@ -8,7 +8,7 @@ void main() {
     test('empty flat class', () {
       final object = FakeClass(() => ClassToJsonString('Empty'));
 
-      expect(object.toString(), '{"\$className":"Empty"}');
+      expect(object.toString(), r'{"$className":"Empty"}');
     });
 
     test('filled flat class', () {
@@ -24,7 +24,7 @@ void main() {
 
       expect(
         object.toString(),
-        '{"\$className":"Filled","integer":1,"double":1.1,"boolean":true,"string":"text","null":null}',
+        r'{"$className":"Filled","integer":1,"double":1.1,"boolean":true,"string":"text","null":null}',
       );
     });
 
@@ -42,7 +42,7 @@ void main() {
 
       expect(
         object.toString(),
-        '{"\$className":"External","externalValue":1.1,"class":{"\$className":"Internal","innerValue":true}}',
+        r'{"$className":"External","externalValue":1.1,"class":{"$className":"Internal","innerValue":true}}',
       );
     });
   });
