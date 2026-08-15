@@ -28,7 +28,7 @@ void main() {
         '  integer: 1,\n'
         '  double: 1.1,\n'
         '  boolean: true,\n'
-        '  string: \'text\',\n'
+        "  string: 'text',\n"
         '  null: null,\n'
         ')',
       );

@@ -54,7 +54,10 @@ mixin EquatableHelper on HelperCore {
         ..returns = const Reference('int')
         ..type = MethodType.getter
         ..name = 'hashCode'
+        ..lambda = fields.isEmpty
         ..body = lazyCode(() {
+          if (fields.isEmpty) return const Code(r'$hashFinish(0)');
+
           const hashVar = 'hashCode';
           final body = StringBuffer('${fields.isEmpty ? 'final' : 'var'} $hashVar = 0;\n');
           body.writeAll(

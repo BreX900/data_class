@@ -17,15 +17,15 @@ class ClassToJsonString extends ClassToStringBase {
   ClassToJsonString(String className, [Iterable<Type> types = const []]) {
     _isJsonString += 1;
 
-    _result2!['\$className'] = className;
-    if (types.isNotEmpty) _result2!['\$classTypes'] = '[${types.join(',')}]';
+    _result2![r'$className'] = className;
+    if (types.isNotEmpty) _result2![r'$classTypes'] = '[${types.join(',')}]';
 
     _result!
-      ..write('{"\$className":')
+      ..write(r'{"$className":')
       ..write(jsonEncode(className));
     if (types.isNotEmpty) {
       _result!
-        ..write(',"\$classTypes":')
+        ..write(r',"$classTypes":')
         ..write(jsonEncode(types));
     }
   }

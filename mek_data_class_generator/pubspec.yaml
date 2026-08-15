@@ -11,7 +11,7 @@ topics:
   - codegen
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 scripts:
   publish: dart format . && dart pub publish
@@ -37,8 +37,8 @@ dependency_overrides:
   mek_data_class: { path: ../mek_data_class }
 
 dev_dependencies:
-  mek_lints: ^4.0.0
+  mek_lints: ^7.0.0
   test: ^1.21.6
 
-  build_runner: ^2.4.5
+  build_runner: ^2.16.0
   json_serializable: ^6.5.4

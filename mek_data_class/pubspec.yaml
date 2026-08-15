@@ -10,7 +10,7 @@ topics:
   - codegen
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 scripts:
   publish: dart format . && dart pub publish
@@ -26,5 +26,4 @@ dependency_overrides:
     path: ../class_to_string
 
 dev_dependencies:
-  mek_lints: ^2.0.0
-  test: ^1.20.1
+  mek_lints: ^7.0.0
