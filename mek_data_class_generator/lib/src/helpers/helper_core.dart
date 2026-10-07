@@ -42,12 +42,16 @@ abstract class HelperCore extends ClassElements {
     StringBuffer buffer,
     void Function(FormalParameterElement parameter) writer,
   ) {
+    final constructorName = constructor.name == 'new'
+        ? element.displayName
+        : constructor.displayName;
+
     if (constructor.formalParameters.isEmpty) {
       if (constructor.isConst) buffer.write('const ');
-      buffer.write(constructor.displayName);
+      buffer.write(constructorName);
       buffer.write('()');
     } else {
-      buffer.write(constructor.displayName);
+      buffer.write(constructorName);
       buffer.write('(');
       for (final parameter in parameters) {
         buffer.write('  ');

@@ -1,4 +1,7 @@
 
+## 4.3.3
+- fix: do not add `.new` on instance constructor invocation
+
 ## 4.3.2
 - build: require `analyzer: '>=10.0.0 <15.0.0'`
 
